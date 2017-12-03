@@ -1,3 +1,11 @@
+/* 문자열 */
+function strings(){
+  console.log('Isn\'t lovely~' ); // 제어문자 \
+  console.log('Line1\nLine2');    // 줄바꿈 \n
+  console.log('\\');              // 백슬레쉬 \
+}
+strings();
+
 /* instancof */
 function instanceof1(){
   function C(){}
@@ -19,7 +27,6 @@ function instanceof2(){
   console.log(namestr instanceof String); // true
   console.log(myname instanceof String);  // true
 }
-instanceof2();
 
 /* typeof */
 function checkTypeof(){

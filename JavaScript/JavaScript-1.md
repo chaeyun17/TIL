@@ -1,6 +1,5 @@
 ### Literal
-리터럴이란 소스코드에서 고정된 값을 뜻하는 기호이다. [더보기][literal_wiki]
-[literal_wiki]: https://en.wikipedia.org/wiki/Literal_(computer_programming)
+리터럴이란 소스코드에서 고정된 값을 뜻하는 기호이다.
 
 ### == 와 ===
 - `==` : 피연산자들을 같은 형으로 변환한 뒤, 값을 비교한다. 추상적 비교.
@@ -8,7 +7,8 @@
 
 ### undefiend 와 null
 - undefined 는 초기화 되지 않는 변수. 값이 없음을 뜻한다.
-- null 은 객체가 아니다라는 뜻. 오브젝트가 올 곳에 오브젝트가 오지 않은 것도 뜻한다.
+- null 은 객체가 아니다라는 뜻. 오브젝트가 올 곳에 오브젝트가 오지 않은 것도 뜻한다.  
+
 ```JavaScript
 /* Undefined 와 null */
 function ex6_Undefined(){
@@ -41,6 +41,7 @@ Null 값은 리터럴이다. null 은 undefiend과 같은 글로벌 객체 프�
 | 문자열 값        | 'string'    |
 | 함수             | 'function'  |
 | 다른 일반적인 값 | 'object'    |
+
 ```JavaScript
 /* typeof */
 function checkTypeof(){
@@ -51,6 +52,7 @@ function checkTypeof(){
 ### instanceof
 instancof 연산자는 object의 프토토타입 체인에서 constructor.prototype이 존재하는지를 테스트한다.  
 [MDN 더보기](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/instanceof)
+
 ```JavaScript
 /* instancof */
 function instanceof1(){
@@ -91,8 +93,15 @@ function instanceof2(){
 
 ### Boolean()
 - Boolean 값의 wrapper 오브젝트.
-- Boolean이 아닌 값을 Boolean으로 변화시키기 위해서 Boolean 객체를 사용하지 마세요. 대신 다음과 같이 함수처럼 사용하세요. [MDN 더보기](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
+- Boolean이 아닌 값을 Boolean으로 변화시키기 위해서 Boolean 객체를 사용하지 마세요. 대신 다음과 같이 함수처럼 사용하세요.
+- [MDN 더보기](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
+
 ```JavaScript
 var x = Boolean(expression);      //preferred
 var x = new Boolean(expression);  //don't use
 ```
+
+### Wrapper Object
+- 모든 초기값은 프로퍼티를 가지지 않는다. 하지만 이렇게 쓸 수 있다. `console.log(str.toUpperCase());` 어떻게 된 것일까?
+- `str`의 프로퍼티에 접근하려고 하면 JavaScript는 값에서 오브젝트로 변화시킨다. 이 오브젝트가 `Wrapper Object`이다. string 메서드들이 상속된다. 참조가 끝나면 wrapper Object는 해체된다.
+- [원문](https://javascriptrefined.io/the-wrapper-object-400311b29151)
