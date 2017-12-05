@@ -1,10 +1,102 @@
+
+
+/* 이피 IIFE */
+var result = [];
+for(var i=0; i<5; i++){
+  result.push(function(){return i});
+}
+
+
+var result = [];
+for(var i=0; i<5; i++){
+  (function (){
+    var i2 = i;
+    result.push(function(){ return i2});
+  }());
+}
+//console.log(result[1]());
+//console.log(result[3]());
+
+/* 클로저 */
+function createIncrementor(start){
+  return function(){
+    start++;
+    return start;
+  }
+}
+function text_creat(){
+  var inc = createIncrementor(5);
+  console.log(inc());
+  console.log(inc());
+  console.log(inc());
+}
+//text_creat();
+
+/* 예외 처리 */
+function getPerson(id){
+  if(id < 0){
+    throw new Error('ID must not be negative: '+id);
+  }
+  return { id: id };
+}
+
+function getPersons(ids){
+  var result = [];
+  ids.forEach(function(id){
+    try{
+      var person = getPerson(id);
+      result.push(person);
+    }catch(exception){
+      console.log(exception);
+    }
+  });
+  return result;
+}
+//console.log(getPersons([2, -5, 137]))
+
+/* 자릿수 강제 */
+function pair2(x, y){
+  if(arguments.length !== 2){
+    throw new Error('Need exactly 2 arguments');
+  }
+}
+function test_pair2(){
+  console.log(pair2(1,2,3));
+}
+
+/* 옵션 매개변수 */
+function pair(x, y){
+  x = x || 0;
+  y = y || 0;
+  return [x, y];
+}
+function test_pair(){
+  console.log(pair());
+  console.log(pair(1));
+  console.log(pair(1,2));
+}
+
+/* arguments */
+function f(x,y) {
+  return Array.prototype.slice.call(arguments);
+}
+function f_text(){B
+  var arrayArgs = f('a','b','c');
+  console.log(arrayArgs); // 3
+  //console.log(args[0]);     // 'a'
+}
+
+/* 함수 */
+var add = function(param1, param2){
+  return param1 + param2;
+};
+
 /* 문자열 */
 function strings(){
   console.log('Isn\'t lovely~' ); // 제어문자 \
   console.log('Line1\nLine2');    // 줄바꿈 \n
   console.log('\\');              // 백슬레쉬 \
 }
-strings();
 
 /* instancof */
 function instanceof1(){

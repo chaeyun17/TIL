@@ -105,3 +105,151 @@ var x = new Boolean(expression);  //don't use
 - 모든 초기값은 프로퍼티를 가지지 않는다. 하지만 이렇게 쓸 수 있다. `console.log(str.toUpperCase());` 어떻게 된 것일까?
 - `str`의 프로퍼티에 접근하려고 하면 JavaScript는 값에서 오브젝트로 변화시킨다. 이 오브젝트가 `Wrapper Object`이다. string 메서드들이 상속된다. 참조가 끝나면 wrapper Object는 해체된다.
 - [원문](https://javascriptrefined.io/the-wrapper-object-400311b29151)
+
+### 함수
+자바스크립트는 해당 스코프에서 함수 선언을 가장 먼저 처리하는데, 이런 특징을 끌어올림(hosting)이라고 합니다. 따라서 함수를 선언하기 전에 참조할 수 있습니다.
+
+```JavaScript
+function foo(){
+  bar();    // 정상 출력. 참조됨
+  function bar(){
+    return 0;
+  }
+}
+```
+```JavaScript
+function foo(){
+  bar();    // undefined 출력. 참조되지 않음.
+  var bar = function(){
+    return 0;
+  }
+}
+```
+
+### 특별한 변수: arguments
+매개변수는 모두 특별한 변수인 arguments에 담깁니다. arguments는 배열처럼 보이지만 배열 메서드는 하나도 없습니다.
+
+```JavaScript
+function f() { return arguments; }
+var args = f('a','b','c');
+console.log(args.length); // 3
+console.log(args[0]);     // 'a'
+```  
+
+Array.prototype.slice.all()을 사용해서, arguments 를 배열로 만들 수 있습니다. 그리고 배열 메서드를 사용할 수 있습니다.
+
+```JavaScript
+function f(x,y) {
+  return Array.prototype.slice.call(arguments);
+}
+function f_text(){
+  var arrayArgs = f('a','b','c');
+  console.log(arrayArgs); // [ 'a', 'b', 'c' ]
+}
+f_text();
+```   
+
+다음은 매개변수에 기본값을 할당할 때 널리 쓰이는 패턴입니다.
+
+```JavaScript
+function pair(x, y){
+  x = x || 0;
+  y = y || 0;
+  return [x, y];
+}
+function test_pair(){
+  console.log(pair());    // [ 0, 0 ]
+  console.log(pair(1));   // [ 1, 0 ]  
+  console.log(pair(1,2)); // [ 1, 2 ]
+}
+test_pair();
+```
+
+매개변수 갯수를 강제할 수도 있습니다.
+
+```JavaScript
+function pair2(x, y){
+  if(arguments.length !== 2){
+    throw new Error('Need exactly 2 arguments');
+  }
+}
+function test_pair2(){
+  console.log(pair2(1,2,3));  // Error: Need exactly 2 arguments
+}
+test_pair2();
+```
+
+### 예외 처리
+try절에는 예외 가능성이 있는 코드를 쓰고, catch 절에는 try 절에서 예외가 일어났을 때 실행할 코드를 씁니다. 위 코드는 다음과 같이 실행합니다.
+```JavaScript
+function getPerson(id){
+  if(id < 0){
+    throw new Error('ID must not be negative: '+id);
+  }
+  return { id: id };
+}
+
+function getPersons(ids){
+  var result = [];
+  ids.forEach(function(id){
+    try{
+      var person = getPerson(id);
+      result.push(person);
+    }catch(exception){
+      console.log(exception);
+    }
+  });
+  return result;
+}
+console.log(getPersons([2, -5, 137]));
+// Error: ID must not be negative: -5
+// ...
+// [ { id: 2 }, { id: 137 } ]
+```
+
+### 변수의 스코프
+변수의 스코프는 현재 블록이 아니라 항상 함수 전체입니다.
+```JavaScript
+function foo(){
+  var x = -512;
+  if(x<0){
+    var tmp = -x;
+  }
+  console.log(tmp);
+}
+foo(); // 512
+```
+
+### 변수의 끌어올림
+변수 선언문은 함수 맨 앞으로 이동하고, 할당은 그 자리에서 있습니다.   
+아래와 같이 작성했지만,
+```JavaScript
+function foo(){
+  console.log(tmp); // undefined;
+  if(false){
+    var tmp = 3;    // 선언, 할당
+  }
+}
+```
+실제로는 이렇게 작동됩니다.
+```JavaScript
+function foo(){
+  var tmp;          // 선언이 끌어올려짐
+  console.log(tmp); // undefined;
+  if(false){
+    tmp = 3;        // 그 자리에서 할당됨
+  }
+}
+```
+
+### 클로저
+클로저는 함수와 함수가 선언된 언어적 환경과의 조합이다. 내부함수는 외부함수의 변수를 참조할 수 있다.   
+[MDN 더보기](https://developer.mozilla.org/ko/docs/Web/JavaScript/Guide/Closures)
+
+### IIFE 패턴
+어떤 변수가 전역 변수가 되지 않게 하기 위해, 새 변수 스코프가 필요할 때가 있습니다. 함수를 블록처럼 사용하는 패턴이 있습니다. 이러한 패털은 Immediately invoked function expression 이라고 합니다. 함수 내부에 새 스코프를 생성하여 tmp가 전역으로 올라가지 못하게 막습니다.
+```JavaScript
+(function (){
+  var tmp = 1;
+}());
+```
