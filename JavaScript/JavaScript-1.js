@@ -1,5 +1,17 @@
 
 
+/*
+'use strict';
+var chaeyun = {
+  name : 'chaeyun Lee',
+  Greeting : function (){
+    console.log("Hi. My name is " + this.name);
+  }
+}
+//chaeyun.Greeting();
+//console.log(delete chaeyun.name);
+*/
+
 /* 이피 IIFE */
 var result = [];
 for(var i=0; i<5; i++){
