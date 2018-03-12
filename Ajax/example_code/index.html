@@ -9,17 +9,20 @@
   textarea {
     margin: 10px 0;
   }
+
   table {
-      border-collapse: collapse;
-      width: 100%;
+    border-collapse: collapse;
+    width: 100%;
   }
 
-  th, td {
-      padding: 8px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
+  th,
+  td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
   }
 </style>
+
 <body>
   <div class="formm">
     <input type="text" id="comment_name"><br>
@@ -37,47 +40,7 @@
   </table>
 
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-  <script>
-
-    $("#comment_submit").on("click",function(event){
-      // 댓글 데이터 객체 생성
-      var jsonAjax = {};
-      var commentObj = {};
-      commentObj[$("#comment_name").val()] = $("#comment_txt").val();
-
-      // JSON 형태로 변경
-      var jsonAjax = JSON.stringify(commentObj);
-
-      // AJAX 통신
-      $.ajax({
-      method: "POST",
-      url: "./serve.php",
-      data: {"comment":jsonAjax}
-      })
-        .done(function(msg) {
-          // 입력창 초기화
-          $("#comment_name").val("");
-          $("#comment_txt").val("");
-          $(".tr").remove();
-
-          // json => object
-          var commentObj = JSON.parse(msg);
-
-          // 출력
-          var list='<tbody class="result">';
-          for(key in commentObj){
-            list +="<tr class=\"tr\">";
-            list +="<td>"+key+"</td><td>"+commentObj[key]+"</td>";
-            list +="</tr>";
-          }
-          list +="</tbody>";
-          $("table").append(list);
-        })
-        .fail(function(){
-          alert("Ajax fail");
-        });
-    });
-  </script>
+  <script src="./js/main.js" charset="utf-8"></script>
 </body>
 
 </html>
