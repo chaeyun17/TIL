@@ -25,6 +25,12 @@ innerHTML 프로퍼티는 다음과 같은 HTML 오브젝트에 대해서는 rea
 출처: [innerHTML property, MSDN](https://msdn.microsoft.com/en-us/ie/ms533897\(v=vs.94\))
 
 ## Node 와 Element의 차이
-Node는 Element를 포함하고 있다. Node는 DOM에서 기본적인 데이터 타입이다. 엘리먼트, 속성, 텍스트 등을 노드라고 한다.
+Node는 Element를 포함하고 있다. Node는 DOM에서 기본적인 데이터 타입이다. 엘리먼트 노드, 속성 노드, 텍스트 노드가 그 예이다.
 
 출처: [What's the difference between an element and a node in XML?](https://stackoverflow.com/questions/132564/whats-the-difference-between-an-element-and-a-node-in-xml)
+
+## Node.childNodes
+- Node list를 반환한다. 노드리스트 아이템들은 모두 Object이다.
+- 공백도 Node로 반환된다.
+- 문자열을 얻기 위해서는 프로퍼티를 사용한다. `node.childNodes[0].nodeName`을 사용해서 문자열을 얻을 수 있다.
+- 엘리먼트만 얻기 위해서는 `ParentNode.children` 사용을 추천한다. 
