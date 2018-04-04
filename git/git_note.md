@@ -26,3 +26,6 @@
 `git push origin topic-name`
 10. 깃헙 페이지에서 Pull request 활성화 버튼 클릭
 11. 게시물 작성
+
+## Unstaged(staged 취소)
+`git reset [파일명]`;
