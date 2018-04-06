@@ -33,3 +33,6 @@
 ## commit 되돌리기
 1. `git log`를 통해 commmit 번호 알아내기
 2. `git reset [commit 번호]`
+
+## staged 와 commit 비교
+`git diff --cached` 또는 `git diff --staged`
