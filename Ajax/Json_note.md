@@ -27,7 +27,7 @@ var sampleJson = JSON.stringify(sampleObj);
 console.log(sampleJson);
 // 결과: {"name":"chaeyun","age":10}
 ```
-- ** Json.parse() ** : JSON => JS Object
+- **JSON.parse()** : JSON => JS Object
 ```javascript
 var myObj = JSON.parse(sampleJson);
 console.log(typeof myObj);
