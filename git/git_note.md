@@ -35,4 +35,5 @@
 2. `git reset [commit 번호]`
 
 ## staged 와 commit 비교
-`git diff --cached` 또는 `git diff --staged`
+`git diff --cached` 또는 `git diff --staged`	
+참고: ["Git diff 사용하기"](http://hochulshin.com/git-diff/)
