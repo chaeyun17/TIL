@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ko">
+ <head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="./css/main.css">
+  <title>Grade Management</title>
+ </head>
+ <body>
+	<h1>성적 관리 시스템</h1>
+  <div class="wrap">
+    <div id="q1_subject" class="q">
+      <div class="q_title">
+        <span class="q_title_text">Q1. 시험 과목 선택</span>
+        <input class="submit" type="button" value="확인" onclick="q1_submit()">
+      </div>
+      <div class="optionGrp">
+        <label><input type="checkbox" value="국어">국어</label>
+        <label><input type="checkbox" value="영어">영어</label>
+        <label><input type="checkbox" value="수학">수학</label>
+        <label><input type="checkbox" value="과학">과학</label>
+        <label><input type="checkbox" value="음악">음악</label>
+      </div>
+    </div>
+
+    <div id="q2_studentNum" class="q hidden">
+      <div class="q_title">
+        <span class="q_title_text">Q2. 시험에 응시할 학생 수는?</span>
+        <input id="q2_input" type="text" placeholder="학생 수">
+        <input class="submit" type="button" value="확인" onclick="q2_submit()">
+      </div>
+    </div>
+
+    <div id="q3_studentName" class="q hidden">
+      <div class="q_title">
+        <span class="q_title_text">Q3. 학생들 이름은?</span>
+        <input class="submit" type="button" value="확인" onclick="q3_submit()">
+      </div>
+      <div class="optionGrp">
+      </div>
+    </div>
+
+    <div id="q4_subjectScore" class="q hidden">
+      <div class="q_title">
+        <span class="q_title_text">Q4. 성적 입력</span>
+        <input class="submit" type="button" value="확인" onclick="q4_submit()">
+      </div>
+      <div class="optionGrp"></div>
+    </div>
+
+    <div id="q5_grade" class="q hidden">
+      <div class="q_title">
+        <span class="q_title_text">Q5. 성적 산출</span>
+
+      </div>
+      <div class="optionGrp"></div>
+    </div>
+
+    </div>
+	  <script
+	  src="https://code.jquery.com/jquery-3.3.1.js"
+	  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+	  crossorigin="anonymous"></script>
+    <script src="./js/studentObj.js" charset="utf-8"></script>
+    <script src="./js/main2.js" charset="utf-8"></script>
+ </body>
+</html>

@@ -1,0 +1,46 @@
+.wrap{
+  font-size: 16px;
+}
+.hidden{
+  display: none;
+}
+.show{
+  display: block;
+}
+.q{
+  margin-top: 40px;
+  border: 1px solid rgba(160,160,160, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+}
+.q_title{
+  margin-bottom: 20px;
+}
+.q_title_text{
+  font-size: 20px;
+  font-weight: bold;
+  margin-right: 20px;
+}
+.q3_inputs{
+  margin-right: 16px;
+}
+table{
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+td{
+  border: 1px solid black;
+  padding: 5px 10px;
+}
+td INPUT{
+  border: none;
+}
+th{
+  border:1px solid black;
+  padding: 5px 10px;
+}
+.graph{
+  width: 1px;
+  height:16px;
+  background-color: red;
+}
