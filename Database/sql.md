@@ -1,6 +1,6 @@
 # SQL
 
-## 기본 명령어
+## 테이블 조작
 ### 테이블 생성
 ```
 CREATE TABLE 테이블명
@@ -9,7 +9,6 @@ CREATE TABLE 테이블명
     컬럼2 dataType options
 );
 ```
-
 ### 추가
 데이터 ROW 추가
 ```
@@ -22,60 +21,78 @@ VALUES
   칼럼1데이터, 칼럼2데이터
 );
 ```
+### 테이블 삭제
+```
+DROP TABEL 테이블명;
+```
+## 제약조건
+- NOT NULL : 값이 무조건 들어가야 한다.
+- UNIQUE : 중복 금지
+- PRIMARY KEY: 다른 데이터 ROW와 구분하기 위한 고유한 키
 
-### 조회
+## SQL 문장
+### 조회 SELECT
 ```
 SELECT 칼럼1, 칼럼2 FROM 테이블명;
 ```
-
-### 삭제
+### 삭제 DELETE
 ```
 DELETE FROM 테이블명 WHERE 조건식;
 ```
-
-### 갱신
+### 갱신 UPDATE
 ```
 UPDATE 테이블명 SET 칼럼1=데이터 WHERE 조건식;
 ```
-
-### 롤백
+## Alias
+별칭짓기. 테이블은 띄우고 바로 별칭을 적는다. 컬럼은 AS 키워드를 사용하고 그 다음에 별칭을 적는다.
+```
+employee a          -- 테이블
+원컬럼명 AS 컬럼별칭  -- 컬럼
+```
+### 롤백 ROLLBACK
 커밋 전 데이터 되돌리기.  
 객체 관련된 거는 되돌려지지 않음.
 ```
 ROLLBACK;
 ```
-
-## 커밋
+### 커밋 COMMIT
 데이터 확정.
 ```
 COMMIT;
 ```
 
-## 테이블 삭제
+
+## 조건식
+### 비교 조건식
+1. ANY: OR와 같은 뜻이다.
 ```
-DROP TABEL 테이블명;
+SELECT * FROM exam WHERE score = ANY (55,70);
+```
+2. SOME
+
+3. ALL
+
+### IS (NOT) NULL
+점수에 NULL이 들어간 데이터(ROW)를 반환함.
+```
+SELECT * FROM exam WHERE score IS NULL;
 ```
 
-## 옵션
-- NOT NULL : 값이 무조건 들어가야 한다.
-- UNIQUE : 중복 금지
-- PRIMARY KEY: 다른 데이터 ROW와 구분하기 위한 고유한 키
-
-## LIKE
+### LIKE
 - 조건식이다. 문자열의 패턴을 검색할 때 사용.
 - 이메일주소가 `@naver.com` 으로 끝나는 학생을 찾기
 ```
 SELECT * FROM students WHERE stu_email LIKE '%@naver.com';
 ```
 
-## IN
+### IN
 - 조건절에 명시한 값이 포함된 건을 반환. ANY와 비슷.
 - 나이가 22,27세인 학생을 찾기
 ```
 SELECT * FROM students WHERE stu_age IN (22,27);
 ```
 
-## BETWEEN
+### BETWEEN
 - 범위에 해당하는 값을 찾을 때 사용한다.
 - 크거나 같고 작거나 같은 값.
 - 50점에서 80점까지의 학생 검색
@@ -86,21 +103,30 @@ SELECT * FROM exam WHERE scroe BETWEEN 50 AND 80;
 ```
 SELECT * FROM exam WHERE (score BETWEEN 50 AND 80) AND (sub_id='SUB001');
 ```
+## EXISTS
+- 있니?
+- 없니(NOT EXISTS)?  
+- Sub query 가 인자로 온다.
+- WHERE 절에서만 사용 가능.
+- 서브쿼리 테이블 B에 있는 메인 테이블A 로우들만 추출한다.
+- 주로 어떤 상황에서 사용될까?  
 
-## IS (NOT) NULL
-점수에 NULL이 들어간 데이터(ROW)를 반환함.
-```
-SELECT * FROM exam WHERE score IS NULL;
+```SQL
+-- Q. 시험을 출제하지 않은 교수는?
+INSERT INTO professors(pro_id, pro_name, pro_depart, pro_phone)
+  VALUES('PRO006','김김김','의예과','010-444-3134');
+
+SELECT *
+FROM professors T1
+WHERE NOT EXISTS(
+  SELECT 1
+  FROM setExams T2
+  WHERE T2.pro_id = T1.pro_id
+)
+;
 ```
 
-## 비교 조건식
-1. ANY: OR와 같은 뜻이다.
-```
-SELECT * FROM exam WHERE score = ANY (55,70);
-```
-2. SOME
 
-3. ALL
 
 
 ## ERD(Entity-Relationship Modeling)
@@ -167,9 +193,6 @@ ORDER BY T1.stu_id ASC, T1.score ASC
 WHERE T4.stu_id = 'STU001';
 ```
 
-## Alias
-별칭짓기. 테이블은 띄우고 바로 별칭을 적는다. 컬럼은 AS 키워드를 사용하고 그 다음에 별칭을 적는다.
-
 ## 집계 함수
 ### COUNT, SUM, AVG, MIN, MAX
 - COUNT(): 횟수
@@ -183,3 +206,34 @@ GROUP BY students.stu_id, students.stu_name;
 ```
 ### HAVING
 GROUP BY 절 다음에 위치해 GROUP BY한 결과를 대상으로 다시 필터를 거는 역할을 수행.
+
+
+## LEFT JOIN
+```sql
+SELECT *
+FROM students T1, exams T2
+WHERE T1.stu_id = T2.stu_id(+);
+```
+
+
+## NVL
+- not value
+- NVL(칼럼명, 변경값)
+- 반환: 변경값
+- `NVL( string1, replace_with )`
+- 예제  
+```sql
+-- Q. 한 번도 시험을 치지 않은 학생들 점수는?
+SELECT T1.stu_id, T1.stu_name, NVL(T2.exam_score,0) AS 점수
+FROM students T1, exams T2
+WHERE T1.stu_id = T2.stu_id(+)
+AND T2.stu_id IS NULL
+;
+```
+- 참고: https://www.techonthenet.com/oracle/functions/nvl.php
+
+## DECODE
+- `DECODE(expr, search1, result1, search2, result2, ..., default)`
+- expr과 search1를 비교해 두 값이 값이 같으면 result1을,   
+같지 않으면 다시 search2와 비교해서 값이 같으면 result2를,  
+최종적으로 같은 값이 없으면 default.
