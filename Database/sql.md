@@ -1,6 +1,7 @@
 # SQL
 
-## 테이블 조작
+## DDL
+데이터정의어. 데이터베이스 객체를 관리하는 언어이다. 데이터베이스 객체를 생성, 삭제, 변경한다.
 ### 테이블 생성
 ```
 CREATE TABLE 테이블명
@@ -9,8 +10,37 @@ CREATE TABLE 테이블명
     컬럼2 dataType options
 );
 ```
-### 추가
-데이터 ROW 추가
+
+### 테이블 삭제
+```
+DROP TABEL 테이블명;
+```
+### 테이블 수정
+```
+ALERT
+```
+### 테이블이나 클러스터의 데이터를 통채로 삭제
+## 데이터 타입
+### 문자 데이터 타입
+- CHAR: 고정길이 문자. 최대 2000byte. 디폴트 값은 1byte
+- VARCHAR2: 가변길이 문자. 최대 4000byte. 디폴트 값은 1byte
+- NCHAR: 고정길이 유니코드 문자. 최대 2000byte. 디폴트 값은 1
+- NVARCHAR2: 가변길이 유니코드 문자. 최대 4000byte. 디폴트 값은 1
+- LONG: 최대 2GB 크기의 가변길이 문자형.
+### 숫자 데이터 타입
+- NUMBER(P.S): 가변숫자.
+
+## 제약조건
+- NOT NULL : 값이 무조건 들어가야 한다.
+- UNIQUE : 중복 금지
+- PRIMARY KEY: 다른 데이터 ROW와 구분하기 위한 고유한 키
+---
+## SQL 문장
+### 조회 SELECT
+```
+SELECT 칼럼1, 칼럼2 FROM 테이블명;
+```
+### 추가 INSERT
 ```
 INSERT INTO 테이블명
 (
@@ -21,20 +51,6 @@ VALUES
   칼럼1데이터, 칼럼2데이터
 );
 ```
-### 테이블 삭제
-```
-DROP TABEL 테이블명;
-```
-## 제약조건
-- NOT NULL : 값이 무조건 들어가야 한다.
-- UNIQUE : 중복 금지
-- PRIMARY KEY: 다른 데이터 ROW와 구분하기 위한 고유한 키
-
-## SQL 문장
-### 조회 SELECT
-```
-SELECT 칼럼1, 칼럼2 FROM 테이블명;
-```
 ### 삭제 DELETE
 ```
 DELETE FROM 테이블명 WHERE 조건식;
@@ -43,36 +59,55 @@ DELETE FROM 테이블명 WHERE 조건식;
 ```
 UPDATE 테이블명 SET 칼럼1=데이터 WHERE 조건식;
 ```
-## Alias
+### 롤백 ROLLBACK
+트랜잭션 처리. 변경된 데이터를 적용하지 않고 이전으로 되돌림
+객체 되돌리는 것은 불가
+```
+ROLLBACK;
+```
+### 커밋 COMMIT
+트랜잭션 처리. 변경된 데이터를 최종 적용.
+```
+COMMIT;
+```
+### Alias
 별칭짓기. 테이블은 띄우고 바로 별칭을 적는다. 컬럼은 AS 키워드를 사용하고 그 다음에 별칭을 적는다.
 ```
 employee a          -- 테이블
 원컬럼명 AS 컬럼별칭  -- 컬럼
 ```
-### 롤백 ROLLBACK
-커밋 전 데이터 되돌리기.  
-객체 관련된 거는 되돌려지지 않음.
+### 외래키
 ```
-ROLLBACK;
+CONSTRAINT 외래키명 FOREGIN KEY (컬러명,...)
+REFERENCES 참조테이블(참조 테이블 컬럼명,...)
 ```
-### 커밋 COMMIT
-데이터 확정.
-```
-COMMIT;
-```
+---
 
+## 의사컬럼
 
+Pseudo-column이란 테이블의 컬럼처럼 동작하지만 실제로 테이블에 저장되지는 않는 컬럼을 말한다. SELECT 문에서는 의사컬럼을 사용할 수 있지만, 의사컬럼 값을 INSERT, UPDATE, DELTE 할 수 없다.
+
+### ROWNUM
+쿼리에서 반환되는 각 로우들에 대한 수서 값을 나타내는 의사컬럼이다.
+```
+SELECT ROWNUM, stu_id
+FROM students;
+```
+---
 ## 조건식
 ### 비교 조건식
-1. ANY: OR와 같은 뜻이다.
+1. ANY, SOME: OR와 같은 뜻이다. ANY 인자 중 하나라도 일치하는 ROW를 추출한다.
 ```
 SELECT * FROM exam WHERE score = ANY (55,70);
 ```
-2. SOME
+```
+SELECT * FROM exam WHERE score = 55
+OR score = 70;
+```
+2. ALL: 모든 조건을 동시에 만족해야 한다. AND 조건으로 변환할 수 있다.
 
-3. ALL
-
-### IS (NOT) NULL
+### NULL 조건식
+NULL 여부를 체크한다. `IS NULL`과 `IS NOT NULL`이 있다.
 점수에 NULL이 들어간 데이터(ROW)를 반환함.
 ```
 SELECT * FROM exam WHERE score IS NULL;
@@ -81,35 +116,46 @@ SELECT * FROM exam WHERE score IS NULL;
 ### LIKE
 - 조건식이다. 문자열의 패턴을 검색할 때 사용.
 - 이메일주소가 `@naver.com` 으로 끝나는 학생을 찾기
-```
+```SQL
 SELECT * FROM students WHERE stu_email LIKE '%@naver.com';
 ```
 
 ### IN
 - 조건절에 명시한 값이 포함된 건을 반환. ANY와 비슷.
+- SUB QUERY를 쓸 수 있다.
 - 나이가 22,27세인 학생을 찾기
-```
+```SQL
 SELECT * FROM students WHERE stu_age IN (22,27);
 ```
+
 
 ### BETWEEN
 - 범위에 해당하는 값을 찾을 때 사용한다.
 - 크거나 같고 작거나 같은 값.
 - 50점에서 80점까지의 학생 검색
-```
+```SQL
 SELECT * FROM exam WHERE scroe BETWEEN 50 AND 80;
 ```
 - SUB001 과목에서 50점에서 80점인 학생을 조회
-```
+```SQL
 SELECT * FROM exam WHERE (score BETWEEN 50 AND 80) AND (sub_id='SUB001');
 ```
-## EXISTS
+
+### ORDER BY
+ROW를 특정 컬럼을 기준으로 오름차순, 내림차순으로 정렬한다.
+```SQL
+SELECT stu_id, stu_name FROM students
+ORDER BY stu_name ASC;
+```
+한 번 정렬하고 내부적으로 한 번 더 정렬이 필요하다면, 두 개의 인자 컬럼을 쓰면 된다.
+
+### EXISTS
 - 있니?
 - 없니(NOT EXISTS)?  
 - Sub query 가 인자로 온다.
 - WHERE 절에서만 사용 가능.
-- 서브쿼리 테이블 B에 있는 메인 테이블A 로우들만 추출한다.
-- 주로 어떤 상황에서 사용될까?  
+- 주로 어떤 상황에서 사용될까?
+    - 연관 없는 테이블 컬럼들끼리 비교할 떄
 
 ```SQL
 -- Q. 시험을 출제하지 않은 교수는?
@@ -121,12 +167,34 @@ FROM professors T1
 WHERE NOT EXISTS(
   SELECT 1
   FROM setExams T2
-  WHERE T2.pro_id = T1.pro_id
+  WHERE T1.pro_id = T2.pro_id
 )
 ;
 ```
+```SQL
+-- 4월에 시험을 안 친 학생
+SELECT * FROM
+(
+    SELECT TO_CHAR(TO_DATE('180401') + LEVEL-1, 'YYMMDD') AS dates
+    FROM DUAL
+    CONNECT BY LEVEL < 31
+) T1
+WHERE NOT EXISTS
+(
+    SELECT 1 FROM
+    (
+        SELECT TO_CHAR(exam_date,'YYMMDD') AS exam_date
+        FROM exams
+        WHERE TO_CHAR(exam_date, 'YYMM') = '1804'
+        GROUP BY exam_date
+    ) T2
+    WHERE T1.dates = T2.exam_date
+)
+ORDER BY T1.dates ASC
+;
+```
 
-
+---
 
 
 ## ERD(Entity-Relationship Modeling)
@@ -153,6 +221,7 @@ exam 테이블을 T1 뷰로 생성. 그리고 T1의 stu_id 만 row 출력.
 SELECT t1.stu_id FROM exam t1;
 ```
 
+---
 ## JOIN
 ### PL/SQL 방식
 ```SQL
@@ -192,10 +261,15 @@ ORDER BY T1.stu_id ASC, T1.score ASC
 ) T4
 WHERE T4.stu_id = 'STU001';
 ```
-
+---
 ## 집계 함수
 ### COUNT, SUM, AVG, MIN, MAX
 - COUNT(): 횟수
+- SUM(): 합계
+- AVG(): 평균
+- MIN(): 최소값
+- MAX(): 최대값
+
 ### GROUP BY
 특정 그룹으로 묶어 데이터를 집계할 수 있다. GROUP BY 구문은 WHERE 와 ORDER BY절 사이에 위치한다.
 ```SQL
@@ -207,14 +281,12 @@ GROUP BY students.stu_id, students.stu_name;
 ### HAVING
 GROUP BY 절 다음에 위치해 GROUP BY한 결과를 대상으로 다시 필터를 거는 역할을 수행.
 
-
 ## LEFT JOIN
 ```sql
 SELECT *
 FROM students T1, exams T2
 WHERE T1.stu_id = T2.stu_id(+);
 ```
-
 
 ## NVL
 - not value
@@ -237,3 +309,69 @@ AND T2.stu_id IS NULL
 - expr과 search1를 비교해 두 값이 값이 같으면 result1을,   
 같지 않으면 다시 search2와 비교해서 값이 같으면 result2를,  
 최종적으로 같은 값이 없으면 default.
+
+
+-----
+
+## SQL 함수
+### INITCAP(str)
+첫 문자는 대문자로, 나머지는 소문자로 반환
+
+### LOWER(str)
+매개변수 str을 소문자로 반환
+
+### UPPER(str)
+매개변수 str을 대문자로 반환
+
+### CONCAT(char1, char2)
+매개변수 char1과 char2를 붙여서 반환. `||`와 같은 기능.
+
+### SUBSTR(char, pos, len)
+잘라올 대사 문자열인 char의 pos번째 문자부터 len길이만큼 잘라낸 결과를 반환하는 함수.
+```sql
+SELECT SUBSTR('ABCDEF', 3, 2) FORM DUAL;
+-- 결과: 'CD'
+```
+### LTRIM(char, set), RTRIM(char, set)
+LTRIM 함수는 매개변수로 들어온 char 문자열에서 set으로 지정된 문자열을 왼쪽 끝에서 제거한 후 나머지 문자열을 반환한다.
+
+### RANK() OVER()
+```sql
+SELECT score ,RANK() OVER(order by score desc) FROM exams;
+```
+### DENSE_RANK() OVER()
+RANK와 비슷하지만 같은 순위가 나오면 다음 순위가 한 번 건너뛰지 않고 매겨진다.
+
+### ROW_NUMBER()
+ROWNUM 의사 컬럼과 비슷한 기능을 하는데, 파티션으로 분할된 그룹별로 각 로우에 대한 순번을 반환하는 함수다.
+```SQL
+ROW_NUMBER() OVER(ORDER BY 컬럼명)
+```
+
+### CONNECT BY LEVEL
+연속된 숫자를 사용하고 싶을 때
+```SQL
+SELECT TO_DATE('2018-01-01')+LEVEL-1
+FROM DUAL
+CONNECT BY LEVEL <= 365;
+```
+
+## 변환 함수
+### TO_CHAR
+숫자나 날짜를 문자로 변환해 주는 함수다. 매개변수로는 숫자나 날짜가 올 수 있고 반환 결과를 특정 형식에 맞게 출력할 수 있다.
+```SQL
+SELECT TO_CHAR(SYSDATE, 'YYYY-MM-DD') FROM DUAL;
+```
+### TO_DATE
+문자를 날짜형으로 변환하는 함수.
+
+-----
+
+## 인라인 쿼리, 서브 쿼리
+```
+SELECT * FROM exam_score
+WHERE score > (SELECT AVG(SCORE) FROM EXAMS);
+```
+- 단일 값만 조건문으로 사용가능하다.
+- `EXISTS` 함수를 사용하면, 여러 ROW를 가지고 조건문으로 가능하다.
+- `WEHRE IN` 도 여러 ROW를 인자를 가지고 비교할 수 있다.
