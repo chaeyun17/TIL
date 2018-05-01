@@ -163,9 +163,53 @@ END;
 -- 커서 없는 커서와 FOR문
 DECLARE
 BEGIN
-    FOR cur_grp_name IN (SELECT grp_name FROM grpcommons_tbl)
+    FOR rec_grp_name IN (SELECT grp_name FROM grpcommons_tbl)
     LOOP
-        DBMS_OUTPUT.PUT_LINE(cur_grp_name.grp_name);
+        DBMS_OUTPUT.PUT_LINE(rec_grp_name.grp_name);
     END LOOP;
 END;
+```
+
+## 시퀀스 SEQUENCE
+### 문법
+```
+CREATE SEQUENCE 시퀀스명
+INCREMENT BY 증감숫자
+START WITH 시작숫자
+NOMINVALUE | MINVALUE 최솟값
+NOMAXVALUE | MAXVALUE 최댓값
+NOCYCLE | CYCLE
+NOCACHE | CACHE
+;
+```
+### 변수
+```
+SEQ_NAME.NEXTVAL -- 다음숫자를 가져오기
+SEQ_NAME.CURRVAL -- 현재숫자를 나타내기
+```
+### 삭제
+```
+DROP SEQUENCE 시퀀스명;
+```
+### 예시
+```SQL
+CREATE SEQUENCE my_seq1
+INCREMENT BY 1
+START WITH 1
+MINVALUE 1
+MAXVALUE 1000
+NOCYCLE
+NOCACHE
+;
+CREATE TABLE TEST_SEQ
+(
+    IDX NUMBER(3) NOT NULL,
+    CONTENT_VAL VARCHAR2(20)
+);
+
+INSERT INTO TEST_SEQ VALUES (
+    MY_SEQ1.NEXTVAL,'하이'
+);
+
+SELECT * FROM TEST_SEQ;
 ```
