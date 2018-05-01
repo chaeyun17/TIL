@@ -1,0 +1,122 @@
+## 테이블
+- GrpCommons_TBL
+- Commons_TBL
+- Students_Tbl
+- Professors_Tbl
+- Subjects_Tbl
+- Students_Time_Tbl
+- Scores_Tbl
+
+### Q. 한 학기 학생 성적표
+```SQL
+SELECT STU_ID, STU_NAME, DEPT ,DO_YEAR, SEMESTER, ROUND(SUM(GRADE_POINT*SUB_CREDIT)/SUM(SUB_CREDIT),2) AS FN_SCORE
+FROM
+(
+SELECT T1.STU_ID, T1.STU_NAME,
+    (
+        SELECT COM_VAL FROM COMMONS_TBL
+        WHERE COMMONS_TBL.COM_ID = T1.STU_DEPT
+        AND COMMONS_TBL.GRP_ID = T1.STU_DEPT_GRP
+
+    ) AS DEPT
+    ,T2.SUB_ID, T2.DO_YEAR
+    ,DECODE(T2.SEMESTER,1,'1학기',2,'2학기') AS SEMESTER, DECODE(T2.GUBUN,1,'중간',2,'기말') AS GUBUN
+    ,T4.SUB_NAME,T2.SCORE
+    ,CASE
+        WHEN T2.SCORE >= 90 THEN 'A+'
+        WHEN T2.SCORE >= 85 AND T2.SCORE < 90 THEN 'A'
+        WHEN T2.SCORE >= 80 AND T2.SCORE < 85 THEN 'B+'
+        WHEN T2.SCORE >= 75 AND T2.SCORE < 80 THEN 'B'
+        WHEN T2.SCORE >= 70 AND T2.SCORE < 75 THEN 'C+'
+        WHEN T2.SCORE >= 65 AND T2.SCORE < 70 THEN 'C'
+        WHEN T2.SCORE >= 60 AND T2.SCORE < 65 THEN 'D+'
+        WHEN T2.SCORE >= 55 AND T2.SCORE < 60 THEN 'D'
+        WHEN T2.SCORE < 55 THEN 'F'
+    END AS GRADE
+    ,CASE
+        WHEN T2.SCORE >= 90 THEN 4.5
+        WHEN T2.SCORE >= 85 AND T2.SCORE < 90 THEN 4.0
+        WHEN T2.SCORE >= 80 AND T2.SCORE < 85 THEN 3.5
+        WHEN T2.SCORE >= 75 AND T2.SCORE < 80 THEN 3
+        WHEN T2.SCORE >= 70 AND T2.SCORE < 75 THEN 2.5
+        WHEN T2.SCORE >= 65 AND T2.SCORE < 70 THEN 2
+        WHEN T2.SCORE >= 60 AND T2.SCORE < 65 THEN 1.5
+        WHEN T2.SCORE >= 55 AND T2.SCORE < 60 THEN 1
+        WHEN T2.SCORE < 55 THEN 0        
+    END AS GRADE_POINT
+    ,T4.SUB_CREDIT
+FROM STUDENTS_TBL T1, SCORES_TBL T2, STUDENTS_TIME_TBL T3, SUBJECTS_TBL T4
+WHERE T1.STU_ID = T2.STU_ID(+)
+AND T2.STU_ID = T3.STU_ID(+)
+AND T2.SUB_ID = T3.SUB_ID(+)
+AND T2.DO_YEAR = T3.DO_YEAR(+)
+AND T2.SEMESTER = T3.SEMESTER(+)
+AND T3.SUB_ID = T4.SUB_ID(+)
+AND T3.DO_YEAR = T4.DO_YEAR(+)
+AND T3.SEMESTER = T4.SEMESTER(+)
+ORDER BY T1.STU_ID ASC, GUBUN DESC
+) T6
+GROUP BY STU_ID,STU_NAME, DO_YEAR, SEMESTER, DEPT
+ORDER BY STU_ID ASC
+;
+```
+
+### 학과별 성적 랭크
+```SQL
+-- 학과별 성적
+-- 학생들 평균 학점을 구한다.
+-- 학과별로 그룹하고, [평균학점 합계/각 학과별 학생수]를 하여 학과별 평균 점수 출력
+SELECT
+RANK() OVER(ORDER BY ROUND(SUM(FINAL_SCORE)/COUNT(*),2) DESC) AS RNK
+,DEPT_NAME, ROUND(SUM(FINAL_SCORE)/COUNT(*),2) AS DEPT_SCORE
+FROM
+(
+    SELECT STU_ID, STU_NAME, STU_DEPT, DEPT_NAME, DO_YEAR, SEMESTER
+    ,ROUND(SUM(SUB_CREDIT*GRADE_POINT)/SUM(SUB_CREDIT),2) AS FINAL_SCORE
+    FROM
+    (
+        SELECT t1.STU_ID, t1.STU_NAME, STU_DEPT
+        ,(SELECT COM_VAL FROM COMMONS_TBL
+        WHERE COMMONS_TBL.GRP_ID = T1.STU_DEPT_GRP
+        AND COMMONS_TBL.COM_ID = T1.STU_DEPT
+        ) AS DEPT_NAME
+        ,T4.SUB_NAME,T2.DO_YEAR,T2.SEMESTER,T2.GUBUN
+        ,CASE
+            WHEN SCORE>=90 THEN 'A+'
+            WHEN SCORE>=85 AND SCORE<90 THEN 'A'
+            WHEN SCORE>=80 AND SCORE<85 THEN 'B+'
+            WHEN SCORE>=75 AND SCORE<80 THEN 'B'
+            WHEN SCORE>=70 AND SCORE<75 THEN 'C+'
+            WHEN SCORE>=65 AND SCORE<70 THEN 'C'
+            WHEN SCORE>=60 AND SCORE<65 THEN 'D+'
+            WHEN SCORE>=55 AND SCORE<60 THEN 'D'
+            WHEN SCORE < 55 THEN 'F'
+        END AS GRADE
+        ,CASE
+            WHEN T2.SCORE >= 90 THEN 4.5
+            WHEN T2.SCORE >= 85 AND T2.SCORE < 90 THEN 4.0
+            WHEN T2.SCORE >= 80 AND T2.SCORE < 85 THEN 3.5
+            WHEN T2.SCORE >= 75 AND T2.SCORE < 80 THEN 3
+            WHEN T2.SCORE >= 70 AND T2.SCORE < 75 THEN 2.5
+            WHEN T2.SCORE >= 65 AND T2.SCORE < 70 THEN 2
+            WHEN T2.SCORE >= 60 AND T2.SCORE < 65 THEN 1.5
+            WHEN T2.SCORE >= 55 AND T2.SCORE < 60 THEN 1
+            WHEN T2.SCORE < 55 THEN 0        
+            END AS GRADE_POINT
+        ,T4.SUB_CREDIT
+        FROM STUDENTS_TBL T1, scores_tbl T2, students_time_tbl T3, subjects_tbl T4
+        WHERE t1.stu_id = t2.stu_id
+        AND t2.stu_id = t3.stu_id
+        AND t2.sub_id = t3.sub_id
+        AND t2.do_year = t3.do_year
+        AND t2.semester = t3.semester
+        AND t3.sub_id = t4.sub_id
+        AND t3.do_year = t4.do_year
+        AND t3.semester = t4.semester
+    ) T5
+    GROUP BY STU_ID, STU_NAME, STU_DEPT, DEPT_NAME, DO_YEAR, SEMESTER
+) T6
+GROUP BY DEPT_NAME
+ORDER BY DEPT_SCORE DESC
+;
+```
