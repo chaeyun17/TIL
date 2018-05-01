@@ -99,3 +99,73 @@ CREATE OR REPLACE PACKAGE BODY 패미지명 IS
     ...
 END 패키지명;
 ```
+
+## CURSOR 커서
+### 명시적 커서
+1. 커서 선언
+매개변수는 생략 가능하다. 명시할 때는 SELECT 문장의 WHERE 절에서 조건을 체크하는 변수로 사용한다.
+```
+CURSOR 커서명 [(매개변수1,매개변수2,...)]
+IS
+SELECT 문장;
+```
+2. 커서 열기
+```
+OPEN 커서명 [(매개변수1,매개변수2,...)];
+```
+3. 커서 닫기
+```
+CLOSE 커서명;
+```
+
+```SQL
+--- 그룹 공통 코드 이름들 출력
+DECLARE
+  v_grp_name grpcommons_tbl.grp_name%type;
+    CURSOR cur_grp_name
+  IS
+  SELECT grp_name FROM grpcommons_tbl;
+BEGIN
+  open cur_grp_name;
+  LOOP
+    FETCH cur_grp_name INTO v_grp_name;
+    EXIT WHEN cur_grp_name%NOTFOUND;
+    DBMS_OUTPUT.PUT_LINE(v_grp_name);
+
+  END LOOP;
+  CLOSE cur_grp_name;
+END;
+```
+
+## 커서와 FOR문
+```SQL
+FOR 레코드 IN 커서명(매개변수1, 매개변수2, ...)
+LOOP
+  처리문;
+END LOOP;
+```
+
+```sql
+DECLARE
+    CURSOR cur_grpcom
+    IS
+    SELECT grp_name FROM grpcommons_tbl;
+BEGIN
+    FOR v_grp_name IN cur_grpcom
+    LOOP
+        DBMS_OUTPUT.PUT_LINE(v_grp_name.grp_name);
+    END LOOP;
+END;
+```
+
+## 선언 없는 커서와 FOR문
+```sql
+-- 커서 없는 커서와 FOR문
+DECLARE
+BEGIN
+    FOR cur_grp_name IN (SELECT grp_name FROM grpcommons_tbl)
+    LOOP
+        DBMS_OUTPUT.PUT_LINE(cur_grp_name.grp_name);
+    END LOOP;
+END;
+```
