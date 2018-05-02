@@ -129,6 +129,7 @@ OR score = 70;
 ```
 2. ALL: 모든 조건을 동시에 만족해야 한다. AND 조건으로 변환할 수 있다.
 
+3. OR/AND: OR는 ROW를 합치는 것, AND는 두 조건을 만족하는 ROW만
 ### NULL 조건식
 NULL 여부를 체크한다. `IS NULL`과 `IS NOT NULL`이 있다.
 점수에 NULL이 들어간 데이터(ROW)를 반환함.

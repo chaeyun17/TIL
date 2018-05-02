@@ -214,3 +214,25 @@ INSERT INTO TEST_SEQ VALUES (
 
 SELECT * FROM TEST_SEQ;
 ```
+
+## 트리거 Trigger
+트리거는 데이터 베이스에 저장된 프로그램 유닛이다. 특정한 이벤트가 발생하면 트리거가 실행된다. 특정한 이벤트는 테이블, 뷰, 스키마 또는 데이터베이스에 연결할 수 있다. 그리고 다음과 같은 명령에 발생한다.
+- DML : DELETE, INSERT or UPDATE
+- DDL : CREATE, ALTER or DROP
+- DB Operation: SERVERERROR, LOGON, LOGOFF, STARTUP or SHUTDOWN
+
+```sql
+CREATE OR REPLACE TRIGGER 트리거명
+  [BEFORE/AFTER/...] [DELETE/INSERT/...]
+  ON 테이블명
+  REFERENCING NEW AS NEW OLD AS OLD
+  FOR EACH ROW
+DECLARE
+
+BEGIN
+  IF INSERTING THEN
+  DBMS_OUTPUT_PUT_LINE(:NEW.column);
+  DBMS_OUTPUT_PUT_LINE(:OLD.column);
+  END IF;
+END;
+```
