@@ -6,3 +6,7 @@
 ## 세팅
 실행  
 `sqlplus system`  
+
+## SQL DEVELOPER 영어로 설정
+1. /opt/sqldeveloper/sqldeveloper/bin/sqldeveloper.conf 열기
+3. `AddVMOption -Duser.language=en` 적기
