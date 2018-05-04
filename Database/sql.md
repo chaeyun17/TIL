@@ -335,6 +335,8 @@ SELECT SUBSTR('ABCDEF', 3, 2) FORM DUAL;
 ### LTRIM(char, set), RTRIM(char, set)
 LTRIM 함수는 매개변수로 들어온 char 문자열에서 set으로 지정된 문자열을 왼쪽 끝에서 제거한 후 나머지 문자열을 반환한다.
 
+## REPLACE(char, search_str, replace_str)
+공백 제거도 가능.
 ### RANK() OVER()
 ```sql
 SELECT score ,RANK() OVER(order by score desc) FROM exams;
