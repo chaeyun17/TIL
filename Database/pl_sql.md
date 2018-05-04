@@ -1,13 +1,4 @@
 # PL/SQL
-<<<<<<< HEAD
-## 익명 블록
-```SQL
-DECLARE
-  선언부
-BEGIN
-  실행부
-END;
-=======
 
 ## IF
 ```SQL
@@ -38,7 +29,6 @@ BEGIN
    exception_section]
 
 END [function_name];
->>>>>>> 54e8424c2b0f66f8ed0070f034c7e75300ececd3
 ```
 
 ## 프로시저 생성
@@ -56,29 +46,6 @@ BEGIN
 END [프로시저 이름];
 
 ```
-<<<<<<< HEAD
-## 명명법
-- 변수: 변수 `v` + 데이터타입 앞 글자(문자는 `s`, 숫자는 `n`, 날짜는 `d`) + 변수설명
-```
-vs_emp_name
-```
-- 상수: constant의 맨 앞 글자인 `c` + 데이터타입 + 변수설명
-```
-cn_pi
-```
-- 매개변수: parameter의 맨 앞 글자인 p + 데이터타입 + 변수설명
-```
-pn_employee_id
-```
-- 함수: `get` + 함수 설명 약자 + `fn`
-```
-get_dep_name_fn
-```
-- 프로시저: 처리유형 + 프로시저 설명 약자 + `proc`
-```
-upd_emp_sal_proc
-ins_new_emp_proc
-=======
 
 ## 패키지
 패키지란 논리적으로 연관성이 있는 PL/SQL 타입, 변수, 상수, 서브 프로그램, 커서, 예외 등의 항목을 묶어 놓은 객체다. 패키지는 컴파일 과정을 거쳐 DB에 저장되며, 다른 프로그램(다른 패키지나 프로시저, 외부 프로그램)에서 패키지의 항목을 참조, 공유, 실행할 수 있다.
@@ -268,5 +235,28 @@ BEGIN
   DBMS_OUTPUT_PUT_LINE(:OLD.column);
   END IF;
 END;
->>>>>>> 54e8424c2b0f66f8ed0070f034c7e75300ececd3
+```
+
+## 명명법
+- 변수: 변수 `v` + 데이터타입 앞 글자(문자는 `s`, 숫자는 `n`, 날짜는 `d`) + 변수설명
+```
+vs_emp_name
+```
+- 상수: constant의 맨 앞 글자인 `c` + 데이터타입 + 변수설명
+```
+cn_pi
+```
+- 매개변수: parameter의 맨 앞 글자인 p + 데이터타입 + 변수설명
+```
+pn_employee_id
+```
+- 함수: `get` + 함수 설명 약자 + `fn`
+```
+get_dep_name_fn
+```
+- 프로시저: 처리유형 + 프로시저 설명 약자 + `proc`
+```
+upd_emp_sal_proc
+ins_new_emp_proc
+
 ```
