@@ -81,6 +81,29 @@ employee a          -- 테이블
 CONSTRAINT 외래키명 FOREGIN KEY (컬러명,...)
 REFERENCES 참조테이블(참조 테이블 컬럼명,...)
 ```
+
+## MERGE문
+MERSE문은 조건을 비교해서 테이블에 해당 조건에 맞는 데이터가 없으면 INSERT, 있으면 UPDATE를 수행하는 문장이다.
+```sql
+MERGE INTO 테이블명
+  USING (update나 insert될 데이터 원천)
+    ON (update될 조건)
+WHEN MATCHED THEN
+  UPDATE SET 컬럼1 = 값1, 값2, ...
+  DELETE WHERE update_delete 조건
+WHEN NOT MATCHED THEN
+  INSERT (컬럼1, 컬럼2, ...) VALUES (값1, 값2, ...)
+  WHERE insert 조건;
+```
+```SQL
+MERGE INTO 주 테이블
+  USING 서브 테이블
+    ON (조건)
+  WHEN MATCHED THEN
+    UPDATE SET 컬럼1 = 값1 [, 컬럼2 = 값2 ...]
+  WHEN NOT MATCHED THEN
+    INSERT (컬럼1 [, 컬럼2 ...]) VALUES (값1 [, 값2 ...])
+```
 ---
 
 ## 의사컬럼
@@ -106,6 +129,7 @@ OR score = 70;
 ```
 2. ALL: 모든 조건을 동시에 만족해야 한다. AND 조건으로 변환할 수 있다.
 
+3. OR/AND: OR는 ROW를 합치는 것, AND는 두 조건을 만족하는 ROW만
 ### NULL 조건식
 NULL 여부를 체크한다. `IS NULL`과 `IS NOT NULL`이 있다.
 점수에 NULL이 들어간 데이터(ROW)를 반환함.
