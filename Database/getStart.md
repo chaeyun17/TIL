@@ -1,4 +1,17 @@
 # 설치
+oracle expresss 11g
+
+## 다운로드
+
+### 오라클 DB
+1. oracle.com
+2. menu - Downloads and trials - Database - Oracle database
+3. oracle expresss 11g 다운로드
+
+### SQL Developer
+1. oracle.com
+2. menu - Downloads and trials - Developer Tools
+3. SQL Developer 다운로드
 
 ## 오라클 Express 11g를 리눅스에 설치하기
 참고: http://html5around.com/wordpress/tutorials/ubuntu-oracle-xe-11gr2-install/
