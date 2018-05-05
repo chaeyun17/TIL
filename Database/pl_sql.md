@@ -78,7 +78,7 @@ END 패키지명;
 ### 패키지 본문
 선언했다면 이들에 대한 구현 내용이 필요한데, 이를 패키지 본문(body)에서 작성한다.
 ```SQL
-CREATE OR REPLACE PACKAGE BODY 패미지명 IS
+CREATE OR REPLACE PACKAGE BODY 패키지명 IS
   상수명 CONSTANT 상수_타입;
   변수명 변수_타입;
   커서 정의 구문;
@@ -236,3 +236,5 @@ BEGIN
   END IF;
 END;
 ```
+
+##
