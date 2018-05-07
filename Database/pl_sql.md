@@ -101,20 +101,32 @@ END 패키지명;
 ```
 
 ## CURSOR 커서
+커서란 특정 SQL 문장을 처리한 결과를 담고 있는 영역(PRIVATE SQL이라는 메모리 영역)을 가리키는 일종의 포인터로, 커서를 사용하면 처리된 SQL 문장의 결과 집합에 접근할 수 있다. 여러 개의 로우에 개별로 순차적으로 접근할 수 있다.
+
+묵시적 커서는(Implicit cursor)란 오라클 내부에서 자동으로 생성되어 사용하는 커서다. PL/SQL 블록에서 실행하는 SQL문장이 실행될 때마다 자동으로 만들어져 사용된다. 반면 명시적 커서(Explicit cursor)는 사용자가 직접 정의해서 사용하는 커서를 말한다.
+
+커서는 `OPEN - FETCH - CLOSE` 이렇게 3단계로 진행된다.
 #### 명시적 커서
-1. 커서 선언
-매개변수는 생략 가능하다. 명시할 때는 SELECT 문장의 WHERE 절에서 조건을 체크하는 변수로 사용한다.
-```
+1. 커서 선언: 커서명과 쿼리문 선언
+매개변수는 생략 가능. 매개변수는 SELECT 문장의 WHERE 절에서 조건을 체크하는 변수로 사용한다.
+```SQL
 CURSOR 커서명 [(매개변수1,매개변수2,...)]
 IS
 SELECT 문장;
 ```
 2. 커서 열기
-```
+```SQL
 OPEN 커서명 [(매개변수1,매개변수2,...)];
 ```
-3. 커서 닫기
+3. 패치 단계에서 커서 사용
+```SQL
+LOOP
+  FETCH 커서명 INTO 변수1, 변수2, ...;
+  EXIT WHEN 커서명%NOTFOUND;
+END LOOP;
 ```
+4. 커서 닫기
+```SQL
 CLOSE 커서명;
 ```
 
@@ -137,6 +149,30 @@ BEGIN
 END;
 ```
 
+```SQL
+--- STU090 인 홍길동90 학생을 출력
+DECLARE
+    o_stu_id students_tbl.stu_id%type;
+    o_stu_name students_tbl.stu_name%type;
+    -- 커서 선언
+    CURSOR cur_stu (c_stu_id students_tbl.stu_id%type, c_stu_name students_tbl.stu_name%type)
+    IS
+    SELECT stu_id, stu_name FROM students_tbl
+    WHERE stu_id = c_stu_id AND stu_name = c_stu_name
+    ;
+BEGIN
+    -- 커서 열기
+    OPEN cur_stu ('STU090','홍길동90');
+    -- FECTH 하기
+    FETCH cur_stu INTO o_stu_id, o_stu_name;
+    DBMS_OUTPUT.PUT_LINE(o_stu_id);
+    DBMS_OUTPUT.PUT_LINE(o_stu_name);
+    CLOSE cur_stu;
+    -- 커서 닫기
+    CLOSE cur_stu;
+END;
+```
+
 #### 커서와 FOR문
 ```SQL
 FOR 레코드 IN 커서명(매개변수1, 매개변수2, ...)
@@ -147,13 +183,14 @@ END LOOP;
 
 ```sql
 DECLARE
-    CURSOR cur_grpcom
+    CURSOR cur_stu  
     IS
-    SELECT grp_name FROM grpcommons_tbl;
+    SELECT stu_id, stu_name FROM students_tbl;
 BEGIN
-    FOR v_grp_name IN cur_grpcom
+    FOR rec_stu IN cur_stu
     LOOP
-        DBMS_OUTPUT.PUT_LINE(v_grp_name.grp_name);
+        DBMS_OUTPUT.PUT_LINE(rec_stu.stu_id);
+        DBMS_OUTPUT.PUT_LINE(rec_stu.stu_name);
     END LOOP;
 END;
 ```
@@ -163,12 +200,130 @@ END;
 -- 커서 없는 커서와 FOR문
 DECLARE
 BEGIN
-    FOR rec_grp_name IN (SELECT grp_name FROM grpcommons_tbl)
+    FOR rec_stu IN (SELECT stu_id, stu_name FROM students_tbl)
     LOOP
-        DBMS_OUTPUT.PUT_LINE(rec_grp_name.grp_name);
+        DBMS_OUTPUT.PUT_LINE(rec_stu.stu_id);
+        DBMS_OUTPUT.PUT_LINE(rec_stu.stu_name);
     END LOOP;
 END;
 ```
+
+#### 커서 변수
+변수의 특징을 가진 커서 변수가 있다.
+`CURSOR 커서명 IS ...`는 명시적 커서이다. 엄밀히 말하면 변수가 아니라 상수다.
+
+1. 커서 변수 선언
+```SQL
+-- 강한 타입
+TYPE 커서_타입명 IS REF CURSOR [RETURN 반환 타입];
+커서_변수명 커서_타입명;
+```
+```SQL
+-- 강한 타입 예시
+TYPE type_cur_stu IS REF CURSOR RETURN students_tbl%ROWTYPE;
+vcur_stu type_cur_stu;
+```
+```SQL
+-- 약한 타입
+TYPE 커서_타입명 IS REF CURSOR;
+커서_변수명 커서_타입명;
+```
+```SQL
+-- 약한타입 예시
+TYPE type_cur_stu IS REF CURSOR;
+vcur_stu type_cur_stu;
+```
+```SQL
+-- 오라클 내장형 커서 타입 사용
+커서_변수명 SYS_REFCURSOR;
+```
+
+2. 커서 정의 및 오픈
+```SQL
+OPEN 커서 변수명 FOR select문;
+```
+
+3. FETCH
+```SQL
+FETCH 커서_변수명 INTO 변수1, 변수2, 변수3;
+FETCH 커서_변수명 INTO 레코드명;
+```
+
+예시
+```sql
+DECLARE
+    vc_stu_name students_tbl.stu_name%type;
+    -- 커서 변수 선언
+    curvar_stu SYS_REFCURSOR;
+BEGIN
+    -- 커서 변수 정의 및 오픈
+    OPEN curvar_stu FOR
+    SELECT stu_name FROM students_Tbl;
+    -- 커서 FETCH
+    LOOP
+        FETCH curvar_stu INTO vc_stu_name;
+        EXIT WHEN curvar_stu%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE(vc_stu_name);
+    END LOOP;
+END;
+```
+
+```sql
+DECLARE
+    -- 레코드 생성
+    rec_stu students_tbl%ROWTYPE;
+    -- 커서 변수
+    cur_stu SYS_REFCURSOR;
+BEGIN
+    -- 커서변수 정의 및 오픈
+    OPEN cur_stu FOR
+    SELECT * FROM students_tbl;
+
+    -- 커서 변수를 fecth
+    -- 레코드로 row를 받아서 원하는 컬럼 출력
+    LOOP
+        FETCH cur_stu INTO rec_stu;
+        EXIT WHEN cur_stu%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE(rec_stu.stu_id);
+        DBMS_OUTPUT.PUT_LINE(rec_stu.stu_name);
+    END LOOP;
+END;
+```
+
+프로시저 매개변수로 사용 예시
+```sql
+-- 프로시저 매개변수로 커서 사용하기
+-- 프로시저 : 커서변수를 인자로 받아서, 학생 테이블을 반환한다.
+-- 학생 아이디와 이름 결과를 출력
+DECLARE
+    -- 출력에 사용할 레코드 선언
+    rec_arg students_tbl%ROWTYPE;
+    -- 매개변수로 쓸 커서변수 선언
+    cur_arg SYS_REFCURSOR;
+
+    -- 프로시저 생성
+    PROCEDURE get_students( pcur_val IN OUT SYS_REFCURSOR )
+    IS
+        pcur_temp SYS_REFCURSOR;
+    BEGIN
+        OPEN pcur_temp FOR
+        SELECT * FROM students_tbl;
+        pcur_val := pcur_temp;
+    END;
+BEGIN
+    -- 프로시저 호출, 커서를 인자로 전달
+    get_students(cur_arg);
+    -- 커서 FETCH
+    LOOP
+        FETCH cur_arg INTO rec_arg;
+        EXIT WHEN cur_arg%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE(rec_arg.stu_id);
+        DBMS_OUTPUT.PUT_LINE(rec_arg.stu_name);
+    END LOOP;
+END;
+
+```
+
 
 ## 시퀀스 SEQUENCE
 차례대로 숫자를 할당하기 위해서 사용. 객체이기 때문에 관리가 필요하다.
