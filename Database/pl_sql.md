@@ -292,9 +292,9 @@ END;
 
 프로시저 매개변수로 사용 예시
 ```sql
+-- 학생 아이디와 이름 결과를 출력
 -- 프로시저 매개변수로 커서 사용하기
 -- 프로시저 : 커서변수를 인자로 받아서, 학생 테이블을 반환한다.
--- 학생 아이디와 이름 결과를 출력
 DECLARE
     -- 출력에 사용할 레코드 선언
     rec_arg students_tbl%ROWTYPE;
@@ -324,6 +324,68 @@ END;
 
 ```
 
+## 레코드
+레코드는 여러 개의 값을 가질 수 있다. 한 개의 ROW만 가질 수 있다.
+
+#### 사용자 정의형 레코드
+```sql
+DECLARE
+    -- 사용자 정의 레코드 타입 선언
+    TYPE type_rec_stu IS RECORD (
+        stu_id      students_tbl.stu_id%type,
+        stu_name    students_tbl.stu_name%type
+    );
+    -- 같은 타입 레코드 변수들 선언
+    rec_stu type_rec_stu;
+    rec_stu2 type_rec_stu;
+BEGIN
+    -- 레코드에 값 할당
+    rec_stu.stu_id := 'STU111';
+    rec_stu.stu_name := '제인도우';
+
+    -- 같은 타입에 할당
+    rec_stu2 := rec_stu;
+    -- 할당 후 변경
+    rec_stu.stu_name := '맨';
+
+    DBMS_OUTPUT.PUT_LINE(rec_stu.stu_name); -- 맨
+    DBMS_OUTPUT.PUT_LINE(rec_stu2.stu_name); -- 제인도우
+END;
+```
+
+#### 테이블형 레코드
+기존에 존재하는 테이블의 값을 기초로 레코드 타입을 사용. 그리고 레코드를 만들어 사용.
+```SQL
+DECLARE
+    -- students 테이블형 레코드 선언
+    rec_stu students_tbl%ROWTYPE;
+BEGIN
+    rec_stu.stu_name := 'jane';
+    DBMS_OUTPUT.PUT_LINE(rec_stu.stu_name);
+END;
+```
+#### 커서형 레코드
+커서를 레코드 변수로 받는 것을 커서형 레코드라고 한다.
+```SQL
+DECLARE
+    -- 커서 선언
+    CURSOR cur_stu IS
+    SELECT * FROM students_tbl;
+    -- 커서형 레코드
+    rec_stu cur_stu%ROWTYPE;
+BEGIN
+    -- 커서 오픈
+    OPEN cur_stu;
+    -- 커서 fetch
+    LOOP
+        FETCH cur_stu INTO rec_stu;
+        EXIT WHEN cur_stu%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE(rec_stu.stu_name);
+    END LOOP;
+    -- 커서 닫기
+    CLOSE cur_stu;
+END;
+```
 
 ## 시퀀스 SEQUENCE
 차례대로 숫자를 할당하기 위해서 사용. 객체이기 때문에 관리가 필요하다.
