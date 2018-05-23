@@ -1,4 +1,4 @@
-# JAVA 학습 노트
+# Java 설치하기
 
 ## Ubuntu에 JAVA JDK 설치하기
 원본: [How to Install Java on Ubuntu](https://thishosting.rocks/install-java-ubuntu/#comment-6661)  
@@ -37,3 +37,18 @@ Oracle JDK를 사용해서 설치해보기
   위 문장을 PATH=".." 다음 줄에 작성
 5. `source /etc/enviroment`
 6. `echo $JAVA_HOME`
+
+## Window 에 JAVA JDK를 설치하기
+1. JAVA JDK를 ORACLE.COM 에서 다운받기. 
+	- 공부용은 JAVA 1.8 
+2. 환경변수 설정 하기
+3. 내 컴퓨터 -> 오른쪽클릭 속성-> 고급 시스템 속성 -> 환경변수 열기
+4. 시스템변수에 JAVA_HOME 추가
+	- 변수명: `JAVA_HOME`
+	- 경로명: 자바 설치 경로
+	- 경로명 예제: `C:\Program Files\Java\jdk1.8.0_171`
+5. 시스템변수 Path 편집
+	- 경로명에 `%JAVA_HOME%\bin;` 추가
+6. Window 검색에서 `cmd` 검색 그리고 실행하기
+7. `java` 와 `javac` 명령어 테스트
+8. 정상적으로 실행되면 설치완료
