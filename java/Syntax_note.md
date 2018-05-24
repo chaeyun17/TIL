@@ -8,7 +8,7 @@
 1. char: 2byte. 유니코드 문자.
 
 ### 정수형
-1. byte: 1 byte (-2^7^ ~ -2^7^-1 )
+1. byte: 1 byte (-2<sup>7</sup> ~ -2<sup>7</sup>-1 )
 2. short: 2 byte
 3. int: 4 byte
 4. long: 8 byte
@@ -42,4 +42,50 @@ MSB가 0 또는 1 일 때, 나머지 비트를 해석하는 방법이 각기 다
 1과 5사이의 정수는 유한하지만, 1과 5사이의 실수는 무한하다. 실수를 정확히 표현하는데 한계가 있다.
   
 **IEEE 754** 표준을 사용한다.
+
+
+
+
+## Switch 문
+
+```java
+switch(op){
+case '1':
+		//execute
+		break;
+case '2':
+		//execute
+		break;
+default: 
+		//execute
+		break;
+}
+```
+
+## Scanner 클래스
+공백(white space)을 구분자로 여긴다.
+- Scanner.next():  공백 구분자까지 잘라서, 입력한 값을 String으로 반환.
+- Scanner.nextInt(): 공백 구분자까지 잘라서, 입력한 String을 int로 변환해서 반환.
+- Scanner.nextLine(): 구분자 상관없이 모두 String으로 반환.
+
+
+### nextInt() 사용 후, nextLine() 입력 불가 문제
+숫자를 입력 후, 문자열 입력이 안되는 문제가 발생했다.   
+Scanner.nextInt() 후, 개행문자가 버퍼에서 미처 비워지지 않았기 때문이다.  
+Scanner.nextLine()을 통해서 개행문자를 비워주었다.  
+또는  
+Scanner.next() 를 사용하여 입력받는다. 이렇게하면 개행문자를 인식하고 정상적으로 새로 입력받을 수 있다.
+```java
+System.out.println("숫자1 입력: ");
+int num1 = sc.nextInt();
+System.out.println("숫자2 입력: ");
+int num2 = sc.nextInt();
+  
+sc.nextLine() // 개행문자 비워주기
+  
+System.out.println("연산자 입력: ");
+String op = sc.nextLine();
+```
+
+
 
