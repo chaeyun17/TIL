@@ -47,7 +47,7 @@ MSB가 0 또는 1 일 때, 나머지 비트를 해석하는 방법이 각기 다
 
 
 ## Switch 문
-
+case 와 default는 label(레이블)이라고 부른다.
 ```java
 switch(op){
 case '1':
