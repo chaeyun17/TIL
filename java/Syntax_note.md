@@ -93,6 +93,9 @@ String op = sc.nextLine();
 ```java
 int[] ary = new int[3];
 ```
+### 자주 쓰는 것
+- array.lenght : 포로퍼티. 배열길이
+- array.clone() : 배열 복사. java.lang.object
 ### 참고
 - [JAVA 자료구조, 생활코딩](https://opentutorials.org/module/1335/8677)
 - [배열과 리스트 차이, 초보몽키의 개발공부로그](https://wayhome25.github.io/cs/2017/04/17/cs-18-1/)
