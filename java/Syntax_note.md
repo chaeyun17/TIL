@@ -87,5 +87,20 @@ System.out.println("연산자 입력: ");
 String op = sc.nextLine();
 ```
 
+## 배열
+배열이란 연관된 데이터를 하나의 변수에 그룹핑해서 관리하기 위한 방법입니다. 배열을 이용하면 하나의 변수에 여러 정보를 담을 수 있고, 반복문과 결합하면 많은 정보도 효율적으로 처리할 수 있습니다.
+
+```java
+int[] ary = new int[3];
+```
+### 참고
+- [JAVA 자료구조, 생활코딩](https://opentutorials.org/module/1335/8677)
+- [배열과 리스트 차이, 초보몽키의 개발공부로그](https://wayhome25.github.io/cs/2017/04/17/cs-18-1/)
+
+## 리스트
+```java
+import java.util.Arraylist
+ArrayList<Integer> arylist = new ArrayList<>();
+```
 
 
