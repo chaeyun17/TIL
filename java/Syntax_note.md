@@ -1,4 +1,5 @@
 # Java 문법 학습 노트
+윤성우 작가의 '열혈 JAVA 프로그래밍'을 참고
 
 ## 자료형(Data Type)
 
@@ -122,9 +123,19 @@ Car mycar = new Car();
 Car 클래스를 인스턴스화하여, 그 주소값을 참조변수 mycar에 저장하였다. 
  
 ### 생성자 Constructor
-생성하는 인스턴스를 초기화를 한다.   
-`new` 키워드를 통해 생성할 때, 매개변수로 전달하면 인스턴스 변수를 초기화할 수 있다.  
-생성자는 여러 개를 만들 수 있다. 매개변수를 전달하지 않는 기본 생성자도 만들어둘 수도 있다.  
+- 생성하는 인스턴스를 초기화를 한다.   
+- `new` 키워드를 통해 생성할 때, 매개변수로 전달하면 인스턴스 변수를 초기화할 수 있다.  
+- 매개변수를 전달하지 않는 Default 생성자도 만들 수 있다.  
+- 메소드와 다른 점. 첫째는 클래스 이름과 동일해야 한다. 둘째는, 값을 봔환하지 않고 반환형도 표시하지 않는다.
+
+### 이름 규칙
+- 클래스 이름의 첫 문자는 대문자로 시작한다.
+- Carmel Case. 둘 이상의 단어가 묶여서 하나의 이름을 이룰 때, 새로 시작하는 단어는 대문자로 한다. `class MyCar`
+- 메소드와 변수 이름은 소문자로 시작하는 Carmel case로 한다. `void getModel()`
+- 상수는 대문자로 한다. `final double PI = 3.14;`
+
+### TIP
+- 외부에서 인스턴스 변수를 직접 수정하면 좋지 않다. 인스턴스 변수는 private으로 하면 좋음.
 
 ```java
 // Car 클래스
@@ -132,11 +143,11 @@ class Car{
 	String color;
 	int speed;
 	
-	Car(String color, int speed){
+	public Car(String color, int speed){
 		this.color = color;
 		this.speed = speed;
 	}
-	Car(){
+	public Car(){
 	
 	}
 }
