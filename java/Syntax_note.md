@@ -1,5 +1,5 @@
 # Java 문법 학습 노트
-윤성우 작가의 '열혈 JAVA 프로그래밍'을 참고
+윤성우 작가의 '열혈 JAVA 프로그래밍'을 참고했습니다.
 
 ## 자료형(Data Type)
 
@@ -160,6 +160,175 @@ public static void main(){
 }
 ```
 
+
+
+## 클래스 패스 Class Path
+자바 가상머신이 클래스 파일을 찾는 경로이다. 자바 가상머신은 프로그램 실행 과정에서 클래스 파이를 찾을 때, '클래스 패스'를 통해 찾는다.  
+다른 폴더에 저장된 클래스를 찾기 위해 Class Path 설정을 한다.  
+
+
+```
+set classpath=.;경로;
+set classpath=.;D:\java\workspace\aaa;
+```
+
+
+## 패키지 Package
+패키지는 클래스를 묶는 수단이다. 다른 클래스 또는 다른 클래스들과 구분할 수 있다.  
+패키지 작명은 보통 URL 형식을 사용한다. 기업 또는 집단에서 만든 패키지를 사용하기 때문에, 충돌을 방지하기 위해 기업 또는 단체의 고유한 이름을 사용한다.
+
+### 패키지 생성
+최상단에 `package 패키지명`을 작성한다.
+```java
+package com.calculate;
+
+public class Sum_num {
+	public int sum_two(int A, int B) {
+		return A+B;
+	}
+}
+```
+
+### 패키지 사용
+최상단에 `import 패키지명.클래스명`을 작성한다.
+```java
+import com.calculate.Sum_num;
+
+public class test01{
+	static void main(){
+		Sum_num s1 = new Sum_num();
+		System.out.println(s1.sum_two(1,2)); // 결과: 3
+	}
+}
+```
+
+## 정보 은닉
+인스턴스 변수를 private 으로 두고, 메소드를 통해 변수를 초기화하기를 권장함.
+```java
+public class Sum_num {
+	int num1;
+	int num2;
+	
+	void setNums(int num1, int num2) {
+		if( num1 > 0 && num2 > 0) {
+			this.num1 = num1;
+			this.num2 = num2;
+		}
+	}
+}
+```
+
+## 접근 수준 지시자 Access-level Modifiers
+- 클래스의 정의: public , default
+- 인스턴스 변수와 메소드 대상: public, protected, private, default
+
+### 클래스 정의
+- public: 어디서든 누구나. 위치에 상관없이 어디서든 해당 클래스의 인스턴스를 생성할 수 있다.
+- default: 같은 패키지에서만. 동일 패키지로 묶인 클래스 내에서만 인스턴스 생성이 가능하다.
+
+#### 제약사항
+public 클래스 중심으로 소스파일을 형성.
+- 하나의 소파일에 하나의 클래스만 public으로 선언 가능하다.
+- 소스파일 이름과 public으로 선언된 클래스의 이름을 일치시킨다.
+
+#### 예시
+```java
+/* Dog.class */
+package pet;
+
+public class Dog {
+	
+	public void bark() {
+		System.out.println("왈왈왈");
+	}
+}
+```
+
+```java
+/* Cat.class */
+package pet;
+
+class Cat {
+	void bark() {
+		System.out.println("야옹야옹");
+	}
+}
+```
+
+```java
+package master;
+import pet.*;
+
+public class order {
+	public static void main(String[] args) {
+		Dog dog1 = new Dog();
+		dog1.bark();
+		// 왈왈왈
+		
+		Cat cat1 = new Cat();
+		// error : The type Cat is not visible
+		
+	}
+}
+```
+
+### 인스턴스 대상
+변수일 경우 접근, 메소드일 경우 호출.
+- private: 클래스 내부에서만 접근 가능.
+- default: 동일 패키지 허용. 동일 패키지로 묶인 클래스 내에서만 접근 가능.
+- protected: 동일 패키지 허용. 추가로 상속관계 클래스에서 허용.
+- public: 어디서든 접근 가능.
+
+#### 예시
+TestPet 클래스와 Dog 클래스는 같은 패키지에 존재.  
+order 클래스는 Dog와 다른 패키지. Dog public 메서드만 접근가능
+```java
+package pet;
+public class Dog {
+	
+	private String color = "white";
+	// 같은 클래스에서만 접근 가능
+	
+	public void bark() {
+		System.out.println("왈왈왈");
+	}
+	
+	void changeColor(String color) {
+		this.color = color;
+		System.out.println(this.color);
+	}
+}
+```
+
+```java
+package pet;
+public class TestPet {
+	public static void main(String[] args) {
+		Dog dogg = new Dog();
+		dogg.changeColor("gray");
+	}
+}
+```
+
+```java
+package master;
+import pet.*;
+
+public class order {
+	public static void main(String[] args) {
+		Dog dog1 = new Dog();
+		dog1.bark();	// 왈왈왈
+		dog1.changeColor("black");	
+		// error: The method changeColor(String) from the type Dog is not visible
+	}
+}
+```
+
+## 캡슐화
+- 하나의 목적을 이루기 위해 관련 있는 모든 것을 하나의 클래스에 담아 두는 것.  
+- 캡슐화는 문법적인 내용이 아니다. 클래스 안에 '무엇을 넣을까'에 대한 이론.
+- 클래스들을 적절히 캡슐화시키면 프로그램이 간결해진다.
+- 캡슐화를 잘하려면 다양한 상황에서의 연습과 경험이 필요하다.
 
 
 ## 객체 지향 프로그래밍
