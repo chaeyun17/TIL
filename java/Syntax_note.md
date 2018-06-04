@@ -427,6 +427,25 @@ public class Cat extends Mammal {
 	}
 	```
 
+	
+## Instance Of
+`instanceof` 연산자이다. **참조변수가 참조하는 인스턴스의 클래스**나 **참조하는 인스턴스가 상속하는 클래스**를 묻는 연산자이다.
+```
+if(ca instanceof cake)
+```
+
+
+## Object 클래스
+모든 클래스는 object 클래스를 상속한다. 그렇기 때문에 모든 클래스의 주소값을 object 참조변수에 저장할 수 있다.
+
+## final
+final 클래스는 상속이 불가능하다. 최종 클래스.  
+final 메소드는 오버라이딩 불가능.  
+final 변수는 상수.  
+
+## @Override
+어노테이션(Annotations). 자바 컴파일러에게 메시지를 전달하는 목적의 메모이다.  
+매개변수 형과 반환형이 다르면 오버라이드가 되지 않는다. 하지만 `@Override`를 사용하면 오버라이드가 된다.
 
 ## 객체 지향 프로그래밍
 
