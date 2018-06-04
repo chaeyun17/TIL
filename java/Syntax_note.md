@@ -324,11 +324,108 @@ public class order {
 }
 ```
 
+
+
 ## 캡슐화
 - 하나의 목적을 이루기 위해 관련 있는 모든 것을 하나의 클래스에 담아 두는 것.  
 - 캡슐화는 문법적인 내용이 아니다. 클래스 안에 '무엇을 넣을까'에 대한 이론.
 - 클래스들을 적절히 캡슐화시키면 프로그램이 간결해진다.
 - 캡슐화를 잘하려면 다양한 상황에서의 연습과 경험이 필요하다.
+
+
+## 클래스 변수
+모든 인스턴스가 공유하는 변수. 메모리에 한 개만 존재. 어떤 인스턴스에도 속하지 않는다.
+static으로 선언된 변수는 변수가 선언된 클래스의 모든 인스턴스가 공유하는 변수이다.
+
+
+
+## 클래스 상속
+- 클래스들의 '공통 기능'을 부모 클래스로 만든다. 코드 재활용이 목적으로 한다면, 무의미하게 복잡해기 때문이다.
+- UML 클래스 다이어그램에서 상속은 실선으로 부모를 향한 화살표로 그린다.
+- 부모클래스를 `super`라고 부른다.
+- 상속은 `extends` 키워드를 사용한다. `class 자식클래스명 extends 부모클래스명`
+- 자바는 단일 상속만 가능하다.
+- 예시) 포유류는 개와 고양이. 둘다 젖먹이다. 포유류는 부모클래스로, 개와 고양이는 자식 클래스로 만들 수 있다.
+- Tip) 상속된 관계가 있으면, 부모클래스가 바뀌면 자식 클래스가 제대로 동작하지 않을 수 있다. 그래서 인터페이스를 사용한다.
+
+### 생성자 처리
+부모 클래스의 생성자가 먼저 호출되고, 자식 클래스의 생성자가 호출된다.
+```java
+/* 생성자 처리 */
+package com.chaeyun.Inheritance;
+public class TestPet2 {
+	public static void main(String[] args) {
+		Mammal m = new Mammal();
+		Dog d = new Dog();	
+		// 결과:
+		// 포유류 생성자입니다.
+		// 강아지 생성자입니다.
+	}
+}
+```
+부모클래스 생성자들 중 원하는 생성자를 호출하고 싶을 때는 `super(인자)`예약어를 사용하면 된다.
+```java
+public class Cat extends Mammal {
+	// Constructor
+	public Cat() {
+		System.out.println("Cat 기본생성자");
+	}
+	public Cat(int i) {
+		super(i);
+		System.out.println("Cat(int i) 생성자" + i);
+	}
+}
+```
+
+## String
+- String.toString(): 실제 데이터 값. 해쉬코드 값. String 변수에는 주소값이 들어있기 때문에 이 메소드를 사용한다.
+- '질문': 힙 영역과 스택영역. 어디에 데이터가 저장되나
+
+## 클래스 변수와 메소드 상속
+- 클래스 변수는 final과 private을 제외하고 상속 가능
+- Is-A 관계이다. 관계가 있는 것만 부모클래스가 될 수 있다.
+
+### Is-A / Has-A 관계
+- Is-A : 개는 포유류이다.
+- Has-A: 차는 차고에 있다.
+
+
+## 오버라이딩
+- 상속관계는 부모 인스턴스이면서도, 자식 인스턴스이다.
+	```java
+	Child p = new Child();
+	if(p instanceof Parent) System.out.println("부모");
+	if(p instanceof Child) System.out.println("자식");
+
+	// 부모
+	// 자식
+	```
+- 메소드와 변수 호출 시, 참조변수의 형을 참조한다.
+	```java
+	Parent p = new Child();
+	p.print();	// 부모입니다
+	```
+- 참조변수의 형 정보를 기준으로 대입의 가능성을 판단한다.
+	```java
+	Parent p = new Child();
+	Child c = (Child) p;
+	```
+- 메소드 오버라이딩은 이름, 반환형, 매개변수가 같아야 한다.
+- 메소드 오버라이딩이 되면, 참조변수의 형에 상관없이 오버라이딩 된 메소드가 호출된다.
+	```java
+	Parent p = new Child();
+	p.print();	// 자식입니다
+	```
+- 클래스 내부에서 부모의 메소드를 호출하려면, `super.메소드명()`을 사용하면 된다.
+	```java
+	class Child extends Parent{
+		int num = 2;
+		void print() {
+			super.print();
+			System.out.println("자식입니다");
+		}
+	}
+	```
 
 
 ## 객체 지향 프로그래밍
