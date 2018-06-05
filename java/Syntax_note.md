@@ -452,6 +452,55 @@ final 변수는 상수.
 매개변수 형과 반환형이 다르면 오버라이드가 되지 않고, 새로운 메소드가 생성된다. `@Override`를 사용하면 컴파일러가 이런 실수를 확인해줄 수 있다.
 
 
-
 ## 인터페이스
+추상메소드를 담고 있다. 구체적 메소드 구현은 implements 를 통해 상속처럼 구현한다.
+- 인터페이스이 형을 대상으로 참조변수 선언 가능
+- `@Override` 선언으로 오버라이딩 가능
+- 인터페이스 변수는 상수이다. public, static, final이 선언된 것과 같다. 대문자로 작성하면 좋다.
+- 인터페이스 간 상속도 가능하다.
+- 디폴트 메소드를 통해 추상 메소드를 추가할 수 있다. 디폴트 메소드는 구현하여도 되고, 하지 않아도 되는 특성을 가지고 있다. 그래서 이미 구현된 클래스를 수정하지 않아도 되는 장점이 있다.
+- 추상 클래스는 추상 메소드를 하나 이상 가진 클래스이다.
+```java
+interface Printable{
+	void print(String doc);
+	default void printCMYK{}
+}
+class Printer implements Printable{
+	@Override
+	void print(String doc){
+		System.out.println(doc);
+	}
+}
+```
+```java
+public abstract class House{	// 추상 클래스
+	public void methodOne(){
+		System.out.println("method one");
+	}
+	@Override
+	public abstract void methodTwo(); // 추상메소드
+}
+```
+
+
+### 변수가 오버로딩이 되는걸까
+아니다. 인터페이스 변수가 숨겨지고, 지역변수가 나왔을 뿐이다.
+출처: https://stackoverflow.com/questions/8814153/overriding-interfaces-variable
+
+
+## hashcode 
+인스턴스만의 고유한 숫자값. 인스턴스끼리의 비교를 하기 위해, 사용 목적에 따라 Overriding을 하여 사용.
+- Object.hashCode(): 인스턴스의 해쉬 값 반환
+- Objects.hashCode() : 여러 인자들을 조합하여 해쉬 값를 생성
+
+## API
+### java.lang.Object.getClass()
+- 인자: NA
+- 반환: object of type Class that represents the runtime class of the object.
+- 반환예시: class java.util.GregorianCalendar
+```java
+if(obj1.getClass() == obj2.getClass())
+```
+- 출처: https://www.tutorialspoint.com/java/lang/object_getclass.htm
+
 
