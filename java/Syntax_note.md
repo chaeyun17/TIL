@@ -453,13 +453,14 @@ final 변수는 상수.
 
 
 ## 인터페이스
-추상메소드를 담고 있다. 구체적 메소드 구현은 implements 를 통해 상속처럼 구현한다.
+추상메소드를 담고 있다. 구체적 메소드 구현은 implements 를 통해 상속처럼 구현한다.  
+인터페이스는 정해진 형태를 유지하면서 다양한 소스를 구현하기 위해 사용할 수도 있다.
 - 인터페이스이 형을 대상으로 참조변수 선언 가능
 - `@Override` 선언으로 오버라이딩 가능
 - 인터페이스 변수는 상수이다. public, static, final이 선언된 것과 같다. 대문자로 작성하면 좋다.
 - 인터페이스 간 상속도 가능하다.
 - 디폴트 메소드를 통해 추상 메소드를 추가할 수 있다. 디폴트 메소드는 구현하여도 되고, 하지 않아도 되는 특성을 가지고 있다. 그래서 이미 구현된 클래스를 수정하지 않아도 되는 장점이 있다.
-- 추상 클래스는 추상 메소드를 하나 이상 가진 클래스이다.
+- 추상 클래스`abstract`는 추상 메소드`abstract`를 하나 이상 가진 클래스이다.
 ```java
 interface Printable{
 	void print(String doc);
@@ -502,5 +503,13 @@ public abstract class House{	// 추상 클래스
 if(obj1.getClass() == obj2.getClass())
 ```
 - 출처: https://www.tutorialspoint.com/java/lang/object_getclass.htm
+
+## oracle database 라이브러리 사용하기
+1. oracle 설치 폴더에 lib 파일 가져오기
+2. java 프로젝트에 lib 폴더 만들어서 그곳에 라이브러리 파일 붙여넣기
+3. 오른쪽 클릭 -> Build Path -> Add build path
+
+4. 다른방법/jre - ext 폴더에 넣기
+5. jdk에서도 똑같이 하기
 
 
