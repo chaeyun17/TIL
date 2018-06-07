@@ -511,3 +511,51 @@ if(obj1.getClass() == obj2.getClass())
 
 4. 다른방법/jre - ext 폴더에 넣기
 5. jdk에서도 똑같이 하기
+
+
+
+## 예외처리
+프로그램을 운영하다보면, 생각치 못했던 결과나 오류가 발생할 수 있다. 이러한 예외사항들에 대해 특정한 처리를 미리 정해둘 수 있다.
+예외에 대해 특정한 처리를 해두면, 프로그램이 중단되지 않고 자연스럽게 운영될 수 있을 것이다.
+- try-catch 문은 try에 관찰대상인 처리명령어들이 들어가고, catch 블록에는 해당 예외가 발생했을 떄 해당 명령어들이 실행된다.
+- 여러 예외처리를 하고 싶을 때는, catch문을 여러 번 사용하거나 `|` 연산자를 사용한다.
+- try-catch-finally에서 finally 블록에는 예외가 발생하든 안하든 무조건 실행한다.
+```java
+/*try-catch 문*/
+public class Test_exception01 {
+	public static void main(String[] args) {
+		int num1 = 3;
+		int num2 = 0;
+		int result = 0;
+		try {
+			result = num1/num2;
+			System.out.printf("3/0 = %n\n",result);
+		}
+		catch(ArithmeticException e) {
+			System.out.println(e.getMessage());
+			// / by zero
+		}
+	}
+}
+```
+
+```java
+/* try-catch-finally */
+public class Test_exception01 {
+	public static void main(String[] args) {
+		int num1 = 3;
+		int num2 = 0;
+		int result = 0;
+		try {
+			result = num1/num2;
+			System.out.printf("%d/%d = %d\n",num1,num2,result);
+		}
+		catch(ArithmeticException e) {
+			System.out.println(e.getMessage());
+		}
+		finally {
+			System.out.println("프로그램을 종료 합니다");
+		}
+	}
+}
+```
