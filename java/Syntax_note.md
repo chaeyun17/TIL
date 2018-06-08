@@ -33,16 +33,16 @@ MSB가 0 또는 1 일 때, 나머지 비트를 해석하는 방법이 각기 다
 -5 를 이진수로 표현하기
 1. 5를 2진수로 나타낸다.
 	- `0000 0101`
-2. 1의 보수를 구한다. 
+2. 1의 보수를 구한다.
 	- 이진수를 반전시키면 된다.
 	- `1111 1010`
 3. +1을 하면 완성
 	- `1111 1011`
 
-	
+
 ## 실수의 표현법
 1과 5사이의 정수는 유한하지만, 1과 5사이의 실수는 무한하다. 실수를 정확히 표현하는데 한계가 있다.
-  
+
 **IEEE 754** 표준을 사용한다.
 
 
@@ -56,7 +56,7 @@ case '1':
 case '2':
 	//execute
 	break;
-default: 
+default:
 	//execute
 	break;
 }
@@ -80,9 +80,9 @@ System.out.println("숫자1 입력: ");
 int num1 = sc.nextInt();
 System.out.println("숫자2 입력: ");
 int num2 = sc.nextInt();
-  
+
 sc.nextLine() // 개행문자 비워주기
-  
+
 System.out.println("연산자 입력: ");
 String op = sc.nextLine();
 ```
@@ -112,16 +112,16 @@ ArrayList<Integer> arylist = new ArrayList<>();
 
 
 ## 클래스 Class
-- **인스턴스 변수**: 프로그램상에서 유지하고 관리해야 할 데이터. Fields.멤버 변수라고도 부른다. 
+- **인스턴스 변수**: 프로그램상에서 유지하고 관리해야 할 데이터. Fields.멤버 변수라고도 부른다.
 - **인스턴스 메소드**: 데이터를 처리하고 조작하능 기능.  
 
 ### 인스턴스 Instance
 객체라고도 부른다. 키워드 `new`를 사용하여 클래스 Car를 인스턴스화(Instantiation)한다.   
 ```java
 Car mycar = new Car();
-``` 
-Car 클래스를 인스턴스화하여, 그 주소값을 참조변수 mycar에 저장하였다. 
- 
+```
+Car 클래스를 인스턴스화하여, 그 주소값을 참조변수 mycar에 저장하였다.
+
 ### 생성자 Constructor
 - 생성하는 인스턴스를 초기화를 한다.   
 - `new` 키워드를 통해 생성할 때, 매개변수로 전달하면 인스턴스 변수를 초기화할 수 있다.  
@@ -142,13 +142,13 @@ Car 클래스를 인스턴스화하여, 그 주소값을 참조변수 mycar에 �
 class Car{
 	String color;
 	int speed;
-	
+
 	public Car(String color, int speed){
 		this.color = color;
 		this.speed = speed;
 	}
 	public Car(){
-	
+
 	}
 }
 ```
@@ -208,7 +208,7 @@ public class test01{
 public class Sum_num {
 	int num1;
 	int num2;
-	
+
 	void setNums(int num1, int num2) {
 		if( num1 > 0 && num2 > 0) {
 			this.num1 = num1;
@@ -237,7 +237,7 @@ public 클래스 중심으로 소스파일을 형성.
 package pet;
 
 public class Dog {
-	
+
 	public void bark() {
 		System.out.println("왈왈왈");
 	}
@@ -264,10 +264,10 @@ public class order {
 		Dog dog1 = new Dog();
 		dog1.bark();
 		// 왈왈왈
-		
+
 		Cat cat1 = new Cat();
 		// error : The type Cat is not visible
-		
+
 	}
 }
 ```
@@ -285,14 +285,14 @@ order 클래스는 Dog와 다른 패키지. Dog public 메서드만 접근가능
 ```java
 package pet;
 public class Dog {
-	
+
 	private String color = "white";
 	// 같은 클래스에서만 접근 가능
-	
+
 	public void bark() {
 		System.out.println("왈왈왈");
 	}
-	
+
 	void changeColor(String color) {
 		this.color = color;
 		System.out.println(this.color);
@@ -318,7 +318,7 @@ public class order {
 	public static void main(String[] args) {
 		Dog dog1 = new Dog();
 		dog1.bark();	// 왈왈왈
-		dog1.changeColor("black");	
+		dog1.changeColor("black");
 		// error: The method changeColor(String) from the type Dog is not visible
 	}
 }
@@ -356,7 +356,7 @@ package com.chaeyun.Inheritance;
 public class TestPet2 {
 	public static void main(String[] args) {
 		Mammal m = new Mammal();
-		Dog d = new Dog();	
+		Dog d = new Dog();
 		// 결과:
 		// 포유류 생성자입니다.
 		// 강아지 생성자입니다.
@@ -427,9 +427,9 @@ public class Cat extends Mammal {
 	}
 	```
 
-	
+
 ## Instance Of
-`instanceof` 연산자이다. **참조변수가 참조하는 인스턴스의 클래스**나 **참조하는 인스턴스가 상속하는 클래스**를 묻는 연산자이다.
+`instanceof` 연산자이다. **참조변수가 참조하는 인스턴스의 클래스** 나 **참조하는 인스턴스가 상속하는 클래스** 를 묻는 연산자이다.
 ```
 if(ca instanceof cake)
 ```
@@ -499,11 +499,7 @@ class MyHouse extneds House{
 출처: https://stackoverflow.com/questions/8814153/overriding-interfaces-variable
 
 
-## 예외처리
-문법 오류가 아닌 로직 에러를 처리한다.
-
-
-## hashcode 
+## hashcode
 인스턴스만의 고유한 숫자값. 인스턴스끼리의 비교를 하기 위해, 사용 목적에 따라 Overriding을 하여 사용.
 - Object.hashCode(): 인스턴스의 해쉬 값 반환
 - Objects.hashCode() : 여러 인자들을 조합하여 해쉬 값를 생성
@@ -529,3 +525,49 @@ if(obj1.getClass() == obj2.getClass())
 출처: [자바와 오라클 연동하기 <1> - JDBC 드라이버, 세상의모든기록](http://all-record.tistory.com/69)
 
 
+
+## 예외처리
+프로그램을 운영하다보면, 생각치 못했던 결과나 오류가 발생할 수 있다. 이러한 예외사항들에 대해 특정한 처리를 미리 정해둘 수 있다.
+예외에 대해 특정한 처리를 해두면, 프로그램이 중단되지 않고 자연스럽게 운영될 수 있을 것이다.
+- try-catch 문은 try에 관찰대상인 처리명령어들이 들어가고, catch 블록에는 해당 예외가 발생했을 떄 해당 명령어들이 실행된다.
+- 여러 예외처리를 하고 싶을 때는, catch문을 여러 번 사용하거나 `|` 연산자를 사용한다.
+- try-catch-finally에서 finally 블록에는 예외가 발생하든 안하든 무조건 실행한다.
+```java
+/*try-catch 문*/
+public class Test_exception01 {
+	public static void main(String[] args) {
+		int num1 = 3;
+		int num2 = 0;
+		int result = 0;
+		try {
+			result = num1/num2;
+			System.out.printf("3/0 = %n\n",result);
+		}
+		catch(ArithmeticException e) {
+			System.out.println(e.getMessage());
+			// / by zero
+		}
+	}
+}
+```
+
+```java
+/* try-catch-finally */
+public class Test_exception01 {
+	public static void main(String[] args) {
+		int num1 = 3;
+		int num2 = 0;
+		int result = 0;
+		try {
+			result = num1/num2;
+			System.out.printf("%d/%d = %d\n",num1,num2,result);
+		}
+		catch(ArithmeticException e) {
+			System.out.println(e.getMessage());
+		}
+		finally {
+			System.out.println("프로그램을 종료 합니다");
+		}
+	}
+}
+```

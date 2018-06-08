@@ -39,8 +39,8 @@ Oracle JDK를 사용해서 설치해보기
 6. `echo $JAVA_HOME`
 
 ## Window 에 JAVA JDK를 설치하기
-1. JAVA JDK를 ORACLE.COM 에서 다운받기. 
-	- 공부용은 JAVA 1.8 
+1. JAVA JDK를 ORACLE.COM 에서 다운받기.
+	- 공부용은 JAVA 1.8
 2. 환경변수 설정 하기
 3. 내 컴퓨터 -> 오른쪽클릭 속성-> 고급 시스템 속성 -> 환경변수 열기
 4. 시스템변수에 JAVA_HOME 추가
@@ -52,3 +52,18 @@ Oracle JDK를 사용해서 설치해보기
 6. Window 검색에서 `cmd` 검색 그리고 실행하기
 7. `java` 와 `javac` 명령어 테스트
 8. 정상적으로 실행되면 설치완료
+
+
+
+# 삭제하기
+## Ubuntu 16.04 LTS
+터미널을 통해 완벽하게 삭제하는 방법입니다. 저는 Oracle jdk 9 을 삭제하자, open jdk 1.8로 자동으로 대체되었습니다.
+출처: [How to uninstall Oracle JDK in Ubuntu 16.04 LTS/ AskUbuntu.com](https://askubuntu.com/questions/850729/how-to-uninstall-oracle-jdk-in-ubuntu-16-04-lts)
+
+1. 어떤 JDK 패키지가 설치되었는지를 확인합니다.  
+`sudo dpkg --list | grep -i jdk`  
+2. Oracle jdk 9를 완전히 삭제해보겠습니다.
+`sudo apt-get purge oracle-java9-installer` 를 통해 oracle jdk9을 삭제합니다.  
+`sudo apt-get autoremove` 를 통해 사용하지 않는 패키지들을 삭제합니다.  
+3. 완전히 삭제됐는지 살펴봅니다.
+`sudo dpkg --list | grep -i jdk`
