@@ -455,12 +455,13 @@ final 변수는 상수.
 ## 인터페이스
 추상메소드를 담고 있다. 구체적 메소드 구현은 implements 를 통해 상속처럼 구현한다.  
 인터페이스는 정해진 형태를 유지하면서 다양한 소스를 구현하기 위해 사용할 수도 있다.
+- 다중 implements 가능.
+- 인터페이스 간 상속도 가능
 - 인터페이스이 형을 대상으로 참조변수 선언 가능
 - `@Override` 선언으로 오버라이딩 가능
 - 인터페이스 변수는 상수이다. public, static, final이 선언된 것과 같다. 대문자로 작성하면 좋다.
-- 인터페이스 간 상속도 가능하다.
 - 디폴트 메소드를 통해 추상 메소드를 추가할 수 있다. 디폴트 메소드는 구현하여도 되고, 하지 않아도 되는 특성을 가지고 있다. 그래서 이미 구현된 클래스를 수정하지 않아도 되는 장점이 있다.
-- 추상 클래스`abstract`는 추상 메소드`abstract`를 하나 이상 가진 클래스이다.
+
 ```java
 interface Printable{
 	void print(String doc);
@@ -473,20 +474,33 @@ class Printer implements Printable{
 	}
 }
 ```
+### 추상클래스
+- 추상 클래스`abstract`는 추상 메소드`abstract`를 하나 이상 가진 실제 클래스이다.
+- 클래스이기 때문에 `extends` 키워드를 통해 다른 클래스에서 추상 메소드를 구현한다.
+ 
 ```java
-public abstract class House{	// 추상 클래스
+abstract class House{	// 추상 클래스
 	public void methodOne(){
 		System.out.println("method one");
 	}
 	@Override
 	public abstract void methodTwo(); // 추상메소드
 }
+
+class MyHouse extneds House{
+	public void methodTwo(){
+		System.out.println("추상메소드 구현하기");
+	}
+}
 ```
 
-
-### 변수가 오버로딩이 되는걸까
+### 인터페이스 변수는 오버라이딩이 되는걸까?
 아니다. 인터페이스 변수가 숨겨지고, 지역변수가 나왔을 뿐이다.
 출처: https://stackoverflow.com/questions/8814153/overriding-interfaces-variable
+
+
+## 예외처리
+문법 오류가 아닌 로직 에러를 처리한다.
 
 
 ## hashcode 
@@ -505,11 +519,13 @@ if(obj1.getClass() == obj2.getClass())
 - 출처: https://www.tutorialspoint.com/java/lang/object_getclass.htm
 
 ## oracle database 라이브러리 사용하기
-1. oracle 설치 폴더에 lib 파일 가져오기
-2. java 프로젝트에 lib 폴더 만들어서 그곳에 라이브러리 파일 붙여넣기
-3. 오른쪽 클릭 -> Build Path -> Add build path
-
-4. 다른방법/jre - ext 폴더에 넣기
-5. jdk에서도 똑같이 하기
+1. oracle 설치 폴더에서 `ojdbc6.jar` 파일 복사하기  
+	D:\app\유저명\product\11.2.0\dbhome_1\jdbc\lib\
+2. jre 폴더에 `ojdbc6.jar` 라이브러리 파일 붙여넣기  
+	C:\Program Files\Java\jre1.8.0_172\lib\ext
+3. 프로젝트 오른쪽 클릭 -> Properties -> Build Path -> Libaries 탭 -> Add External JARs
+-> `ojdbc6.jar` 불러오기  
+  
+출처: [자바와 오라클 연동하기 <1> - JDBC 드라이버, 세상의모든기록](http://all-record.tistory.com/69)
 
 
