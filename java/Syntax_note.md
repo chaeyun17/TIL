@@ -571,3 +571,12 @@ public class Test_exception01 {
 	}
 }
 ```
+
+## Object
+```java
+Duck duck = new Duck();
+
+System.out.println(duck.getClass()); // class com.gmail.hopefulyun.object.Duck
+System.out.println(duck.toString()); // com.gmail.hopefulyun.object.Duck@33909752
+System.out.println(duck.hashCode()); // 16진수를 10진수로 변경
+```
