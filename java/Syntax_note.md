@@ -580,3 +580,28 @@ System.out.println(duck.getClass()); // class com.gmail.hopefulyun.object.Duck
 System.out.println(duck.toString()); // com.gmail.hopefulyun.object.Duck@33909752
 System.out.println(duck.hashCode()); // 16진수를 10진수로 변경
 ```
+
+## Wrapper 클래스
+메소드의 인자로 인스턴스를 요구하는 경우가 있다. 기본 자료형 데이터를 클래스로 바꿀 수 있고, 그 클래스를 다시 기본자료형 데이터로 바꿀 수 있다.
+Boxing은 값을 인스턴스에 감싸는 행위이고, Unboxing은 저장된 값을 꺼내는 행위를 말한다. 래퍼 인스턴스들은 담고 있는 값을 수정하지 못한다.
+```java
+Integer INum = new Integer("11");	
+Integer INum2 = new Integer(11);	
+Integer INum3 = 11;					// auto boxing
+int INum4 = INum;					// auto unboxing
+System.out.println(INum.intValue());	// 11
+System.out.println(INum2.doubleValue());// 11.0
+System.out.println(INum3);				// 11
+System.out.println(INum4); 				// 11
+```
+
+## BigInteger 클래스
+long보다 큰 정수를 표현하고 싶을 때 또는 정확한 실수를 표현하고 싶을 때 사용한다.
+
+## 리스트 ArrayList
+기본적으로 Object Type으로 처리. `ArrayList<T>` 을 사용. `<T>`는 Generic 저장되는 type을 제한한다. `T`는 클래스타입.
+- 옛 방식: `ArrayList al = new ArrayList();`
+- 새 방식: `ArrayList<Integer> al = new ArrayList<>();`
+옛방식으로 하면 `ArrayList.get(index)`의 반환 값이 object이다. 강제형변환을 통해 사용해야 하며, 성능을 느리게 만든다. 그래서 리스트 선언 때부터 데이터형을 제너릭을 통해 정한다.
+
+
