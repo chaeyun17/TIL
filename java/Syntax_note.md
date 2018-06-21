@@ -604,4 +604,73 @@ long보다 큰 정수를 표현하고 싶을 때 또는 정확한 실수를 표�
 - 새 방식: `ArrayList<Integer> al = new ArrayList<>();`
 옛방식으로 하면 `ArrayList.get(index)`의 반환 값이 object이다. 강제형변환을 통해 사용해야 하며, 성능을 느리게 만든다. 그래서 리스트 선언 때부터 데이터형을 제너릭을 통해 정한다.
 
+## String 메소드
+- char chatAt(int index): index로 한 글자를 가져온다.
+- bytes[] getBytes(String str): String 오브젝트를 byte 데이터형 배열로 변환
+- int lastIndexOf(String str) : 뒤에서부터 str을 찾는다.
+- trim
+- subString
+- split
+- new StringTokenizer
+- String replace(String original, String replace)
+### 인코딩 변환
+```
+String str = new String(str.getBytes(), "EUC-KR");
+```
+- UTF-8 한글 2 byte
+- EUC-KR 한글 3 byte
+- 영어는 둘 다 1 byte
+
+### 문자열 index
+```java
+// 한글 한 글자와 영어 한 글자는 같은 한 index로 취급한다.
+String title = "자바 프로그래밍";
+int loc = title.indexOf("프로그래밍");
+System.out.println(loc);
+
+System.out.println(title.length());
+
+if(title.indexOf("자바") != -1)
+	System.out.println("자바 관련 입니다");
+else
+	System.out.println("자바 관련이 아닙니다");
+```
+
+### StringBuffer , StringBuilder
+
+## Generic 제네릭
+Object로 메소드와 인자를 설정하면, 예상치 못한 object가 담기고 사용될 수 있다. 그래서 인스턴스를 생성할 때, 자료형을 고정시키는 제너릭을 사용한다.
+제너릭은 `T`이다.
+- Type Parameter 타입 매개변수 : `Box<T>`에서 `T`
+- Type Argument 타입 인자: `Box<Apple>` 에서 `Apple`
+- Parameterized Type 메개변수화 타입: `Box<Apple>`
+- 매개변수화 타입은 제너릭 타입 Generic Type이라고도 한다.
+```java
+class Box<T>{
+	private T fruit;
+	public void set(T obj) {
+		fruit = obj;
+	}
+	public T get() {
+		return fruit;
+	}
+}
+```
+```java
+Box<Apple> aBox = new Box<Apple>();
+Box<Orange> oBox = new Box<Orange>();
+
+aBox.set(new Apple());
+oBox.set(new Orange());
+
+System.out.println(aBox.get());
+System.out.println(oBox.get());
+```
+
+- 타입매개변수의 이름은 한 문자로 대문자로 짓는다. `Element:E , Key:K, Number:N, Type:T, V:Value` 를 주로 사용한다.
+- 타입매개변수로 기본 자료형은 올 수 없지만, 래퍼 클래스는 올 수 있다. `Box<Integer> box = new Box<Integer>();`
+- 타입 인자를 생략할 수 있다. `<>`를 다이아몬드 기호라고 부른다. `Box<Apple> box1 = new Box<>()`
+- 타입인자로 제너릭타입이 올 수 있다. `Box<Box<String>> box2 = new Box<>()`
+- 타입인자를 제한할 수 있다. `class Box<T extends Number>` 그리고 제한된 클래스(`Number`)의 메소드(`ob.intValue()`)를 호출할 수 있다.
+- 타입인자를 하나이상의 인터페이스에 대해 제한할 수 있다. `class Box<T exteneds NUmber & Eatable>`
 
