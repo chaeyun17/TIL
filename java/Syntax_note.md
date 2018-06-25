@@ -639,6 +639,8 @@ else
 ### StringBuffer , StringBuilder
 
 ## Generic 제네릭
+제너릭은 클래스, 메소드, 인터페이스에 사용될 수 있다.
+### 제너릭 클래스
 Object로 메소드와 인자를 설정하면, 예상치 못한 object가 담기고 사용될 수 있다. 그래서 인스턴스를 생성할 때, 자료형을 고정시키는 제너릭을 사용한다.
 제너릭은 `T`이다.
 - Type Parameter 타입 매개변수 : `Box<T>`에서 `T`
@@ -674,3 +676,15 @@ System.out.println(oBox.get());
 - 타입인자를 제한할 수 있다. `class Box<T extends Number>` 그리고 제한된 클래스(`Number`)의 메소드(`ob.intValue()`)를 호출할 수 있다.
 - 타입인자를 하나이상의 인터페이스에 대해 제한할 수 있다. `class Box<T exteneds NUmber & Eatable>`
 
+### 제너릭 메소드
+```java
+class BoxFactory{
+	public static <T> Box<T> makeBox(T fruit) {
+		Box<T> box = new Box<T>();
+		box.set(fruit);
+		return box;
+	}
+}
+
+Box<kiwi> box1 = BoxFactory.<kiwi>makeBox(new kiwi("green"));
+```
