@@ -50,6 +50,11 @@ public void insertData(int pnum, String name, String email, int bYear) {
 - DAO: Data Access Object
 - VO: Value Object. simular DTO.
 
+## DBCP
+CONNECTION POOL
+
+관련 자료: [jdbc, dbcp 차이?](http://leminity.tistory.com/20#rp)
+
 ## Eclipse Data Source Explore 기능
 1. Window - Show View - other - Data Management - Data Source Explorer
 2. Data Connection 폴더에서 오른쪽 클릭 NEW
