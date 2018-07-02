@@ -688,3 +688,167 @@ class BoxFactory{
 
 Box<kiwi> box1 = BoxFactory.<kiwi>makeBox(new kiwi("green"));
 ```
+
+
+## 컬렉션 프레임워크
+
+### List<E> 리스트
+인스턴스의 저장 순서를 유지한다. 그리고 동일한 인스턴스의 중복 저장을 허용한다.
+
+#### ArrayList<E>
+배열 기반 자료구조. 배열을 이용하여 인스턴스 저장. 요소가 추가되거나 저장될 때마다 새로운 배열이 생성.
+- public ArrayList(): 10개의 배열 요소를 가진 배열 인스턴스 생성
+- public ArrayList(int initial): 원하는 수만큼의 배열 요소를 가진 배열 인스턴스 생성
+- 성능을 위해서는 배열 요소를 미리 정해두면 좋다.
+- 인덱스 값을 통해 저장된 인스턴스의 참조가 빠르다.
+- 요소 추가/제거 연산이 복잡하다. 
+
+#### LinkendList<E>
+리스트 기반 자료구조. 리스트를 구성하여 인스턴스 저장.
+- 저장된 인스턴스의 참조가 느리다. 첫 요소부터 찾아가기 때문에.
+- 요소 추가/제거가 간단하다.
+
+#### for-each(enhanced for)
+`public interface Iterable<T>`을 상속하는 클래스만 사용가능. Collenction<E>에서 이 인터스페이스를 구현하고 있다.
+
+```java
+List<String> list = Arrays.asList("가","나", "box");
+for(String s : list) System.out.println(s);
+```
+
+#### Iterator<T> iterator() 반복자
+- E next(): 다음 인스턴스의 참조 값을 반환
+- boolean hasNext(): next 메소드 호출 시 참조 값 반환 가능 여부 확인
+- void remove(): next 메소드 호출을 통해 반환했던 인스턴스 삭제
+
+```java
+List<String> list = Arrays.asList("가","나", "box");
+itr = list.iterator();
+while(itr.hasNext()){
+	System.out.println(itr.next());
+	if(str.equals("Box")) itr.remove();
+}
+```
+
+#### ListIterator<E> 양방향 반복자
+iterator 인터페이스를 상속했다.
+public ListIterator<E> listIterator()
+[java8 doc](https://docs.oracle.com/javase/8/docs/api/java/util/ListIterator.html)
+
+
+### SET<E> 셋
+집합 개념과 유사하다. 중복을 제거하고 싶다면, 이 자료구조를 이용할 수도 있다.
+- 데이터 순서가 없다.
+- 데이터 중복이 없다.
+
+#### HashSet
+동일 인스턴스를 판단하는 기준은 `equals` 와 `hashcode` 메소드 리턴값이다.
+
+#### TreeSet
+정렬되어 있고 중복이 없다. 인스턴스 요소일 경우, 정렬기준이 있어야한다. 두 가지 방법이 있다.
+- Compareable 인터페이스 상속하여 compareTo를 구현하여야 한다.
+- TreeSet 생성자 인자로 Comparator 인터페이스를 구현한 클래스를 전달한다.
+
+### QUEUE<E> 큐
+First In , First Out 구조이다. 큐는 앞뒤가 다 뚫려있는 통이라고 볼 수 있다.
+- 대표적 구현 클래스는 `LinkedList`가 있다. Queue 참조변수에 대입하면 큐처럼 사용할 수 있다.
+- `boolean offer(E e)`: 넣기. 넣을 공간이 없으면 false 반환
+- `E poll()`: 꺼내기. 꺼낼 것이 없으면 null 반환
+- `E peek()`: 확인하기. 확인할 대상이 없으면 null 반환
+add 와 remove를 사용하지 않는 이유는 비어 있는 상황을 포함하고 있기 때문이다.
+[java 8 doc](https://docs.oracle.com/javase/8/docs/api/java/util/Queue.html)
+
+```java
+Queue<Mavel> que = new LinkedList<Mavel>();
+que.offer(new Mavel("슈퍼맨",1991));
+que.offer(new Mavel("배트맨",1951));
+que.offer(new Mavel("윙맨",2000));
+
+Iterator itr = que.iterator();
+for(;itr.hasNext();) {
+	System.out.println(que.poll());
+}
+System.out.println(que.peek());
+System.out.println(que.size());
+```
+
+### Deque 덱
+Deque는 양뱡향으로 넣고 꺼낼 수 있다. 그래서 특정 한 방향으로 넣고 꺼낸다면, 스택(First in, Last Out)처럼 사용이 가능하다. 당연히 큐로도 사용가능. 
+Stack 클래스가 있지만 거의 성능 문제로 거의 사용하지 않고 있다.  
+- LinkedList는 Deque<E>, List<E>, Queue<E> 인터페이스를 구현한다.
+```java
+Deque<Mavel> deque = new ArrayDeque<Mavel>();
+deque.offerLast(new Mavel("슈퍼맨",1991));
+deque.offerLast(new Mavel("배트맨",1951));
+deque.offerLast(new Mavel("윙맨",2000));
+
+while( deque.peekLast() != null ) {
+	System.out.println(deque.pollLast());
+}
+```
+```
+/* 스택처럼 사용하도록 클래스 생성 */
+interface InF_stack<E>{
+	public boolean push(E item);
+	public E pop();
+	public E peek();
+}
+class Im_stack<E> implements InF_stack<E>{
+	private Deque<E> deque = new ArrayDeque<E>();
+	@Override
+	public boolean push(E item) {return deque.offerLast(item);}
+	@Override
+	public E pop() { return deque.pollLast(); }
+	@Override
+	public E peek() { return deque.peekLast();}
+}
+```
+
+### Map<K, V>
+key-value 자료구조. 고유 key를 통해 value를 찾는다. HashMap과 TreeMap이 있다. 둘 다 중복이 안된다는 점을 가지고 있다. 
+TreeMap은 key를 대상으로 정렬 상태를 유지한다는 차이점이 있다. `put`과 `set`을 통해 접근한다.
+```java
+HashMap<Integer, String> map = new HashMap<>();
+map.put(1, "lee");
+map.put(2, "park);
+map.put(1, "kim");
+
+System.out.println(map.get(1));	// kim
+System.out.println(map.get(2));	// lee
+```
+순차접근은 `public SET<K> keySet()`을 사용하여, key를 SET 컬렉션으로 생성하여 사용한다. 
+```java
+/* keyset을 통한 순차접근 */
+HashMap<Integer, String> map = new HashMap<>();
+map.put(1, "이");
+map.put(3, "김");
+map.put(5, "박");
+
+Set<Integer> keyset = map.keySet();
+for( Integer key : keyset) {
+	System.out.println(key);
+}
+for( Integer key : keyset) {
+	System.out.println(map.get(key));
+}
+```
+TreeMap 인스턴스 생성자 인자로 Comparator 구현 클래스를 전달하면 정렬할 수 있다.
+```java
+/* 내림차순 key 정렬 */
+TreeMap<Integer, Marvel> tmap2 = new TreeMap<>(new keyByDesc());
+tmap2.put(1, new Marvel("아이언맨",2000));
+tmap2.put(3, new Marvel("펭귄맨",2000));
+tmap2.put(2, new Marvel("조커",2000));
+Set<Integer> keyset2 = tmap2.keySet();
+System.out.println(keyset2);
+```
+
+### 컬렉션 메소드
+- sort()
+- binarySearch()
+- copy()
+
+## 스트림
+
+### 스트림 생성
+- 배열 스트림 생성: `static <T> Stream<T> stream(T[] array)`
