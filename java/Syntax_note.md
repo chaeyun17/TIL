@@ -477,7 +477,7 @@ class Printer implements Printable{
 ### 추상클래스
 - 추상 클래스`abstract`는 추상 메소드`abstract`를 하나 이상 가진 실제 클래스이다.
 - 클래스이기 때문에 `extends` 키워드를 통해 다른 클래스에서 추상 메소드를 구현한다.
- 
+
 ```java
 abstract class House{	// 추상 클래스
 	public void methodOne(){
@@ -521,7 +521,7 @@ if(obj1.getClass() == obj2.getClass())
 	C:\Program Files\Java\jre1.8.0_172\lib\ext
 3. 프로젝트 오른쪽 클릭 -> Properties -> Build Path -> Libaries 탭 -> Add External JARs
 -> `ojdbc6.jar` 불러오기  
-  
+
 출처: [자바와 오라클 연동하기 <1> - JDBC 드라이버, 세상의모든기록](http://all-record.tistory.com/69)
 
 
@@ -585,8 +585,8 @@ System.out.println(duck.hashCode()); // 16진수를 10진수로 변경
 메소드의 인자로 인스턴스를 요구하는 경우가 있다. 기본 자료형 데이터를 클래스로 바꿀 수 있고, 그 클래스를 다시 기본자료형 데이터로 바꿀 수 있다.
 Boxing은 값을 인스턴스에 감싸는 행위이고, Unboxing은 저장된 값을 꺼내는 행위를 말한다. 래퍼 인스턴스들은 담고 있는 값을 수정하지 못한다.
 ```java
-Integer INum = new Integer("11");	
-Integer INum2 = new Integer(11);	
+Integer INum = new Integer("11");
+Integer INum2 = new Integer(11);
 Integer INum3 = 11;					// auto boxing
 int INum4 = INum;					// auto unboxing
 System.out.println(INum.intValue());	// 11
@@ -701,7 +701,7 @@ Box<kiwi> box1 = BoxFactory.<kiwi>makeBox(new kiwi("green"));
 - public ArrayList(int initial): 원하는 수만큼의 배열 요소를 가진 배열 인스턴스 생성
 - 성능을 위해서는 배열 요소를 미리 정해두면 좋다.
 - 인덱스 값을 통해 저장된 인스턴스의 참조가 빠르다.
-- 요소 추가/제거 연산이 복잡하다. 
+- 요소 추가/제거 연산이 복잡하다.
 
 #### LinkendList<E>
 리스트 기반 자료구조. 리스트를 구성하여 인스턴스 저장.
@@ -773,7 +773,7 @@ System.out.println(que.size());
 ```
 
 ### Deque 덱
-Deque는 양뱡향으로 넣고 꺼낼 수 있다. 그래서 특정 한 방향으로 넣고 꺼낸다면, 스택(First in, Last Out)처럼 사용이 가능하다. 당연히 큐로도 사용가능. 
+Deque는 양뱡향으로 넣고 꺼낼 수 있다. 그래서 특정 한 방향으로 넣고 꺼낸다면, 스택(First in, Last Out)처럼 사용이 가능하다. 당연히 큐로도 사용가능.
 Stack 클래스가 있지만 거의 성능 문제로 거의 사용하지 않고 있다.  
 - LinkedList는 Deque<E>, List<E>, Queue<E> 인터페이스를 구현한다.
 ```java
@@ -805,18 +805,18 @@ class Im_stack<E> implements InF_stack<E>{
 ```
 
 ### Map<K, V>
-key-value 자료구조. 고유 key를 통해 value를 찾는다. HashMap과 TreeMap이 있다. 둘 다 중복이 안된다는 점을 가지고 있다. 
+key-value 자료구조. 고유 key를 통해 value를 찾는다. HashMap과 TreeMap이 있다. 둘 다 중복이 안된다는 점을 가지고 있다.
 TreeMap은 key를 대상으로 정렬 상태를 유지한다는 차이점이 있다. `put`과 `set`을 통해 접근한다.
 ```java
 HashMap<Integer, String> map = new HashMap<>();
 map.put(1, "lee");
-map.put(2, "park);
+map.put(2, "park");
 map.put(1, "kim");
 
 System.out.println(map.get(1));	// kim
 System.out.println(map.get(2));	// lee
 ```
-순차접근은 `public SET<K> keySet()`을 사용하여, key를 SET 컬렉션으로 생성하여 사용한다. 
+순차접근은 `public SET<K> keySet()`을 사용하여, key를 SET 컬렉션으로 생성하여 사용한다.
 ```java
 /* keyset을 통한 순차접근 */
 HashMap<Integer, String> map = new HashMap<>();
@@ -847,6 +847,162 @@ System.out.println(keyset2);
 - sort()
 - binarySearch()
 - copy()
+
+## 네스티드 클래스(Nested Class)
+네스티드 클래스는 static 네스티드 클래스와 non-static 네스티드 클래스로 구분한다.
+non-statice 네스티드 클래스는 이너 클래스(Inner Class)라고도 부른다.
+
+이너 클래스는 맴버 클래스, 로컬 클래스, 익명 클래스로 구분한다.
+맴버 클래스는 인스턴스 변수 자리에, 로컬 클래스는 메소드 안에 위치한다. 익명 클래스는 인스턴스 생성과 동시에 선언한다.
+
+### static Nested Class
+static 네스티드 클래스의 인스턴스 생성은 외부 클래스의 인스턴스 생성과 무관한다.  
+-> static 네스티드 클래스 내에서 외부 클래스의 인스턴스 변수와 메소드에 접근 불가능하다.
+```java
+/* static Nested Class example */
+class Outer{
+	private static int static_num = 0;
+	private int intance_num2 = 3;
+	// Nested Class
+	static class Nested1{
+		void add(int n) { static_num += n;}
+		int get() { return static_num; }
+	}
+	static class Nested2{
+		void add(int n) { intance_num2 += intance_num2;} // error
+	}
+}
+public class staticNested {
+	public static void main(String[] args) {
+		// Nested Class instance
+		Outer.Nested1 ne1 = new Outer.Nested1();
+		ne1.add(333);
+		System.out.println(ne1.get());	// 333
+	}
+}
+```
+### Inner Class. 이너 클래스
+non-static Nested classs. 맴버, 로컬, 익명 클래스가 있다.
+
+#### 맴버 클래스
+인스턴스 변수 위치에 클래스를 정의한다.
+`p1.getPrinter()` 메소드가 어떠한 인스턴스의 참조 값을 반환하는지 모른다. Printable을 구현하고 있어서 Printable 변수로만 참조하고 있다.  
+이렇게 클래스 정의를 감추면, `getPrinter()` 메소드 반환값이 다른 클래스 인스턴스로 바뀌어도 외부 코드를 바꿀 필요가 없다. 코드 유연성이 생겼다.
+```java
+interface Printable{
+	void print();
+}
+class Papers{
+	private String con;
+	// 생성자
+	public Papers(String s) { con = s;}
+	// 메소드
+	public Printable getPrinter() {
+		return new Printer();
+	}
+	// 이너 맴버 클래스: private 이기 때문에 클래스 내에서만 생성가능
+	private class Printer implements Printable{
+		@Override
+		public void print() {
+			System.out.println(con);
+		}
+	}
+}
+
+public class UseMemberInner {
+	public static void main(String[] args) {
+		Papers p1 = new Papers("이 편지는 1980년부터 시작하여...");
+		Printable printer1 = p1.getPrinter(); // Printable로만 참조할 수 있다.
+		printer1.print(); // 이 편지는 1980년부터 시작하여...
+	}
+}
+```
+
+#### 로컬 클래스
+if 또는 while문 또는 메소드 몸체에와 같은 블록 안에 정의할 수 있다.  
+블록 밖에서 클래스를 생성할 수 없다. 그래서 private 사용은 의미가 없다.
+```java
+interface Printable{
+	void print();
+}
+class Papers{
+	private String con;
+	// 생성자
+	public Papers(String s) { con = s;}
+	// 메소드
+	public Printable getPrinter() {
+		// 로컬 클래스
+		class Printer implements Printable{
+			@Override
+			public void print() {
+				System.out.println(con);
+			}
+		}
+		return new Printer();
+	}
+}
+
+public class UseMemberInner {
+	public static void main(String[] args) {
+		Papers p = new Papers("편지: 이 편지를 100명에게 보내지 않는다면...");
+		Printable printer1 = p.getPrinter();
+		printer1.print();
+	}
+}
+```
+
+#### 익명 클래스
+클래스의 정의와 인스턴스의 생성을 하나로 묶을 수 있다.
+```java
+/* 익명클래스 예제 */
+interface Printable{
+	void print();
+}
+class Papers{
+	private String con;
+	// 생성자
+	public Papers(String s) { con = s;}
+	// 메소드
+	public Printable getPrinter() {
+		// 익명 클래스: 정의와 선언이 한 번에
+		return new Printable() {
+			@Override
+			public void print() {System.out.println(con);
+			}
+		};
+	}
+}
+
+public class UseMemberInner {
+	public static void main(String[] args) {
+		Papers p = new Papers("편지: 이 편지를 100명에게 보내지 않는다면...");
+		Printable printer1 = p.getPrinter();
+		printer1.print();
+	}
+}
+```
+```java
+/* 익명클래스 예제2 */
+public class AnonymousComparator {
+	public static void main(String[] args) {
+		List<String> list = new ArrayList<>();
+		list.add("Robot");
+		list.add("Apple");
+		list.add("Box");
+		// 익명 클래스
+		Comparator<String> cmp = new Comparator<String>() {
+			@Override
+			public int compare(String s1, String s2) {
+				return s1.length() - s2.length();
+			}
+		};
+		Collections.sort(list, cmp);
+		System.out.println(list); // [Box, Robot, Apple]
+	}
+}
+```
+
+## 람다
 
 ## 스트림
 
