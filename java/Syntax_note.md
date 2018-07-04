@@ -1003,6 +1003,52 @@ public class AnonymousComparator {
 ```
 
 ## 람다
+```java
+/* 람다 예제1 */
+interface Printable{
+	void print(String s);
+}
+public class Lambda01 {
+
+	public static void main(String[] args) {
+		// 익명클래스
+		Printable prn = new Printable() {
+			@Override
+			public void print(String str) { System.out.println(str);}
+		};
+		prn.print("haha");
+		// 람다식
+		Printable prn2 = (s)->{ System.out.println(s); };
+		prn2.print("hihi");
+	}
+}
+```
+```java
+/* 람다 예제2 */
+interface Printable03{
+	void print(String s);
+}
+public class Lambda03 {
+	public static void main(String[] args) {
+		Printable03 p1 ;
+		p1 = s -> System.out.println(s);
+		p1.print("맛있다");
+	}
+}
+```
+```java
+/* 람다 예제3 */
+interface Calculate{
+	int cal(int a, int b);
+}
+public class TwoParamNoReturn {
+	public static void main(String[] args) {
+		Calculate c1 ;
+		c1 = (a,b) -> a+b;
+		System.out.println(c1.cal(1, 2));
+	}
+}
+```
 
 ## 스트림
 
