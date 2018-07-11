@@ -20,3 +20,11 @@ web.xml에 정리를 해두면 전체적인 url 매핑을 볼 수 있기 때문�
 서블릿은 한 번 생성한 객체를 재사용하기 때문에 처리양이 적고, 메모리 사용이 절약이 된다. CGI는 처음부터 끝까지 다시 처리하기 때문에 서블릿보다 비효율적이다. 
 
 ## CGI는 어떻게 동작할까?
+
+## tomcat java doc 을 이클립스에 연동하기
+servlet documents를 이클립스에서 즉석해서 보려고 한다. 하지만 document를 찾을 수 없다는 에러가 뜬다.
+1. tomcat 홈페이지에서 버전에 맞는 document를 다운 받는다.
+2. 이클립스 화면으로 온다. 프로젝트 익스플로러에서 `Libraries`-`Apache Tomcat v9.0`의 리스트를 펼친다. `servlet-api.jar` 오른쪽 클릭을 통해, 파일의 프로퍼티 설정창을 연다. 
+3. javadoc Location 탭에서 javadoc URL에 `servletapi` 폴더 경로를 입력한다. 예시: `file:/D:/chaeyun/Documents/tomcat-9.0-doc/servletapi/`
+
+출처: https://stackoverflow.com/questions/2869485/how-to-add-javadoc-for-servlet-api-in-eclipse
