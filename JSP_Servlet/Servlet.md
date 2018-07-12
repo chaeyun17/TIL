@@ -45,29 +45,10 @@ public class AddInfo extends HttpServlet{
 - POST 방식: 문자열 크기 제한 없음. 요청 몸체에서 담긴다. FORM 태그를 통해서만 데이터 전달이 가능하다.
 
 ## 서블릿 환경설정
-web.xml에서 정의한 설정값을 특정 메소드를 통해 값을 가져올 수 있다. 1번과 2번 방법 중 하나의 방법을 사용하면 된다.
-1. init() 메소드 사용  
-init 매개변수로 ServletConfig 객체가 전달되기 때문에 해당 객체의 메소드를 사용한다.
-```java
-String id, pw;
-@Override
-public void init(ServletConfig config) throws ServletException{
-	id = config.getInitParameter("id");
-	pw = config.getInitParameter("password");
-}
-```
-2. this.getInitParameter() 메소드 사용  
-GenericServlet 클래스로부터 해당 메소드를 상속받았기 때문에, 바로 사용할 수 있다.
-```java
-@Override
-public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-	// config 가져오기
-	String charset = this.getInitParameter("charset");
-	resp.setCharacterEncoding(charset);
-	resp.setContentType("text/html");
-}
-```
-3. web.xml 설정  
+ServletConfig 객체에 설정들이 존재한다. 최초로 요청이 들어왔을 때 서블릿 객체 생성 다음으로 ServletConfig 객체가 생성된다.  
+web.xml에서 정의한 설정값을 특정 메소드를 통해 값을 가져올 수 있다. 2번과 3번 방법 중 하나의 방법을 사용하면 된다.  
+
+1. web.xml 설정  
 `<servlet>` 태그 내에서 `<init-param>` 태그를 사용한다.  
 `<load-on-startup>`은 최초 요청이 없어도 먼저 객체를 만들어둔다. 태그 내 값은 서블릿 간의 우선순위이다. 숫자가 낮을수록 우선순위가 높다.  
 ```xml
@@ -84,4 +65,25 @@ public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOExc
 	<servlet-name>initParam</servlet-name>
 	<url-pattern>/initParamTest</url-pattern>
 </servlet-mapping>
+```
+2. init() 메소드 사용  
+init 매개변수로 ServletConfig 객체가 전달되기 때문에 해당 객체의 메소드를 사용한다.
+```java
+String id, pw;
+@Override
+public void init(ServletConfig config) throws ServletException{
+	id = config.getInitParameter("id");
+	pw = config.getInitParameter("password");
+}
+```
+3. this.getInitParameter() 메소드 사용  
+GenericServlet 클래스로부터 해당 메소드를 상속받았기 때문에, 바로 사용할 수 있다.
+```java
+@Override
+public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+	// config 가져오기
+	String charset = this.getInitParameter("charset");
+	resp.setCharacterEncoding(charset);
+	resp.setContentType("text/html");
+}
 ```
