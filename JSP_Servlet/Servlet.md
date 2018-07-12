@@ -87,3 +87,31 @@ public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOExc
 	resp.setContentType("text/html");
 }
 ```
+
+## 서블릿 상태정보 유지
+- servletContext: 상태정보를 서버에 저장하며, 웹어플리케이션과 함께 생성되고 소멸한다. 다른 서블릿들과 데이터를 공유할 수 있다.
+- cookie: 상태정보를 클라이언트에 저장. 클라이언트 웹 브라우저에 저장.
+- session: 클라이언트 별 상태정보를 서버에 저장. 
+- servletRequest: 하나의 요청에 따른 상태 정보. 요청과 응답을 하고나면 소멸. 
+
+### Context
+```java
+// Set Context
+ShareObject obj1 = new ShareObject();
+obj1.setCount(100);
+obj1.setStr("객체 공유 테스트 - 1");
+sc.setAttribute("data1", (ShareObject)obj1);
+```
+```java
+// Get Context
+ServletContext sContxt = this.getServletContext();
+out.print(sContxt.getAttribute("data1"));
+```
+
+### Cookie
+```java
+// 쿠키 세팅 server -> client
+Cookie c1 = new Cookie("id","guest");
+c1.setPath("/");
+resp.addCookie(c1);
+```
