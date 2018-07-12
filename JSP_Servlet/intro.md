@@ -1,4 +1,4 @@
-# JSP & Servlet
+# JSP & Servlet Intro
 책 '처음해보는 Servelt&JSP 웹프로그래밍(오정임 지음, Ruby Paper)'를 참고하였습니다.
 ## Java EE
 Java Enterprise Edition. 
