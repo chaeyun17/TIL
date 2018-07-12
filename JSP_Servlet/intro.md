@@ -28,3 +28,15 @@ servlet documents를 이클립스에서 즉석해서 보려고 한다. 하지만
 3. javadoc Location 탭에서 javadoc URL에 `servletapi` 폴더 경로를 입력한다. 예시: `file:/D:/chaeyun/Documents/tomcat-9.0-doc/servletapi/`
 
 출처: https://stackoverflow.com/questions/2869485/how-to-add-javadoc-for-servlet-api-in-eclipse
+
+## MIME type files
+**What is a MIME type?**
+
+MIME stands for "Multipurpose Internet Mail Extensions. It's a way of identifying files on the Internet according to their nature and format. For example, using the "Content-type" header value defined in a HTTP response, the browser can open the file with the proper extension/plugin.
+
+**What is an Internet Media Type?**
+
+"Internet Media Type" is the same as a MIME type. MIME types were originally created for emails sent using the SMTP protocol. Nowadays, this standard is used in a lot of other protocols, hence the new naming convention "Internet Media Type".
+
+출처: https://www.freeformatter.com/mime-types-list.html
+
