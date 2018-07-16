@@ -40,13 +40,13 @@ public class AddInfo extends HttpServlet{
 }
 ```
 
-## http 메소드
+## HTTP 메소드
 - GET 방식: 255바이트 미만. 인코딩/디코딩하는 추가 작업이 필요 없어서 처리속도가 빠르다. URL을 통해 전달한다. 파라미터가 노출된다.
 - POST 방식: 문자열 크기 제한 없음. 요청 몸체에서 담긴다. FORM 태그를 통해서만 데이터 전달이 가능하다.
 
 ## 서블릿 환경설정
 ServletConfig 객체에 설정들이 존재한다. 최초로 요청이 들어왔을 때 서블릿 객체 생성 다음으로 ServletConfig 객체가 생성된다.  
-web.xml에서 정의한 설정값을 특정 메소드를 통해 값을 가져올 수 있다. 2번과 3번 방법 중 하나의 방법을 사용하면 된다.  
+web.xml에서 정의한 설정값을 특정 메소드를 통해 값을 가져올 수 있다. `ServletConfig.getInitParameter()` 또는 `this.getInitParameter()`을 사용하면 된다.  
 
 1. web.xml 설정  
 `<servlet>` 태그 내에서 `<init-param>` 태그를 사용한다.  
@@ -77,7 +77,7 @@ public void init(ServletConfig config) throws ServletException{
 }
 ```
 3. this.getInitParameter() 메소드 사용  
-GenericServlet 클래스로부터 해당 메소드를 상속받았기 때문에, 바로 사용할 수 있다.
+ServletConfig 인터페이스를 GenericServlet 클래스에서 구현하였기 때문에, 메소드를 통해 설정값을 얻을 수 있다.
 ```java
 @Override
 public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -158,46 +158,140 @@ out.print(usrBook.toString());
 ```
 
 ## Filter 필터
-javax.servlet.filter 인터페이스. 서블릿을 실행하기 전 또는 후에 정해진 처리를 하기 위함.
-- init(): 초기화
-- filter(ServletRequest req, ServletResponse res, FilterChain chain): 필터링 처리.
-- destroy(): 자원 해제
+javax.servlet.filter 인터페이스 구현. 서블릿을 실행하기 전 또는 후에 정해진 처리를 하기 위함.
+- `init()`: 초기화
+- `fileter(ServletRequest req, ServletResponse res, FilterChain chain)`: 필터링 처리.
+- `chain.doFilter(req, resp)`: 필터 연결 
+- `destroy()`: 자원 해제
 - FilterChain 객체: web.xml의 `<filter-mapping>` 태그 정보를 가지고 있음.
 ```java
 // 필터 객체
-public class FlowFilterOne implements Filter{
-	public void init(FilterConfig config) {
-		System.out.println("init() 호출 ...... one");
+public class HangulFilter implements Filter {
+	private String charset = "";
+	@Override
+	public void init(FilterConfig fconfig) throws ServletException{
+		System.out.println("HangulFilter init 실행");
+		this.charset = fconfig.getInitParameter("encoding"); 
 	}
 	@Override
-	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
-			throws IOException, ServletException {
-		System.out.println("doFilter()호출 전 ...... one");
+	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException{
+		req.setCharacterEncoding(this.charset);
+		resp.setContentType("text/html");
+		resp.setCharacterEncoding(this.charset);
 		chain.doFilter(req, resp);
-		System.out.println("doFilter() 호출 후 ...... one");
-	}
-	@Override
-	public void destroy() {
-		System.out.println("destroy() 호출 ...... one");
 	}
 }
 ```
 ```xml
 <!-- web.xml -->
 <filter>
-	<filter-name>flow1</filter-name>
-	<filter-class>com.chaeyun.test.FlowFilterOne</filter-class>
+	<filter-name>HangulFilter</filter-name>
+	<filter-class>com.chaeyun.join.HangulFilter</filter-class>
+	<init-param>
+		<param-name>encoidng</param-name>
+		<param-value>UTF-8</param-value>
+	<init-param>
 </filter>
 <filter-mapping>
-	<filter-name>flow1</filter-name>
-	<url-pattern>/second</url-pattern>
+	<filter-name>HangulFilter</filter-name>
+	<url-pattern>/writeHangul</url-pattern>
 </filter-mapping>
 ```
+## 이벤트
+웹어플리케이션이 실행될 때, 클라이언트로부터 요청이 일어났을 때, 세션이 생성됐을 때, 객체 속성에 변화가 일어났을 때 등 이벤트 발생에 대한 처리를 할 수 있다.
+- ServletContextListener(ServletContextEvent)
+- ServletRequestListener(ServletRequestEvnet)
+- HttpSessionListener(HttpSessionEvent)
+```java
+// 이벤트 예제
+@WebListener
+public class TestServletContextListener implements ServletContextListener{
+	public TestServletContextListener() {
+		System.out.println("ServletContext 객체 생성");
+	}
+	@Override
+	public void contextInitialized(ServletContextEvent e) {
+		System.out.println("이벤트: ServletContext 객체 초기화");
+	}
+	@Override
+	public void contextDestroyed(ServletContextEvent e ) {
+		System.out.println("이벤트: ServletContext 객체 해제");
+	}
+}
+```
+```xml
+<!-- web.xml -->
+<!-- annotaion 대신 web.xml 사용-->
+<listener>
+	<listener-class>com.chaeyun.test.TestServletContextListener</listener-class>
+</listener>
+```
+## 오류처리
+### 코드 내에서 에러 처리
+- try-catch 문 또는 thorws 
+- try-catch-finally 에서 finally 부분에서는 자원 해제 코드가 주로 위치한다.
+- Override 메소드는 원래 메소드에서 선언하고 있는 예외객체 외에 추가할 수 없다. 이런 경우에는 메소드 내에서 try-catch 문을 사용해야 한다.
 
+### 오류 페이지로 에러 처리 
+
+#### 오류 설정 
+web.xml을 이용하면 오류 처리 범위를 웹 어플리케이션으로 확장할 수 있다.
+```xml
+<error-page>
+	<error-code>405</error-code>
+	<location>/errorHandle</location>
+</error-page>
+<error-page>
+	<exception-type>java.lang.NullPointerException</exception-type>
+	<location>/errorHandle</location>
+</error-page>
+```
+- `<error-code>`: 오류 코드로 값을 지정
+- `<exception-type>`: 오류가 정의된 객체 이름 지정
+- `<location>`: 오류가 발생했을 때 실행할 페이지 경로
+
+### 오류 정보
+현재 발생한 오류에 대한 정보를 HttpServletRequest 객체에 등록하고, 오류 페이지에 HttpServletRequest와 HttpServletResponse를 전달한다.  
+
+#### 과정
+1. 클라이언트 page 요청
+2. page 실행
+3. 오류 발생
+4. HttpServletRequest 속성에 오류 정보 등록 (status_code, exception_type 등)
+5. 오류 처리 page로 이동
+6. servie(HttpServletRequest, HttpServletResponse) 에 HttpServletRequest 객체 전달
+7. 오류 처리 page에서 HttpServletRequest 객체에서 오류 정보 추출
+8. 오류 처리
+
+밑 예제는 다른 서블릿에서 발생한 에러를 받아서 처리하는 서블릿이다.
+
+```java
+@WebServlet("/errorHandle")
+public class ErrorHandleServlet extends HttpServlet{
+	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
+		res.setContentType("text/html;charset=UTF-8");
+		PrintWriter out = res.getWriter();
+		
+		Integer code = (Integer)req.getAttribute("javax.servlet.error.status_code");
+		String message = (String)req.getAttribute("javax.servlet.error.message");
+		Object type = req.getAttribute("javax.servlet.error.exception_type");
+		Throwable exception = (Throwable) req.getAttribute("javax.servlet.error.exception");
+		String uri = (String)req.getAttribute("javax.servlet.error.request_uri");
+		
+		out.print("<h2>Error Code : "+code+"</h2>");
+		out.print("<h2>Error Message : "+message+"</h2>");
+		out.print("<h2>Error Type : "+type+"</h2>");
+		out.print("<h2>Error Exception : "+exception+"</h2>");
+		out.print("<h2>Error Uri : "+uri+"</h2>");
+		
+		out.close();
+	}
+}
+```
 
 ## web.xml 작성 시 태그 순서
-?가 표시된 태그는 사용되지 않을 수도 있고, 사용된다면 한 번만 나올 수 있는 태그.  
-\*가 표시된 태그는 사용되지 않을 수도 있고, 또는 여러 번 사용될 수 있는 태그.
+`?`가 표시된 태그는 사용되지 않을 수도 있고, 사용된다면 한 번만 나올 수 있는 태그.  
+`*`가 표시된 태그는 사용되지 않을 수도 있고, 또는 여러 번 사용될 수 있는 태그.
 ```xml
 <display-name?>
 <description?>
