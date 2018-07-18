@@ -95,7 +95,7 @@ Java Naming and Directory Interface는 API와 SPI로 이루어져 있으며, API
 해당 자원을 이용하고자 하는 아른 어플리케이션에서 Naming & Directory 서버에 접근하여 이름값만을 가지고 자원을 연결하여 이용하는 개념이다.
 
 ### 구현
-1. server.xml 설정
+1. server.xml 설정  
 Connection Pool은 서버에서 관리하는 자원이다. WAS_HOME/conf/server.xml
 ```xml
 <GlobalNamingResources>
@@ -111,13 +111,13 @@ Connection Pool은 서버에서 관리하는 자원이다. WAS_HOME/conf/server.
 	/>
 </GlobalNamingResources>
 ```
-2. context.xml 설정
+2. context.xml 설정  
 서버에 등록된 리소스를 웹 어플리케이션에서 찾아서 사용할 수 있도록 글로벌한 이름을 지정.
 WAS_HOME/conf/context.xml
 ```xml
 <ResourceLink global="jdbc/myoracle" name="jdbc/myoracle" type="javax.sql.DataSource"/>
 ```
-3. web.xml 설정
+3. web.xml 설정  
 서버에서 관리하는 리소스를 웹 어플리케이션에서 사용하기 위하여 설정.
 `/WEB-INF/web.xml`
 ```xml
@@ -128,7 +128,7 @@ WAS_HOME/conf/context.xml
 	<res-auth>Container</res-auth>
 </resource-ref>
 ```
-4. DB 작업
+4. DB 작업  
 ```jsp
 <%@ page language="java" 
 		 contentType="text/html;charset=UTF-8"
