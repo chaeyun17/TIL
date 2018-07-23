@@ -10,6 +10,9 @@ sudo apt-get install mysql-server;
 ### 로그인하기
 `mysql -uroot -p`
 
+**윈도우**  
+`설치경로\bin\mysql.exe -uroot -p`
+
 ### 유저 생성
 `CREATE USER '유저명'@'localhost' IDENTIFIED BY '비밀번호';`  
 참고: https://dev.mysql.com/doc/refman/5.7/en/assigning-passwords.html
