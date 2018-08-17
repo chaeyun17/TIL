@@ -37,4 +37,38 @@ mvn install:install-file
 ```
 8. 테스트로 프로젝트 실행해보기
 
+### 참고
+- https://www.mkyong.com/maven/how-to-add-oracle-jdbc-driver-in-your-maven-local-repository/
+- https://www.slipp.net/wiki/pages/viewpage.action?pageId=21004440
 
+
+## jdk 1.8로 기본설정 세팅하기
+기존 maven-compiler-plugin 은 jdk1.5 버전이다. 그래서 pom.xml에 설정을 추가하여 jdk1.8로 버전을 변경해야 한다.
+pom.xml 은 기존 부모설정을 오버라이드하는 원리이다.
+
+### 방법
+1. pom.xml에 해당 코드를 추가한다.
+```xml
+<build>
+	<plugins>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<version>3.6.1</version>
+			<configuration>
+				<source>1.8</source>
+				<target>1.8</target>
+			</configuration>
+		</plugin>
+	</plugins>
+</build>
+```
+2. 프로젝트 오른쪽 클릭 maven - Update project 실행
+
+** 테스트 중 실행금지 **
+2. 프로젝트 오른쪽 클릭 - Rus As - Configureation 선택
+테스트필요: goals에 `eclipse:clean eclipse:eclipse` 입력
+3. Run
+
+### 참고
+- https://www.slipp.net/wiki/pages/viewpage.action?pageId=21004440
