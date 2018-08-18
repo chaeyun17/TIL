@@ -51,6 +51,7 @@ Ajax 어플리케이션은 실행을 위한 플랫폼으로 위에서 열거한 
 ![Ajax통신원리2](https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Ajax-vergleich-en.svg/585px-Ajax-vergleich-en.svg.png)
 
 ## Ajax 구현
+참고자료: https://blog.garstasio.com/you-dont-need-jquery/ajax/
 ### Javascript 예시
 많은 개발자들이 XMLHttpRequest 객체 문법을 싫어한다. 그래서 우회방법들을 만들었다.
 
