@@ -12,8 +12,21 @@
 - DB 서버 포트는 1521 , Http 서버 포트는 8080이 기본값으로 지정된다.
 
 ### 계정 생성
+참고: https://docs.oracle.com/cd/E17781_01/admin.112/e18585/toc.htm#XEGSG110
+
+1. 명령창에서 `sqlplus` 실행
+2. `conn` 명령어로 접속. 아이디(system)와 비밀번호(설치시 세팅한 비번) 입력
+3. `create user 사용자명 identified by 비밀번호;`
+4. 권한 부여 
+```SQL
+grant CREATE SESSION, ALTER SESSION, CREATE DATABASE LINK, CREATE MATERIALIZED VIEW, CREATE PROCEDURE, CREATE PUBLIC SYNONYM, CREATE ROLE, CREATE SEQUENCE, CREATE SYNONYM, CREATE TABLE, CREATE TRIGGER, CREATE TYPE, CREATE VIEW, UNLIMITED TABLESPACE to 사용자명;
+```
+5. `exit` 종료
+
+
+**scott 계정 활성화**
 1. 명령 프롬프트에서 `sqlplus`
-2. usr-name: system , password: 설치 시 세팅한 비밀번호
+2. `conn` 명령어로 접속. 아이디와 비밀번호를 입력. usr-name: system , password: 설치 시 세팅한 비밀번호
 3. `@C:\oraclexe\app\oracle\product\11.2.0\server\rdbms\admin\scott.sql` 명령 입력. scott 계정 생성
 4. `alter user scott identified by tiger;` 입력. 비밀번호 세팅
 5. `conn scott/tiger` 데이터베이스 서버 접속
