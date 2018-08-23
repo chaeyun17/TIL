@@ -72,3 +72,20 @@ pom.xml 은 기존 부모설정을 오버라이드하는 원리이다.
 
 ### 참고
 - https://www.slipp.net/wiki/pages/viewpage.action?pageId=21004440
+
+
+
+## 스프링 프로젝트 테스트 해보기
+junit 알아보기
+
+## sql 에러
+**에러 코드**  
+java.sql.SQLIntegrityConstraintViolationException: Cannot add or update a child row: a foreign key constraint fails
+**원인**  
+존재하지 않는 참조키를 추가하려고 했음. 먼저 참조대상이 되는 부모 테이블에 참조 데이터가 필요함.
+
+
+**에러 코드**
+WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set.
+**원인**
+mysql 접속 url에 `&autoReconnect=true&useSSL=false` 추가하여 세팅
