@@ -1,7 +1,7 @@
 # 이슈
 
 ## ojdbc6.jar를 로컬 maven 에 추가하기
-ojdbc 드라이버는 maven repository에 존재하지 않는다. ojdbc6 파일을 oracle 사이트에서 다운 받아서, maven 에 등록하여야 한다. 명령어를 통해 ojdbc6 파일을 local repository에 추가하여야 한다. 
+ojdbc 드라이버는 maven repository에 존재하지 않는다. ojdbc6 파일을 oracle 사이트에서 다운 받아서, maven 에 등록하여야 한다. 명령어를 통해 ojdbc6 파일을 local repository에 추가하여야 한다.
 
 ### 방법
 1. ojdbc6를 oracle 사이트에서 다운로드한다.
@@ -10,11 +10,11 @@ ojdbc 드라이버는 maven repository에 존재하지 않는다. ojdbc6 파일�
 4. 왼쪽 리스트에서 `Maven Build` 하위리스트인 `내 프로젝트 이름` 선택
 5. 아래의 명령어를 빈칸에 맞게 입력.
 ```
-mvn install:install-file 
-	-Dfile=ojdbc6.jar 
-	-DgroupId=com.oracle 
-	-DartifactId=ojdbc6 
-	-Dversion=11.2.0 
+mvn install:install-file
+	-Dfile=ojdbc6.jar
+	-DgroupId=com.oracle
+	-DartifactId=ojdbc6
+	-Dversion=11.2.0
 	-Dpackaging=jar
 ```
 - Goals 칸에는 `install:install-file `
@@ -89,3 +89,39 @@ java.sql.SQLIntegrityConstraintViolationException: Cannot add or update a child 
 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set.
 **원인**
 mysql 접속 url에 `&autoReconnect=true&useSSL=false` 추가하여 세팅
+
+## jsp에서 자기 앱 홈 주소로 이동하기
+`${pageContext.request.contextPath}` 결과는 `/앱이름` 이다. 이것을 사용하면 된다.
+
+출처: https://stackoverflow.com/questions/2204870/how-to-get-domain-url-and-application-name
+
+## jsp에서 java 함수 사용하기
+1. `<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>`
+2. `<c:set var = "string2" value = "${fn:substring(string1, 5, 15)}" />`
+
+출처: https://www.tutorialspoint.com/jsp/jstl_function_substring.htm
+
+## Date에서 String 으로 데이터타입 변환
+```java
+public void convertDateToString(Date dt){
+	DataFormat df = new SimpleDateFormat("dd/MM/yyyy");
+	Stirng dateStr = df.format(dt);
+	return dateStr;
+}
+
+public String convertDateToString(Date dt, String pattern){
+	DateFormat df = new SimpleDateFormat(pattern);
+	String dateToString = df.format(df);
+	return dateToString;
+}
+```
+
+출처: https://stackoverflow.com/questions/17207600/convert-date-to-string-in-spring-3   
+패턴: http://tutorials.jenkov.com/java-internationalization/simpledateformat.html
+
+## ResultSet에서 Date 와 Time 받기
+resultSet 에서 getTimestamp() 사용.
+
+## Mysql 연결 에러
+- timezone 에러일 경우: 5.1 이하 버전을 사용해서 해결하거나 접속할 때 timezone을 Asia/Seoul로 설정하면된다.  
+`jdbc.url=jdbc:mysql://localhost:3307/board02?user=board02&password=1111&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Seoul&autoReconnect=true&useSSL=false`
