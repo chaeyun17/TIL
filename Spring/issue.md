@@ -125,3 +125,6 @@ resultSet 에서 getTimestamp() 사용.
 ## Mysql 연결 에러
 - timezone 에러일 경우: 5.1 이하 버전을 사용해서 해결하거나 접속할 때 timezone을 Asia/Seoul로 설정하면된다.  
 `jdbc.url=jdbc:mysql://localhost:3307/board02?user=board02&password=1111&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Seoul&autoReconnect=true&useSSL=false`
+
+## 서버 배포
+참고: http://luckyyowu.tistory.com/124
