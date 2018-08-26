@@ -128,3 +128,91 @@ resultSet 에서 getTimestamp() 사용.
 
 ## 서버 배포
 참고: http://luckyyowu.tistory.com/124
+
+## 로그 출력하기 (print log)
+```java
+package com.tutorialspoint;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.apache.log4j.Logger;
+
+public class MainApp {
+   static Logger log = Logger.getLogger(MainApp.class.getName());
+
+   public static void main(String[] args) {
+      ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+      log.info("Going to create HelloWord Obj");
+      HelloWorld obj = (HelloWorld) context.getBean("helloWorld");
+      obj.getMessage();
+
+      log.info("Exiting the program");
+   }
+}
+```
+**참고**  
+- https://www.tutorialspoint.com/spring/logging_with_log4j.htm
+- https://www.codejava.net/frameworks/spring/how-to-use-log4j-in-spring-mvc
+
+## JSTL에서 변수가 비어있는지 확인하는 연산자
+```JSP
+<c:choose>
+    <c:when test="${empty var1}">
+        var1 is empty or null.
+    </c:when>
+    <c:otherwise>
+        var1 is NOT empty or null.
+    </c:otherwise>
+</c:choose>
+```
+```jsp
+<c:if test="${empty var1}">
+    var1 is empty or null.
+</c:if>
+<c:if test="${not empty var1}">
+    var1 is NOT empty or null.
+</c:if>
+```
+출처: https://stackoverflow.com/questions/2811626/evaluate-empty-or-null-jstl-c-tags
+
+## 스프링에서 세션 관리
+
+### 세션 만들기
+
+1. 컨트롤러에 어노테이션
+```java
+@SessionAttributes("loginUser")
+@Controller
+public class UserController {...}
+```
+
+2. 메서드 내에서 해당 이름으로 모델에 속성 추가
+`model.addAttribute("loginUser", dbUser);`
+
+```java
+@RequestMapping(value="/user/login.do", method=RequestMethod.POST)
+public String loginUser(User user, Model model) {
+	User dbUser = null;
+	try {
+		dbUser = service.loginUser(user);
+	}catch(EmptyResultDataAccessException err) {
+		model.addAttribute("err_title","로그인 에러");
+		model.addAttribute("err_msg","회원정보가 존재하지 않거나 일치하지 않습니다");
+		return "error/errorPage";
+	}
+
+	model.addAttribute("loginUser", dbUser);
+	return "redirect:/";
+}
+```
+
+### 세션 삭제
+`sessionStatus.setComplete();`
+
+```java
+@RequestMapping(value="*/logout.do")
+public String logoutUser(SessionStatus sessionStatus, HttpServletRequest req) {
+	sessionStatus.setComplete();
+	return "redirect:/";
+}
+```
