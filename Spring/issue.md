@@ -332,3 +332,17 @@ public class FileUploadController {
 ### 참고
 - https://www.edwith.org/boostcourse-web/lecture/16817/
 - https://www.journaldev.com/2573/spring-mvc-file-upload-example-single-multiple-files
+
+## MYSQL foreign key 설정 검사 해제
+```sql
+SET FOREIGN_KEY_CHECKS = 0;
+DROP TABLE IF EXISTS user_tbl CASCADE;
+DROP TABLE IF EXISTS post_tbl CASCADE;
+DROP TABLE IF EXISTS filelist_tbl CASCADE;
+SET FOREIGN_KEY_CHECKS = 1;
+```
+
+## MYSQL에서 방금 insert한 row id 얻기
+```sql
+select LAST_INSERT_ID();
+```
