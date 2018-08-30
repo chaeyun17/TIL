@@ -346,3 +346,9 @@ SET FOREIGN_KEY_CHECKS = 1;
 ```sql
 select LAST_INSERT_ID();
 ```
+
+## 이미지/데이터를 스프링 컨트롤러에서 라우팅하여 얻기
+뷰인 jsp에서 사용할 이미지 또는 데이터는 자신의 서버로 해당 이미지와 데이터를 요청해야한다. 
+요청받은 스프링 컨트롤러에서는 로컬저장소에서 요청한 파일을 찾아서 HTTP CONTENT-TYPE을 요청파일 타입에 맞게 변환해서 리턴해준다.
+
+### 출처: https://www.baeldung.com/spring-controller-return-image-file
