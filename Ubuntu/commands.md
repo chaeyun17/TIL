@@ -22,3 +22,9 @@
 - `df -h` : 사람이 보기에 편하게 출력
 
 [출처 블로그](http://ngee.tistory.com/377)
+
+## 폴더 바로가기 생성(링크 생성)
+`ln -s /my/folder /my/link`
+
+출처: https://askubuntu.com/questions/1035562/how-to-create-folder-shortcut-in-ubuntu-18-4
+
