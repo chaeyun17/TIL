@@ -46,3 +46,4 @@ C:\> mysqld --init-file=C:\\mysql-init.txt
 `SHOW DATABASES;`
 
 ### TABLE 생성
+
