@@ -31,26 +31,42 @@
 ### 방법
 `ln -s /my/folder /my/link`
 
-### 출처 
+### 출처
 https://askubuntu.com/questions/1035562/how-to-create-folder-shortcut-in-ubuntu-18-4
 
 ## JDK uninstall 삭제하기
 ### 방법
 1. `java -version` 자바 현재 사용 버전 확인
 2. `sudo dpkg --list | grep -i jdk` 설치된 jdk 패키지 목록 확인
-3. `sudo apt-get purge oracle-java8-installer` 
+3. `sudo apt-get purge oracle-java8-installer`
 4. `sudo apt-get autoremove` 관련 패키지 삭제
 5. `sudo dpkg --list | grep -i jdk` 정상 삭제가 되었는지 확인
 
-### 출처 
+### 출처
 https://askubuntu.com/questions/850729/how-to-uninstall-oracle-jdk-in-ubuntu-16-04-lts?rq=1
 
 ## jdk 설치하기
 ### 방법
 1. `java -version` 현재 설치 자바 버전확인
-2. `apt-get update` 패키지 정보 업데이트 
+2. `apt-get update` 패키지 정보 업데이트
 3. `apt-get install default-jre` 자바 실행 버전 설치. ubuntu 18.04는 openjdk-11-jre
 4. `apt-get install default-jdk` 자바 개발 버전 설치
 
-### 출처 
+### 출처
 https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-on-ubuntu-18-04
+
+## MYSQL 제거 및 설치
+### 방법
+```
+$ sudo mkdir /var/run/mysqld; sudo chown mysql /var/run/mysqld
+$ sudo mysqld_safe --skip-grant-tables&
+$ sudo mysql --user=root mysql
+update user set authentication_string=PASSWORD('new-password') where user='root';
+flush privileges;
+$ sudo service mysql stop
+$ sudo service mysql start
+$ sudo mysqladmin shutdown
+$ sudo service mysql start
+```
+### 출처
+https://askubuntu.com/questions/766900/mysql-doesnt-ask-for-root-password-when-installing
