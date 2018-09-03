@@ -352,3 +352,10 @@ select LAST_INSERT_ID();
 요청받은 스프링 컨트롤러에서는 로컬저장소에서 요청한 파일을 찾아서 HTTP CONTENT-TYPE을 요청파일 타입에 맞게 변환해서 리턴해준다.
 
 ### 출처: https://www.baeldung.com/spring-controller-return-image-file
+
+
+## 스프링 트랜잭션 구현
+- 필요배경: 첨부이미지파일을 저장하는 처리와 글을 저장하는 처리가 같이 이루어져야 한다. 어느 한 개가 실패하면 둘다 롤백이 되어야한다.
+- AOP로 구현
+- 트랜잭션 매니저를 통해 스프링에서 제공하는 AOP 어드바이스 사용 .
+- 책 214 P
