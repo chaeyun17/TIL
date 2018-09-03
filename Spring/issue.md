@@ -348,7 +348,7 @@ select LAST_INSERT_ID();
 ```
 
 ## 이미지/데이터를 스프링 컨트롤러에서 라우팅하여 얻기
-뷰인 jsp에서 사용할 이미지 또는 데이터는 자신의 서버로 해당 이미지와 데이터를 요청해야한다. 
+뷰인 jsp에서 사용할 이미지 또는 데이터는 자신의 서버로 해당 이미지와 데이터를 요청해야한다.
 요청받은 스프링 컨트롤러에서는 로컬저장소에서 요청한 파일을 찾아서 HTTP CONTENT-TYPE을 요청파일 타입에 맞게 변환해서 리턴해준다.
 
 ### 출처: https://www.baeldung.com/spring-controller-return-image-file
@@ -359,3 +359,32 @@ select LAST_INSERT_ID();
 - AOP로 구현
 - 트랜잭션 매니저를 통해 스프링에서 제공하는 AOP 어드바이스 사용 .
 - 책 214 P
+
+## `@Transactional` 작동 안하는 에러
+컴포넌트 오토 스캔과 트랜잭션 오토 스캔이 같은 context xml에 있지 않았기 때문이다.
+root-context.xml에 있는 내용을 servlet-context.xml로 옮기면 해결된다.
+
+### 출처
+- https://stackoverflow.com/questions/10019426/spring-transactional-not-working
+- https://stackoverflow.com/questions/11708967/what-is-the-difference-between-applicationcontext-and-webapplicationcontext-in-s
+
+## 트랜잭션 로그 출력법 (log4j)
+java/resources/log4j.xml 열어서 다음과 같은 문법으로 추가한다.
+```xml
+<logger name="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	<level value="debug" />
+</logger>
+```
+아래의 root logger 설정을 info에서 debug로 고쳐준다
+```xml
+<!-- Root Logger -->
+<root>
+	<!-- <priority value="warn" /> -->
+	<priority value="debug" />
+	<appender-ref ref="console" />
+</root>
+```
+
+## 파일 삭제 오류
+file.delete()가 false를 리턴하면서 삭제가 안되는 경우가 있다. 이런 경우에는 stream을 close를 하지 않아서 일 경우이다.  
+Files 클래스를 통해 delete를 해보면 자세한 에러가 뜬다.

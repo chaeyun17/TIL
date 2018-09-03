@@ -21,8 +21,7 @@ sudo apt-get install mysql-server;
 `ALTER USER '유저명'@'localhost' IDENTIFIED BY '비밀번호';`  
 참고: https://dev.mysql.com/doc/refman/5.7/en/resetting-permissions.html
 
-#### ROOT 비밀번호 리셋
-##### 윈도우
+#### 윈도우
 1. 윈도우 서비스 관리자에서 mysql 끄기 (bitnami일 경우, mysql 서버 끄기)
 2. 새로운 텍스트 파일 생성
 3. `ALTER USER 'root'@'localhost' IDENTIFIED BY 'new password';` 내용 작성 후, 저장
@@ -36,6 +35,19 @@ C:\> mysqld --init-file=C:\\mysql-init.txt
 
 참고: https://dev.mysql.com/doc/refman/5.7/en/resetting-permissions.html
 
+### 권한 부여
+1. `mysql -u root -p`
+2. `GRANT ALL PRIVILEGES ON *.* TO 'username'@'localhost' IDENTIFIED BY 'password'`
+**출처**  
+https://www.a2hosting.com/kb/developer-corner/mysql/managing-mysql-databases-and-users-from-the-command-line
+
+### sql 스크립트 실행
+`mysql -u username -p < example.sql`
+
+---
+
+## 기타
+
 ### 유저 리스트
 `SELECT USER FROM mysql.user;`  
 `SELECT * FROM mysql.user;`  
@@ -45,4 +57,11 @@ C:\> mysqld --init-file=C:\\mysql-init.txt
 `CREATE DATABASE 명칭;`  
 `SHOW DATABASES;`
 
-### TABLE 생성
+### 서버 포트 변경
+1. `sudo vi /etc/mysql/mysql.conf.d/mysqld.cnf`
+2. port 부분 수정(기본 3306)
+3. systemctl restart mysql
+4. `sudo mysql -h localhost -u root -p`
+5. `mysql> show variables like 'port`
+**참고**  
+https://www.tecmint.com/change-default-mysql-mariadb-port-in-linux/
