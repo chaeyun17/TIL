@@ -388,3 +388,14 @@ java/resources/log4j.xml 열어서 다음과 같은 문법으로 추가한다.
 ## 파일 삭제 오류
 file.delete()가 false를 리턴하면서 삭제가 안되는 경우가 있다. 이런 경우에는 stream을 close를 하지 않아서 일 경우이다.  
 Files 클래스를 통해 delete를 해보면 자세한 에러가 뜬다.
+
+## bean property 에 연산식 넣기
+- Spring Expression Language (SpEl) 을 사용하면 된다.
+- `#{1+1}`
+### 출처
+- https://www.baeldung.com/spring-expression-language
+
+
+## 인텔리J 로 스프링 프로젝트 만들기
+### 출처
+https://nesoy.github.io/articles/2017-02/SpringMVC
