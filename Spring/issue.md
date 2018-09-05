@@ -399,3 +399,43 @@ Files 클래스를 통해 delete를 해보면 자세한 에러가 뜬다.
 ## 인텔리J 로 스프링 프로젝트 만들기
 ### 출처
 https://nesoy.github.io/articles/2017-02/SpringMVC
+
+## 배포하기
+### 참고
+- https://stackoverflow.com/questions/18943355/deploying-spring-mvc-project
+- http://www.mkyong.com/maven/how-to-deploy-maven-based-war-file-to-tomcat/
+
+
+## [maven] maven build시 unmappable character for encoding 에러
+```
+   <plugin>
+
+                <groupId>org.apache.maven.plugins</groupId>
+
+                <artifactId>maven-compiler-plugin</artifactId>
+
+                <version>2.5.1</version>
+
+                <configuration>
+
+                    <source>1.6</source>
+
+                    <target>1.6</target>
+
+                    <compilerArgument>-Xlint:all</compilerArgument>
+
+                    <showWarnings>true</showWarnings>
+
+                    <showDeprecation>true</showDeprecation>
+
+                    <encoding>UTF-8</encoding>
+
+                </configuration>
+
+            </plugin>
+
+
+출처: http://blog.taeseong.me/305 [사과 냄새나는 IT이야기 TAESTORY,]
+```
+
+출처: http://blog.taeseong.me/305 [사과 냄새나는 IT이야기 TAESTORY,]

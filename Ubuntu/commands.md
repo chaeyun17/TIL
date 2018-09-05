@@ -67,6 +67,7 @@ $ sudo service mysql stop
 $ sudo service mysql start
 $ sudo mysqladmin shutdown
 $ sudo service mysql start
+$ sudo mysql -uroot -p
 ```
 ### 출처
 https://askubuntu.com/questions/766900/mysql-doesnt-ask-for-root-password-when-installing
