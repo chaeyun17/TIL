@@ -124,7 +124,16 @@ export PATH=$ORACLE_HOME/bin:$PATH
 `umount /dev/shm`
 `rm -rf /dev/shm`
 
+### 에러 리스트
+- /u01/app/oracle/product/11.2.0/xe/config/scripts
+## 서버 세팅
+- https://www.tecmint.com/initial-ubuntu-server-setup-guide/
+## 스왑파일 추가법
+- https://support.rackspace.com/how-to/create-a-linux-swap-file/
+## 설치 중 bc 에러
+- https://community.oracle.com/thread/369980
 ## 참고
+- http://meandmyubuntulinux.blogspot.com/2012/05/installing-oracle-11g-r2-express.html
 - http://blog.saltfactory.net/install-oracle-xe-on-ubuntu/
 - http://html5around.com/wordpress/tutorials/ubuntu-oracle-xe-11gr2-install/
 - https://sarc.io/index.php/oracledatabase/186-2014-06-10-01-33-05
