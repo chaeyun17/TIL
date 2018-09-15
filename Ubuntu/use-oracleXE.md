@@ -132,6 +132,8 @@ export PATH=$ORACLE_HOME/bin:$PATH
 - https://support.rackspace.com/how-to/create-a-linux-swap-file/
 ## 설치 중 bc 에러
 - https://community.oracle.com/thread/369980
+## 오라클 11g r2 설치법
+- https://sqlandplsql.com/2011/12/02/installing-oracle-11g-on-ubuntu/
 ## 참고
 - http://meandmyubuntulinux.blogspot.com/2012/05/installing-oracle-11g-r2-express.html
 - http://blog.saltfactory.net/install-oracle-xe-on-ubuntu/
