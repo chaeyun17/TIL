@@ -8,6 +8,10 @@
   `mysql db_name < text_file`
 
 4. 톰캣 실행
+- https://tecadmin.net/install-tomcat-9-on-ubuntu/
+
+## 원격 접속 허용
+- https://www.digitalocean.com/community/tutorials/install-tomcat-9-ubuntu-1804
 
 ## 참고
 

@@ -43,7 +43,15 @@ https://www.a2hosting.com/kb/developer-corner/mysql/managing-mysql-databases-and
 
 ### sql 스크립트 실행
 `mysql -u username -p < example.sql`
+`mysql -u yourusername -p yourpassword yourdatabase < text_file`
+`mysql> source \home\user\Desktop\test.sql;`
 
+## 포트 변경
+`vi /etc/mysql/mysql.conf.d/mysqld.cnf`
+
+## 원격 접속
+- https://stackoverflow.com/questions/14779104/how-to-allow-remote-connection-to-mysql
+- `service mysql restart`
 ---
 
 ## 기타
