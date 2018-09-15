@@ -12,6 +12,8 @@
 # 참고
 - https://www.talkapex.com/2017/10/how-to-setup-oracle-db-12-2-docker-container/
 - [oracle 11g xe conatiner](https://hub.docker.com/r/wnameless/oracle-xe-11g/)
+- [To use external database servers with your hosting server:](https://docs.plesk.com/en-US/12.5/administrator-guide/database-servers/adding-and-removing-database-servers.59428/)
+- http://www.nakov.com/blog/2008/11/20/connect-to-oracle-express-edition-from-remote-machine/
 
 ## 명령어 참고
 - `docer run - it` : Assign name and allocate pseudo-TTY (--name, -it) , [doc](https://docs.docker.com/engine/reference/commandline/run/#extended-description)
