@@ -13,6 +13,13 @@
 ## 원격 접속 허용
 - https://www.digitalocean.com/community/tutorials/install-tomcat-9-ubuntu-1804
 
+## 80 포트를 8080포트로 리다이렉트
+`iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080`
+## 되돌리기
+`iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080`
+- https://o7planning.org/en/11363/redirecting-port-80-443-on-ubuntu-server-using-iptables
+- https://coderanch.com/t/109718/os/Linux-Tomcat-java-net-BindException
+
 ## 참고
 
 - [https://www.digitalocean.com/community/tutorials/install-tomcat-9-ubuntu-1804](https://www.digitalocean.com/community/tutorials/install-tomcat-9-ubuntu-1804)
