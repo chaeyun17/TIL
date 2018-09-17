@@ -7,8 +7,20 @@ ojdbc 드라이버는 maven repository에 존재하지 않는다. ojdbc6 파일�
 1. ojdbc6를 oracle 사이트에서 다운로드한다.
 2. 프로젝트가 저장된 폴더에 lib라는 새 폴더를 생성하고, 그 곳에 ojdbc6.jar를 이동시킨다.
 3. 이클립스에서 프로젝트 오른쪽 클릭 -> Run As -> Run Configuration 선택
-4. 왼쪽 리스트에서 `Maven Build` 하위리스트인 `내 프로젝트 이름` 선택
+4. 왼쪽 리스트에서 `Maven Build`를 선택하고 오른쪽클릭하여 새로운 설정 추가.
 5. 아래의 명령어를 빈칸에 맞게 입력.
+
+- 맨 상단 Base Directory: 나의 프로젝트
+- Goals 칸에는 `install:install-file`
+- 밑에 Parameter Name / Value 에서 Add 하기
+- Name: `file` , Value: `저장경로\ojdbc6.jar` 를 입력 후, Ok
+- Name: `groupId` , Value: `com.oracle` 를 입력 후, Ok
+- Name: `artifactId`, Value: `ojdbc6` 를 입력 후, Ok
+- Name: `version`, Value: `11.2.0` 를 입력 후, Ok
+- Name: `packaging`, Value: `jar` 를 입력 후, Ok
+- Name: `generatePom`, Value: `true` 를 입력 후, Ok
+
+아래는 maven을 따로 설치하여, 터미널로 적용할 때 사용하는 명령어.
 ```
 mvn install:install-file
 	-Dfile=ojdbc6.jar
@@ -16,14 +28,8 @@ mvn install:install-file
 	-DartifactId=ojdbc6
 	-Dversion=11.2.0
 	-Dpackaging=jar
+	-DgeneratePom=true
 ```
-- Goals 칸에는 `install:install-file `
-- 밑에 Parameter Name / Value 에서 Add 하기
-- Name: `file` , Value: `lib\ojdbc6.jar` 를 입력 후, Ok
-- Name: `groupId` , Value: `com.oracle` 를 입력 후, Ok
-- Name: `artifactId`, Value: `ojdbc6` 를 입력 후, Ok
-- Name: `version`, Value: `11.2.0` 를 입력 후, Ok
-- Name: `packaging`, Value: `jar` 를 입력 후, Ok
 
 6. Apply 를 하고, Run 클릭. console 창에 build success 확인.
 7. 프로젝트 pom.xml에 denpendency 추가
