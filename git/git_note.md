@@ -1,4 +1,7 @@
 # GIT 메모
+## 참고자료
+- [누구나 쉽게 이해할 수 있는 git 입문](https://backlog.com/git-tutorial/kr/)
+- [pro git](https://git-scm.com/book/ko/v1)
 
 ## Git repository 만들기
 1. `git init <project name>`
@@ -35,5 +38,10 @@
 2. `git reset [commit 번호]`
 
 ## staged 와 commit 비교
-`git diff --cached` 또는 `git diff --staged`	
+`git diff --cached` 또는 `git diff --staged`
 참고: ["Git diff 사용하기"](http://hochulshin.com/git-diff/)
+
+## Branch
+- 생성: `git branch 브랜치명`
+- 전환: `git checkout 사용할브랜치명`
+- 생성&전환: `git checkout -b <branch>`
