@@ -430,3 +430,16 @@ https://nesoy.github.io/articles/2017-02/SpringMVC
 ```
 
 출처: http://blog.taeseong.me/305 [사과 냄새나는 IT이야기 TAESTORY,]
+
+## validation 데이터 검증
+- 출처: https://www.baeldung.com/javax-validation
+
+## clob not implment
+```xml
+<!-- mybatis config -->
+<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	<property name="dataSource" ref="dataSource"></property>
+	<property name="configLocation" value="classpath:mybatis-config.xml"/>
+</bean>
+```
+http://stove99.tistory.com/22
