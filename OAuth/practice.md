@@ -44,11 +44,86 @@ spring:
   thymeleaf:
     cache: false
 ```
-
 - accessTokenUri: 토큰을 얻기 위한 요청 경로
 - userAuthorizationUri: 허가 경로. 유저가 리다이렉션되는 목적지
 - userInfoUri: 인증절차를 마치고, 유저의 마지막 도착지점. 여기선 유저의 상세정보를 볼 수 있는 페이지로 설정됨.
 - resource: 이 설정은 리소스 서버에 해당한다. 여기선 유저 정보를 얻고 있다.
+
+## Auth App Server 구현
+```yml
+server.port=8081
+server.servlet.context-path=/auth
+```
+
+```JAVA
+@Configuration
+@EnableAuthorizationServer
+public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
+     
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+ 
+    @Override
+    public void configure(
+      AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
+        oauthServer.tokenKeyAccess("permitAll()")
+          .checkTokenAccess("isAuthenticated()");
+    }
+ 
+    @Override
+    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+        clients.inMemory()
+          .withClient("SampleClientId")
+          .secret(passwordEncoder.encode("secret"))
+          .authorizedGrantTypes("authorization_code")
+          .scopes("user_info")
+          .autoApprove(true) 
+          .redirectUris("http://localhost:8082/ui/login","http://localhost:8083/ui2/login"); 
+    }
+}
+```
+
+```JAVA
+@Configuration
+@Order(1)
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+ 
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.requestMatchers()
+          .antMatchers("/login", "/oauth/authorize")
+          .and()
+          .authorizeRequests()
+          .anyRequest().authenticated()
+          .and()
+          .formLogin().permitAll();
+    }
+ 
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication()
+            .withUser("john")
+            .password(passwordEncoder().encode("123"))
+            .roles("USER");
+    }
+     
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder(){ 
+        return new BCryptPasswordEncoder(); 
+    }
+}
+```
+
+```JAVA
+@RestController
+public class UserController {
+    @GetMapping("/user/me")
+    public Principal user(Principal principal) {
+        return principal;
+    }
+}
+```
+
 
 ### 시나리오
 1. `localhost:8082/ui/securedPage` : 클라이언트 앱에서 원하는 페이지로 들어가려고 한다.
