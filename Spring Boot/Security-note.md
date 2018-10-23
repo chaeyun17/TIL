@@ -18,8 +18,8 @@
 ![Spring Security : Authentication Architecture](https://chathurangat.files.wordpress.com/2017/08/blogpost-spring-security-architecture.png?w=1108)
 
 
-### 1. Http Request 받기
-스프링 시큐리티는 필터들의 체인을 가진다. 그러므로 Request가 왔을 때, 인증과 권한부여를 위해서 필터들의 체인을 통과할 것이다. 유저 인증 요청이 있을 경우에도, 인증 작동방식/모델에 기초한 관련된 Authentication Filter를 찾을 때 까지 평소처럼 필터들의 체인을 통과할 것이다.
+### 1. Http Request 처리
+스프링 시큐리티는 필터들의 체인을 가진다. 그래서 HTTP Request가 오면, 인증과 권한부여를 위한 필터들의 체인을 통과할 것이다. 유저 인증 요청인 경우에도, 인증 처리방식에 기초한 관련된 Authentication Filter를 찾을 때까지 필터들의 체인을 통과할 것이다.
 
 - 예시: HTTP 기본 인증 Request는 **BasicAuthenticationFilter** 를 만날 때까지 필터들의 체인을 통과할 것이다.
 - Http Digest Authentication reqeust는 **DigestAuthenticationFilter** 를 만날 때까지 필터들의 체인을 통과한다.
@@ -27,13 +27,13 @@
 - x509 인증 request는 **X509AuthenticationFilter**를 만날 때까지 필터 체인을 통과한다.
 
 ### 2. 유저 credential(자격정보)에 기반한 AuthenticationToken 생성
-관련된 AuthenticationFilter가 인증요청을 받으면, 받은 요청으로부터 유저이름과 비밀번호를 추출한다(대부분의 인증 방식에는 유저이름과 비밀번호를 요구한다). 그런 다음, 유저 자격정보에서 추출한 것을 기반으로 인증 객체(Authentication Object)를 만든다.
+관련된 `AuthenticationFilter`가 인증요청을 받으면, HTTP Request로부터 유저이름과 비밀번호를 추출한다(대부분의 인증 방식에는 유저이름과 비밀번호를 요구한다). 그리고 유저 자격정보에서 추출한 것을 기반으로 인증 객체`Authentication Object`를 만든다.
 
-추출된 자격 증명이 유저명과 비밀번호라면, 추출된 유저명과 비밀번호를 사용하여 UsernamePasswordAuthenticationToken 이 만들어진다.
+추출된 자격 증명이 유저명과 비밀번호라면, 추출된 유저명과 비밀번호를 사용하여 `UsernamePasswordAuthenticationToken`을 만든다.
 
 ### 3. 만들어진 AuthenticationToken을 AuthenticationManager에게 넘기기
 
-UsernamePasswordAuthenticationToken 객체가 만들어지면, AuthenticationManager의 authenticate 메소드를 호출하는데 사용될 것이다. AuthenticationManager 는 단지 인터페이스일 뿐이고 구현은 ProviderManager 가 한다.
+`UsernamePasswordAuthenticationToken` 객체가 생성되면, `AuthenticationManager`의 `authenticate` 메소드를 호출하는데 사용된다. `AuthenticationManager` 는 단지 인터페이스일 뿐이고 구현은 `ProviderManager`가 한다.
 
 ```java
 public interface AuthenticationManager
@@ -42,7 +42,7 @@ Authentication authenticate(Authentication authentication)throws AuthenticationE
 }
 ```
 
-ProviderManager가 인증 유저 요청에 사용되는 설정된 AuthenticationProvider들의 리스트를 가진다. ProviderManager 는 각각의 AuthenticationProvider를 통과할 것이다. 그리고 인증 객체(예: UsernamePasswordAuthenticationToken)에 기초하여 유저를 인증하려고 할 것이다.
+`ProviderManager` 가 인증 유저 요청에 사용되는 설정된 `AuthenticationProvider` 들의 리스트를 가진다. `ProviderManager` 는 각각의 `AuthenticationProvider` 를 통과할 것이다. 그리고 인증 객체(예: `UsernamePasswordAuthenticationToken`)에 기초하여 유저를 인증하려고 할 것이다.
 
 ### 4. AuthenticationProvider는 제공된 인증 객체를 가지고 유저 인증을 시도한다.
 ```java
