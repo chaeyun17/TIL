@@ -39,3 +39,30 @@ POM.xml 에서 해당 plugin 을 명시해줘야한다.
   </build>
 </project>
 ```
+
+## dependency confilct
+라이브러리는 같지만, 서로 다른 버전일 경우 충돌이 일어나는 경우가 있다. root 프로젝트에 가장 근접하게 선언된 dependency 라이브러리 버전이 사용된다. root 프로젝트에서 더 먼 라이브러리 버전에서 충돌이 일어나느 것이다. 해결하기 위해서는 root 프로젝트의 pom.xml 에서 직접적으로 사용할 dependency 라이브러리 버전을 명시하면 해결될 수도 있다.
+
+```xml
+<plugins>
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>1.4.1</version>
+        <configuration>
+            <rules><dependencyConvergence/></rules>
+        </configuration>
+    </plugin>
+</plugins>
+```
+위를 root 프로젝트 pom에 설정한다면, maven cli를 통해 어떤 곳에서 충돌이 일어나는지 확인할 수 있다.
+
+출처 : https://dzone.com/articles/solving-dependency-conflicts-in-maven
+
+## 상속 구조
+- 부모 프로젝트 pom.xml 에서 packing 방식을 `pom` 으로 설정하면, 상속 구조가 된다.
+- 자식 pom 에게  `artifactId, name, prerequisties` 를 빼고 대부분 상속한다.
+
+## Dependency Management
+- 부모와 자식 프로젝트가 구조 일 때, 자식의 dependcy를 부모에서 관리할 수 있다.
+- 부모 pom에서 dependency 설정을 하고, 자식 pom의 depenecy 설정에서 간단한 정보만 명시하면 된다. 
