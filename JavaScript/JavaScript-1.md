@@ -301,3 +301,51 @@ true
 > obj1.num == 123
 true
 ```
+
+### call 과 apply
+오브젝트에 다른 함수를 호출하여 사용할 수 있다. 첫번쨰 매개변수는 메서드 내에서 this에 전달된다.
+다른 점은 두 번째 매개변수부터 call은 매개변수를 각각 전달하고, apply는 배열로 전달한다는 것이다.
+```js
+o1 = {a:1, b:2, c:3}
+
+function sum(){
+  var _sum = 0;
+  for(name in this){
+    _sum += this[name];
+  }
+  return _sum;
+}
+
+sum.call(o1);
+```
+```js
+o1 = {a:1, b:2, c:3}
+
+function sum(){
+  var _sum = 0;
+  for(name in this){
+    _sum += this[name];
+  }
+  return _sum;
+}
+
+sum.apply(o1);
+```
+#### 참고
+- https://www.w3schools.com/js/js_function_call.asp
+- https://opentutorials.org/course/743/6550
+
+### 클로저
+- 클로저는 외부함수의 맥락이 내부함수에 연결된 것이다.
+- 외부함수가 호출될 때마다, 새로운 맥락과 그에 연결된 내부함수가 생성되서 반환된다.
+
+```js
+function outer(){
+  var greeting = "Welcome to JS!";
+  return function(){
+    console.log(greeting);
+  }
+}
+var inner = outer();
+inner();
+```
