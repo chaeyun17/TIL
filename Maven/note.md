@@ -1,6 +1,13 @@
 # Maven
 Java 프로젝트들을 빌드하고 관리하는 자동화 도구이다.  
 
+## maven 설치
+1. apache-maven-3.3.1-bin.zip [다운로드](https://maven.apache.org/download.cgi?Preferred=http%3A%2F%2Fmirror.apache-kr.org%2F)
+2. 환경변수 설정: `M2_HOME=C:\Program Files\Apache Software Foundation\apache-maven-3.3.1 M2=%M2_HOME%\bin MAVEN_OPTS=-Xms256m -Xmx512m` 
+3. path 에 설정: `%M2_HOME%\bin`
+4. `mvn --version` 테스트
+
+
 ## mvn site
 메이븐을 처음 설치하고 `mvn site`를 하면 해당 관련 플러그인들을 .m2 폴더에서 찾을 수 없어서 에러가 뜬다.
 POM.xml 에서 해당 plugin 을 명시해줘야한다.
