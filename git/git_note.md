@@ -45,3 +45,11 @@
 - 생성: `git branch 브랜치명`
 - 전환: `git checkout 사용할브랜치명`
 - 생성&전환: `git checkout -b <branch>`
+
+## push 취소
+1. git reset HEAD^
+2. git commit -m "Write commit messages"
+3. git push origin [branch name] -f
+
+### 출처
+- https://gmlwjd9405.github.io/2018/05/25/git-add-cancle.html
