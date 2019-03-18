@@ -15,3 +15,6 @@ Long polling 방식으로 통신. long polling 방식은 클라이언트의 requ
 ### 2. webhook 방식
 - 실시간으로 메시지 업데이트를 받는다. 하지만 어떤 것이 성공했는지 실패했는지 모른다.
 - long polling 방식보다 좀 더 빠르다. 구현하기 쉽다.
+
+## 라이브러리
+- JAVA : https://github.com/rubenlagus/TelegramBots/wiki
