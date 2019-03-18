@@ -62,7 +62,7 @@
 
 ## 해상도 조절(작업중)
 ### MediaDevices.getuserMedia()
-- 
+- 클라이언트의 영상 화면 크기 제어
 
 ### Not Working
 - `kurento-utils-js` 라이브리러 중 `WebRtcPeer` 오브젝트에서 담당. options 오브젝트의 mediaConstraints의 video 값을 수정해야함.
@@ -78,6 +78,12 @@ mediaConstraints = {
                               }  
                    };
 ```
+
+## 한 기기에서 2개 장치 녹화 및 접속
+- 기존 기기 선택 방법으로 서비스를 실행하고 2개의 클라이언트로 접속이 되는지 테스트.
+    - chorme private tab으로 시도 
+    - 전송 확인 완료
+
 
 ---
 
