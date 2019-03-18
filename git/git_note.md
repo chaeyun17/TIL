@@ -51,5 +51,30 @@
 2. git commit -m "Write commit messages"
 3. git push origin [branch name] -f
 
-### 출처
+### 참고자료
 - https://gmlwjd9405.github.io/2018/05/25/git-add-cancle.html
+
+## Up to date forked project
+1. fork한 프로젝트를 로컬로 클론한다.
+`git clone [ssh://~]`
+1. 프로젝트 디렉토리로 이동한다. 
+`cd ./cloned-project`
+1. 본 프로젝트 원격 저장소를 설정한다.
+`git remote add upstream [ssh://git@~]`
+1. 본 프로젝트 원격 저장소로부터 fetch. 본 프로젝트의 branch들이 생성된다.
+`git fetch upstream`
+1. branch를 생성하고 checkout 한다.
+`git branch [target_branch]`
+`git checkout [target_branch]`
+1. 해당 branch에 upstream/target_branch 를 병합한다.
+`git merge upstream/target_branch`
+
+또는
+
+`git checkout [remote_branch] --track [remote]/[remote_branch]`
+
+
+#### 참고
+- https://gist.github.com/CristinaSolana/1885435
+- https://help.github.com/en/articles/syncing-a-fork
+- https://stackoverflow.com/questions/1709177/git-pull-a-certain-branch-from-github
