@@ -10,12 +10,14 @@
   - `@ComponetScan`: 스프링이 다른 컴포넌트들, 설정들(Configurations), 그리고 서비스들을 같은 패키지에서 찾는다. 그리고 컨트롤러도 찾는다.
 
 ## 연동 관계 엔티티 JSON 반환 문제
-#### 에러
+**에러**  
 json 형태로 response할 때, 에러가 뜬다. 연관된 엔티티에 무한루프에 든다는 추측이다. 확인필요
 ```
 com.fasterxml.jackson.databind.exc.InvalidDefinitionException: No serializer found for class org.hibernate.proxy.pojo.javassist.JavassistLazyInitializer and no properties discovered to create BeanSerializer (to avoid exception, disable SerializationFeature.FAIL_ON_EMPTY_BEANS) (through reference chain: io.iochord.dev.bhias_client.domain.Member["role"]->io.iochord.dev.bhias_client.domain.Role_$$_jvstaae_1["handler"])
 ```
-### 해결법
+
+**해결법** 
+
 - `@JsonBackReference`: 참조 하위까지 json으로 다루지 않는다. 생략
 - `@JsonManagedReference`: 참조를 json에 포함한다.
 
@@ -34,12 +36,69 @@ private class Info {
 }
 ```
 
-#### 참고
+**참고**
 - https://stackoverflow.com/questions/37392733/difference-between-jsonignore-and-jsonbackreference-jsonmanagedreference/37394318
 - https://www.baeldung.com/jackson-bidirectional-relationships-and-infinite-recursion
-
-## 참고
-
 - http://spring.io/projects/spring-data-jpa
 - [예제들](https://github.com/spring-projects/spring-data-examples/tree/master/jpa)
 - [튜토리얼](https://spring.io/guides/gs/accessing-data-jpa/)
+
+## Initialize a Database Using Hibernate
+```
+spring.jpa.hibernate.ddl-auto=create-drop
+```
+spring.jpa.hibernate.ddl-auto 값으로는 none, validate, update, create, create-drop이 있다.
+
+- validate: validate the schema, makes no changes to the database.
+- update: update the schema.
+- create: creates the schema, destroying previous data.
+- create-drop: drop the schema at the end of the session
+- none: is all other cases.
+
+**참고**
+- https://docs.spring.io/spring-boot/docs/current/reference/html/howto-database-initialization.html#howto-initialize-a-database-using-hibernate
+
+## @JoinColumn Annotaion
+
+The `@JoinColumn` annotation defines that actual physical mapping on the owning side.
+
+the value of `mappedBy` is the name of the association-mapping attribute on the owning side. 
+
+`@JoinColumn`은 컬럼 소유 엔티티에서 물리적으로 mapping되는 DB 컬럼을 지정한다. 
+
+`mappedBy`는 컬럼 소유 엔티티 쪽의 맵핑된 속성명이다. 양방향으로 Join.
+
+**OneToOne**
+
+```java
+@Entity
+public class Office {
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "addressId")
+    private Address address;
+}
+```
+  
+**OneToMany**
+```java
+@Entity
+public class Employee {
+  
+    @Id
+    private Long id;
+ 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
+    private List<Email> emails;
+}
+ 
+@Entity
+public class Email {
+  
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
+}
+```
+**참고**
+- https://www.baeldung.com/jpa-join-column
+- https://www.baeldung.com/jpa-joincolumn-vs-mappedby
