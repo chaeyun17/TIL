@@ -55,6 +55,11 @@ spring.jpa.hibernate.ddl-auto 값으로는 none, validate, update, create, creat
 - create-drop: drop the schema at the end of the session
 - none: is all other cases.
 
+초기 데이터를 Insert 하고 싶으면, `src/main/resources/import.sql` 을 생성하면 된다. `spring.jpa.hibernate.ddl-auto`가 작동하는 경우에만 적용된다. 
+
+hibername.ddl-auto를 사용하지 않을 경우에는, `scheme-{$platform}.sql` 과 `data-{$platform}.sql` 을 생성하면 된다.   
+scheme 에는 DDL이 들어가고, data.sql에는 초기 데이터를 삽입하는 sql을 작성한다. platform은 `spring.datasource.platform` 프로퍼티를 통해 설정 할 수 있다.   h2, mysql 등이 있다. 따로 platform을 설정하지 않을 경우에는 `scheme.sql` 과 `data.sql`을 사용하면 된다.   
+
 **참고**
 - https://docs.spring.io/spring-boot/docs/current/reference/html/howto-database-initialization.html#howto-initialize-a-database-using-hibernate
 
