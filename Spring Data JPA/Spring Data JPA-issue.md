@@ -60,7 +60,7 @@ spring.jpa.hibernate.ddl-auto 값으로는 none, validate, update, create, creat
 ### Data Insert
 `src/main/resources/import.sql` 을 생성을 합니다. 내용에 insert sql문을 작성합니다.
 
-### Initalize a Database using Spring
+## Initalize a Database using Spring
 `spring.datasource.platform` 설정을 통해 h2, mysql, mariadb를 정합니다. 그리고 `scheme-{$platform}.sql` 과 `data-{$platform}.sql` 을 생성을 합니다. `scheme-{$platform}.sql` 내용으로 초기 테이블을 생성하는 DDL(Create table 등)이 들어가며, `data-{$platform}.sql` 내용에는 초기 데이터를 삽입하는 DML(Insert 등)이 들어갑니다. 따로 platform을 설정하지 않을 경우에는 `scheme.sql` 과 `data.sql` 이름 명칭을 사용합니다.
 
 `spring.jpa.hibernate.ddl-auto` 를 사용하는 경우에, schema.sql은 중복이 되기 떄문에 hiberante 방식 또는 spring 방식 중 하나를 선택하여야 합니다. 테스트를 해본 결과, embeded DB 에서는 data.sql이 작동하지만, DBMS에서는 data.sql 스크립트 실행이 되질 않습니다. DBMS를 사용하는 경우에는 Hibernate 방식 사용을 추천드립니다.
