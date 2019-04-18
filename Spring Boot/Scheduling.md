@@ -70,6 +70,34 @@ public class AppCofnig {
 ```java
 package com.example.executortest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * PrintMsgTaskRunner: 메시지 출력하는 Task
+ */
+public class PrintMsgTaskRunner implements Runnable{
+
+    private String message;
+
+    private static Logger log = LoggerFactory.getLogger(PrintMsgTaskRunner.class);
+
+    public PrintMsgTaskRunner(String message){
+        this.message = message;
+    }
+
+    @Override
+    public void run() {
+        log.info(this.message);
+    }
+
+    
+}
+```
+
+```java
+package com.example.executortest;
+
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
