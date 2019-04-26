@@ -133,3 +133,4 @@ public class AppRunner implements ApplicationRunner {
 - [7. Task Execution and Scheduling, Spring 5.1.6](https://docs.spring.io/spring/docs/5.1.6.RELEASE/spring-framework-reference/integration.html#scheduling)
 - [TaskExecutor (Spring Framework 5.1.6.RELEASE API)](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/core/task/TaskExecutor.html)
 - [ThreadPoolTaskScheduler (Spring Framework 5.1.6.RELEASE API)](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/scheduling/concurrent/ThreadPoolTaskScheduler.html)
+- [A Guide to the Spring Task Scheduler | Baeldung](https://www.baeldung.com/spring-task-scheduler)
