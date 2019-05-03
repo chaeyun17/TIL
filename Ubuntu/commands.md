@@ -71,3 +71,10 @@ $ sudo mysql -uroot -p
 ```
 ### 출처
 https://askubuntu.com/questions/766900/mysql-doesnt-ask-for-root-password-when-installing
+
+## Bring a background process to foreground
+- `fg`는 마지막으로 background 상태로 보낸 process를 foreground 상태로 변경하는 명령어이다.
+- 백그라운드 프로세스들의 목록을 확인하는 명령어는 `jobs`이고, 해당 번호 백그라운드 프로세스를 포그라운드로 바꿀면 `fg %3`을 사용하면 된다. 3에는 jobs 리스트의 번호.
+- 백그라운드 프로세스 정지: `kill -stop %job_id`
+- 실행 중 프로세스를 백그라운드로 변경: `Ctrl + z` 로 프로세스를 일시정지 후, `bg` 명령어로 백그라운드 프로세스로 변경
+- 참고: https://www.unix.com/unix-for-advanced-and-expert-users/78975-make-foreground-running-process-run-background-without-hang-up.html
