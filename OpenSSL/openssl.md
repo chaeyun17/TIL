@@ -17,3 +17,8 @@ openssl pkcs12 -export -name YOUR_KEYSTORE_ALIAS -in YOUR_CRT.crt -inkey YOUR_PR
 keytool -importkeystore -srckeystore p12keystore.p12 -srcstoretype pkcs12 -deststoretype pkcs12 -alias my_keystore -destkeystore my_keystore.jks
 ```
 
+## 참고링크
+- https://www.digitalocean.com/community/tutorials/java-keytool-essentials-working-with-java-keystores
+- https://www.digitalocean.com/community/tutorials/openssl-essentials-working-with-ssl-certificates-private-keys-and-csrs/  
+- https://openvidu.io/docs/deployment/deploying-ubuntu/
+
