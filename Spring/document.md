@@ -71,3 +71,85 @@ IoC 컨테이너에는 많은 빈들을 관리하고 있다. 이 빈들은 컨�
 
 어떻게 빈을 생성할 것인지에 대한 정보를 담은 빈 정의 뿐만 아니라, `ApplicationContext` 구현체들은 (유저가 생성한) 컨테이너 밖에서 존재하는 객체들을 등록하도록 할 수 있다. 이 작업은 `getBeanFactory()` 메서드를 통한 ApplicationContext의 BeanFactory 접근을 통해 이루어진다. 이 메서드는 BeanFactory 구현체인 `DefaultListableBeanFactory`를 반환하는 메서드이다. `DefaultListableBeanFactory`는 `registerSingleton()` 과 `registerBeanDefinition()` 메서드를 통해 객체들을 등록할 수 있다. 하지만 일반적으로 어플리케이션은 빈 정의 메타데이터를 통해 정의된 빈들과만 일을 한다.
 
+### 1.3.1. Naming Beans
+모든 빈은 하나 또는 하나 이상의 식별이름을 갖는다. 이러한 식별자는 컨테이너 내에서 유일해야 한다. 보통 빈은 한 개의 식별자만을 가진다. 하지만 식별자를 하나 이상을 원할 경우, 추가 가명을 사용할 수 있다. XML 기반 설정 메타데이터에서는 id 속성과 name 속성을 사용하거나 둘 다를 빈 식별자로 사용한다. id 속성은 정확히 한 가지 아이디를 특정한다. 관습적으로, 이러한 이름들은 alphanumeric 이다. (myBean, someService 등). 그러나그들은 특별한 문자열들을 포함할 수 있다. 빈에 다른 가명을 사용하려면, name 속성을 통해 할 수 있다. 콤마(,)또는 세미콜론으로 나눌 수 있거나 whitespace로 나눌 수 있다.
+
+설정에서 빈에 id 또는 name 둘 다 설정하지 않을 경우, 컨테이너는 유일한 이름을 생성한다. 그러나 이름으로 빈을 참조하고 싶을 떈, ref 엘리먼트를 사용하거나 service locator style lookup을 통해 이름을 설정해야 한다. 이름을 설정하지 않는 Motivation은 inner beans 와 autowiring collaborators를 사용하는 것과 관계가 있다.
+
+빈 이름은 보통 소문자로 시작하는 CamealCase 방식을 컨벤션으로 사용한다. `accountManager`, `accountService` 등이 있다.
+
+classpath에서 컴포넌트 스캔과 함께, 스프링은 이름이 없는 빈의 이름을 생성한다. 위에서 말한 camelcase 방식을 사용하여 이름을 자동 생성한다.
+
+JavaConfiguration에서는 `@Bean` 어노테이션을 통해 alias를 설정할 수 있다.
+
+### 1.3.2. Instantiating Beans
+일반적으로 xml로 빈을 정의할 때, bean 태그 안에 class 속성을 사용해서 인스턴스화를 할 수 있다. 이것은 해당 class의 생성자를 호출해서 직접적으로 인스턴스화를 하는 것과 같다. Java code의 new 를 사용하는 것과 비슷하다.
+
+class에 `static` 팩토리 메서드가 있다면, 컨테이너는 static 팩토리 메서드를 통해 빈을 생성한다. static 팩토리 메서드를 반환되는 객체 타입은 같은 클래스 일수도 있고 다른 클래스 일수도 있다.
+
+#### Instatiation with a constructor
+생성자 접근을 통해 빈을 생성할 떄, 모든 보통의 class들은 보통 스프링에서 사용할 수 있으며, 호환될 수 있다. 이 점은 클래스가 인터페이스를 구현하거나 specific fashion을 코딩할 필요하가 없다는 것이다. 하지만 해당 빈에 사용하는 IoC 유형에 따라 기본 생성자가 필요할 수도 있다.
+
+스프링 컨테이너는 어떠한 클래스든 관리할 수 있다. 대부분 스프링 사용자들은 기본 생성자에다가 컨테이너의 프로퍼티를 본뜬 게터와 세터를 함께 사용한다. 컨테이너에서 빈 스타일이 아닌 클래스도 사용할 수 있다. 예를 들면, JavaBean 스펙에 절대로 충실하지 않은 레거시 컨넥션 풀을 사용할 필요가 있을 때다. 스프링은 이러한 것도 관리할 수 있다.
+
+```
+<bean id="exampleBean" class="examples.ExampleBean"/>
+<bean name="anotherExample" class="examples.ExampleBeanTwo"/>
+```
+
+생성자에 매개변수를 제공하고 객체 생성 이후에 인스턴스 프로퍼티에 세팅하는 매커니즘은 Injection Dependency를 참고하면 된다.
+
+#### Instantiation with a static Factory Method
+```
+<bean id="clientService"
+    class="examples.ClientService"
+    factory-method="createInstance"/>
+```
+이 static factory method를 호출할 수 있다. 그리고 마치 생성자를 통해 만든 것과 같은 live object를 리턴한다. 
+```
+public class ClientService {
+    private static ClientService clientService = new ClientService();
+    private ClientService() {}
+
+    public static ClientService createInstance() {
+        return clientService;
+    }
+}
+```
+
+팩토리 메서드에 (선택적인) 매개변수를 제공하고 팩토리를 통해 반환된 오브젝트에 오브젝트 인스턴스 프로퍼티를 설정하는 메커니즘에 대한 것은 Dependencies and Configuration in DeTail 을 보면 된다.
+
+#### Instantiation by Using an Instance Factory Method
+```
+<!-- the factory bean, which contains a method called createInstance() -->
+<bean id="serviceLocator" class="examples.DefaultServiceLocator">
+    <!-- inject any dependencies required by this locator bean -->
+</bean>
+
+<!-- the bean to be created via the factory bean -->
+<bean id="clientService"
+    factory-bean="serviceLocator"
+    factory-method="createClientServiceInstance"/>
+
+```
+```
+public class DefaultServiceLocator {
+
+    private static ClientService clientService = new ClientServiceImpl();
+
+    public ClientService createClientServiceInstance() {
+        return clientService;
+    }
+}
+```
+static factory method를 통해 인스턴스화를 하는 것과 비슷하게, 인스턴스 팩토리 메서드를 통한 인스턴스화는 이미 생성된 빈의 non-static 메서드를 호출한다. 이 매커니즘을 사용하기 위해서는, `class` 속성은 비워 두고, `factory-bean` 속성에서, 객체를 생성하는 인스턴스 팩토리 메서드를 가진 빈 이름을 지정한다. 빈에는 여러 개의 팩토리 메서드를 가질 수 있다.
+
+이 방식은 팩토리 빈 자체가 DI를 통해 관리되고 설정되는 것을 볼 수 있다. 
+
+스프링 문서에서, "factory bean"은 스프링 컨테이너를 통해 설정되고, 인스턴스 또는 static factory method를 통해 객체들을 생성하는 빈을 뜻한다. 반대로 `FactoryBean`은 스프링의 FactoryBean을 뜻한다.
+
+### 1.4 Dependencis
+엔터프라이즈 어플리케이션은 수많은 빈들을 가지고, 간단한 어플리케이션도 몇 개의 빈들을 가진다. 이 빈들은 서로 협력하여 엔드 유저에게 하나의 완벽한 어플리케이션으로 나타난다. 이 섹션에서는 빈 정의를 어떻게 하는지부터 시작해서 객체들의 협력을 통해 어떻게 완벽한 어플리케이션을 만드는지에 대해 설명한다.
+
+### 1.4.1 Dependency Injection
+Dependecy Injection(DI)는 객체들의 Dependency를 정의하는 절차이다. 생성자 매개변수, 팩토리 메서드 매개변수, 프로터티를 통해서만 정의한다. DI는 직접적인 클래스 생성 또는 Service Locator Pattern 을 통해 종속물들의 위치와 인스턴스화를 스스로 관리하는 빈을 뒤집는 것이다.  
