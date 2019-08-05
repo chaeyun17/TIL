@@ -56,5 +56,6 @@ REST는 분산 하이퍼 미디어 시스템인 웹을 위한 아키텍쳐 스�
 ## 참조
 - [그런 REST API로 괜찮은가, Naver D2](https://www.youtube.com/watch?v=RP_f5dMoHFc): 주로 이 영상의 내용을 메모한 것임.
 - [Representational State Transfer (REST), Roy.T.Fielding Disertation](https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm)
+- [Do sessions really violate RESTfulness?](https://stackoverflow.com/questions/6068113/do-sessions-really-violate-restfulness): session이 REST 제약조건을 어기는 것인지? REST에서 어떻게 인증 기능을 구현할지?
 - [RESTFul이란 무엇인가?](http://blog.remotty.com/blog/2014/01/28/lets-study-rest/)
 - [REST, Wikipedia ko](https://ko.wikipedia.org/wiki/REST)
