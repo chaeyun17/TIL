@@ -153,3 +153,47 @@ static factory method를 통해 인스턴스화를 하는 것과 비슷하게, �
 
 ### 1.4.1 Dependency Injection
 Dependecy Injection(DI)는 객체들의 Dependency를 정의하는 절차이다. 생성자 매개변수, 팩토리 메서드 매개변수, 프로터티를 통해서만 정의한다. DI는 직접적인 클래스 생성 또는 Service Locator Pattern 을 통해 종속물들의 위치와 인스턴스화를 스스로 관리하는 빈을 뒤집는 것이다.  
+
+
+-----
+
+
+# 2. 리소스들
+
+java.net.URL만 사용해서는 모든 리소스들에 접근하기에 부족하다. 클래스패스, 서블릿 컨텍스트 등이 그 예시이다. 스프링의 Resource 인터페이스는 로우레벨 리소스들을 접근하는 것을 추상화하였다. 이 Resource 인터페이스는 InputStreamSource 인터페이스를 상속한 것이다. 인터페이스 메서드들을 살펴보면, 여러가지 편리한 메소드들이 있다. 직접적으로 파일 데이터를 읽을 수 있는 inpustream도 있다.
+
+스프링 안에서도 이 Resource 를 많이 사용한다. 유틸리티 클래스이다. 참고로 Resource 추상화는 기존 기능을 대체하거나 하지 않고, warpper의 역할을 한다. 예를 들어, UrlResource는 URL의 기능의 wrapper 역할을 한다.
+
+Resource 구현체 종류
+- UrlResource
+- ClassPathResource
+- FileSystemResource
+- ServletContextResource
+- InputStreamResource
+- ByteArrayResource
+
+2.3.1 UrlResource
+UrlResource는 java.net.URl을 감싼 것이다. URL로 파일들, HTTP 대상, FTP 대상 등을 접근할 수 있다. 문자열 앞에 file: 이면 파일을 가르키고, http: 면 http를 가르키고, ftp: 면 ftp를 가르킨다. classpath: 처럼 많이 알려진 prefix는 자동으로 인식해서 url을 만든다.
+
+2.3.2 ClassPathResource
+classpath를 통해 resource를 접근하는 클래스. thread context class loader 에서 주로 사용한다. 
+
+2.3.3 FileSystemResource
+java.io.File 과 java.nio.file.Path를 다루기 위한 Resource 구현체이다.
+
+2.3.4. ServletContextResource
+웹 어플리케이션의 root 디렉토리에 연관된 상대 경로를 변환한 ServletContext 자원들을 위한 구현체이다. 이것은 항상 stream 접근과 URL 접근을한다. 
+
+2.3.5. InputStreamResource
+InputStream을 위한 구현체. 여러번 stream을 읽어야할 필요가 있을 떄 사용해서는 안된다.
+
+2.3.6. ByteArrayResource
+byte array를 위한 구현체.
+
+2.4. The ResourceLoader
+ResourceLoader는 Resource를 반환하는 인터페이스이다. 모든 Application context는 ResourceLoader 인터페이스를 구현한다. 그러므로 모든 어플리케이션 컨텍스트에는 Resource 인스턴스들을 사용한다. 각각의 어플리케이션 컨텍스트는 getResource를 호출하면, 컨텍스트에 맞는 Resource 구현체들이 반환된다. 예를 들어, ClassPathXmlApplicationContext는 ClassPathResource를 반환한다. FileSystemXmlApplicationContext 는 FileSystemResource 를 반환한다. WebApplicationContext 는 ServletContextResource 를 반환한다. 
+
+앞에 prefix로 classpath: , file:// , https:// 를 붙여서 getResource 인자로 제공하면 해당 Resource 타입으로 변경될 수 있다. 
+
+2.5. The ResourceLoaderAware Interface
+이 인터페이스는 
