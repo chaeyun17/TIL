@@ -148,7 +148,7 @@ static factory method를 통해 인스턴스화를 하는 것과 비슷하게, �
 
 스프링 문서에서, "factory bean"은 스프링 컨테이너를 통해 설정되고, 인스턴스 또는 static factory method를 통해 객체들을 생성하는 빈을 뜻한다. 반대로 `FactoryBean`은 스프링의 FactoryBean을 뜻한다.
 
-### 1.4 Dependencis
+## 1.4 Dependencis
 엔터프라이즈 어플리케이션은 수많은 빈들을 가지고, 간단한 어플리케이션도 몇 개의 빈들을 가진다. 이 빈들은 서로 협력하여 엔드 유저에게 하나의 완벽한 어플리케이션으로 나타난다. 이 섹션에서는 빈 정의를 어떻게 하는지부터 시작해서 객체들의 협력을 통해 어떻게 완벽한 어플리케이션을 만드는지에 대해 설명한다.
 
 ### 1.4.1 Dependency Injection
@@ -172,28 +172,213 @@ Resource 구현체 종류
 - InputStreamResource
 - ByteArrayResource
 
-2.3.1 UrlResource
+```java
+public interface Resource extends InputStreamSource {
+
+    boolean exists();
+
+    boolean isOpen();
+
+    URL getURL() throws IOException;
+
+    File getFile() throws IOException;
+
+    Resource createRelative(String relativePath) throws IOException;
+
+    String getFilename();
+
+    String getDescription();
+
+}
+```
+```java
+public interface InputStreamSource {
+
+    InputStream getInputStream() throws IOException;
+
+}
+```
+### 2.3.1 UrlResource
 UrlResource는 java.net.URl을 감싼 것이다. URL로 파일들, HTTP 대상, FTP 대상 등을 접근할 수 있다. 문자열 앞에 file: 이면 파일을 가르키고, http: 면 http를 가르키고, ftp: 면 ftp를 가르킨다. classpath: 처럼 많이 알려진 prefix는 자동으로 인식해서 url을 만든다.
 
-2.3.2 ClassPathResource
+### 2.3.2 ClassPathResource
 classpath를 통해 resource를 접근하는 클래스. thread context class loader 에서 주로 사용한다. 
 
-2.3.3 FileSystemResource
+### 2.3.3 FileSystemResource
 java.io.File 과 java.nio.file.Path를 다루기 위한 Resource 구현체이다.
 
-2.3.4. ServletContextResource
+### 2.3.4. ServletContextResource
 웹 어플리케이션의 root 디렉토리에 연관된 상대 경로를 변환한 ServletContext 자원들을 위한 구현체이다. 이것은 항상 stream 접근과 URL 접근을한다. 
 
-2.3.5. InputStreamResource
+### 2.3.5. InputStreamResource
 InputStream을 위한 구현체. 여러번 stream을 읽어야할 필요가 있을 떄 사용해서는 안된다.
 
-2.3.6. ByteArrayResource
+### 2.3.6. ByteArrayResource
 byte array를 위한 구현체.
 
-2.4. The ResourceLoader
+```
+Resource resource = new FileUrlResource("samples/sample-1.txt"); // text: 123
+resource.getFilename();
+log.info(resource.getFilename()); // sample-1.txt
+log.info(resource.getDescription()); // URL [file:samples/sample-1.txt]
+log.info(resource.getURI().toString()); // file:samples/sample-1.txt
+log.info(resource.getURL().toString()); // file:samples/sample-1.txt
+log.info(String.valueOf(resource.contentLength())); // 3
+```
+
+```java
+Resource resource = new FileUrlResource("samples/sample-1.txt"); // text: 123
+InputStream in = resource.getInputStream();
+ByteArrayResource bytesResource = new ByteArrayResource(in.readAllBytes(), resource.getDescription());
+log.info(bytesResource.getDescription());  // Byte array resource [URL [file:samples/sample-1.txt]]
+```
+
+```java
+Resource sample1 = ctx.getResource("file:samples/sample-1.txt");
+log.info(sample1.getDescription()); 
+// URL [file:samples/sample-1.txt]
+log.info(sample1.getFilename()); 
+// sample-1.txt
+if(sample1.exists()){
+	File sample1File = sample1.getFile();
+	log.info(sample1File.getAbsolutePath().toString());
+	// d:\vessle_monitoring\test-code\SpringBootTest\spring-doc-tester\samples\sample-1.txt
+}
+```
+
+## 2.4. The ResourceLoader
 ResourceLoader는 Resource를 반환하는 인터페이스이다. 모든 Application context는 ResourceLoader 인터페이스를 구현한다. 그러므로 모든 어플리케이션 컨텍스트에는 Resource 인스턴스들을 사용한다. 각각의 어플리케이션 컨텍스트는 getResource를 호출하면, 컨텍스트에 맞는 Resource 구현체들이 반환된다. 예를 들어, ClassPathXmlApplicationContext는 ClassPathResource를 반환한다. FileSystemXmlApplicationContext 는 FileSystemResource 를 반환한다. WebApplicationContext 는 ServletContextResource 를 반환한다. 
+
+```java
+public interface ResourceLoader {
+
+    Resource getResource(String location);
+
+}
+```
+```java
+Resource template = ctx.getResource("some/resource/path/myTemplate.txt");
+Resource template = ctx.getResource("file:///some/resource/path/myTemplate.txt");
+Resource template = ctx.getResource("https://myhost.com/resource/path/myTemplate.txt");
+```
 
 앞에 prefix로 classpath: , file:// , https:// 를 붙여서 getResource 인자로 제공하면 해당 Resource 타입으로 변경될 수 있다. 
 
-2.5. The ResourceLoaderAware Interface
-이 인터페이스는 
+## 2.5. The ResourceLoaderAware Interface
+```java
+public interface ResourceLoaderAware {
+
+    void setResourceLoader(ResourceLoader resourceLoader);
+}
+```
+
+ResourceLoader가 작동하고 있다는 것을 알림을 받기를 원하는 오브젝트가 구현하는 인터페이스이다. ResourceLoader 참조를 제공받기를 기대하는 컴포넌트들 식별하는 ResourceLoaderAware는 특별한 콜백 인터페이스이다. 이 인터페이스를 구현한 클래스가 Bean으로 생성되면, classLoader를 구현한 application context가 자동으로 주입된다. 
+
+이 인터페이스를 구현한 객체는 application context라는 resourceloader를 사용하여 resource들을 얻을 수 있다. 하지만 일반적으로 ResourceLoader가 필요할 때는 사용자에 특화된 ResourceLoader를 의존성 주입받아서 사용하는 것을 권장한다.
+
+```java
+@Slf4j
+@Component
+public class AppResourceLoaderAware implements ResourceLoaderAware {
+
+    @Override
+    public void setResourceLoader(ResourceLoader resourceLoader) {
+        log.info(resourceLoader.toString());
+        // org.springframework.context.annotation.AnnotationConfigApplicationContext@4666d1dc, started on Sat Sep 28 11:22:09 KST 2019
+    }
+}
+
+```
+
+## 2.6. Resources as Dependencies
+리소스들도 의존성 주입을 받아서 사용할 수 있다. 필요한 리소스들이 동적으로 바뀌는 경우에는 ResourceLoader를 사용하는 것이 좋다. 예를 들어, 유저 역할에 따라 다른 템플릿들(자원)이 필요할 경우가 있다. 하지만 리소스들이 정적이라면, ResourceLoader를 사용할 이유는 없어진다. 그냥 Resource 프로퍼티를 외부로 노출시켜서 의존성 주입을 받으면 된다.
+
+```xml
+<bean id="myBean" class="...">
+    <property name="template" value="some/resource/path/myTemplate.txt"/>
+</bean>
+```
+모든 어플리케이션 컨텍스트는 PropertyEditor 특별한 자바빈을 사용한다. 이것은 string path를 resource 객체로 변환시켜 준다.
+
+
+```java
+@Slf4j
+@Component
+public class TextReader {
+
+    private final Resource textFile;
+    
+    public TextReader(
+        @Value("file:samples/sample-1.txt") 
+        Resource textFile) {
+        
+        this.textFile = textFile;
+    }
+
+    public void print() {
+        try {
+            InputStream in = textFile.getInputStream();
+            byte[] text = in.readAllBytes();
+            String str = new String(text);
+            log.info(str);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+
+@Component
+public class AppRunner implements ApplicationRunner {
+
+    @Autowired
+	private TextReader textReader;
+
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+        textReader.print(); // 123
+    }
+}
+```
+
+## 2.7. Application Contexts and Resource Paths
+이 섹션에서는 Application Context를 Resource를 통해 만드는 과정을 설명할 것이다.
+
+```
+ApplicationContext ctx = new ClassPathXmlApplicationContext("conf/appContext.xml");
+
+ApplicationContext ctx =
+    new FileSystemXmlApplicationContext("conf/appContext.xml");
+	
+ApplicationContext ctx =
+    new FileSystemXmlApplicationContext("classpath:conf/appContext.xml"
+```
+
+**Constructing ClassPathXmlApplicationContext Instances — Shortcuts**
+
+xml 파일 이름들로 application context를 생성할 수 있다. 또한 class 파일로도 생성이 가능하다.
+```
+com/
+  foo/
+    services.xml
+    daos.xml
+    MessengerService.class
+```
+
+```
+ApplicationContext ctx = new ClassPathXmlApplicationContext(
+    new String[] {"services.xml", "daos.xml"}, MessengerService.class);
+```
+
+### 2.7.2. Wildcards in Application Context Constructor Resource Paths
+경로에 와일드카드를 지원함.
+
+**Ant Style Pattern**
+
+```
+/WEB-INF/*-context.xml
+com/mycompany/**/applicationContext.xml
+file:C:/some/path/*-context.xml
+classpath:com/mycompany/**/applicationContext.xml
+```
+
