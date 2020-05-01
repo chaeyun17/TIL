@@ -92,8 +92,45 @@ AuthenticationManager는 관련된 인증 필터에게 완전히 채워진 인�
 `SecurityContextHolder.getContext().setAuthentication(authentication);`
 
 
+------
+
+# 스프링 시큐리티 설정법
+
+```Java
+// SecurityConfig.java
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter
+{
+
+  @Override
+  protected void configure(HttpSecurity http) throws Exception
+  {
+    http.csrf().disable().httpBasic().and().authorizeRequests().anyRequest().authenticated().and().sessionManagement()
+      .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+  }
+
+  @Override
+  protected void configure(AuthenticationManagerBuilder auth) throws Exception
+  {
+    String password = passwordEncoder().encode("pass");
+    auth.inMemoryAuthentication().passwordEncoder(passwordEncoder()).withUser("user").password(password).roles("USER");
+  }
+
+  @Bean
+  public PasswordEncoder passwordEncoder()
+  {
+    return new BCryptPasswordEncoder();
+  }
+}
+```
 
 ## 참고
 - [스프링 시큐리티 설계 개념](https://spring.io/guides/topicals/spring-security-architecture/)
 - [스프링 시큐리티 동작 흐름](https://springbootdev.com/2017/08/23/spring-security-authentication-architecture/)
 - [Spring Security: Authentication with a Database-backed UserDetailsService](https://www.baeldung.com/spring-security-authentication-with-a-database)
+- [스피링 시큐리티5 설정 tutorial](https://medium.com/@shehanfernando/building-a-web-security-platform-with-spring-boot-security-part-02-6da5b5e478f8)
+- [UserDetailsService 설정법](https://www.baeldung.com/spring-security-authentication-with-a-database)
+- [Spring의 User 데이터 스키마](https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#user-schema)
+- [Difference between Role and GrantedAuthority in Spring Security, stackoverflow](https://stackoverflow.com/questions/19525380/difference-between-role-and-grantedauthority-in-spring-security)
