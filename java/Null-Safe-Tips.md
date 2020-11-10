@@ -105,7 +105,129 @@ param 파라미터가 null일 경우, `AssertionError`가 발생한다.
 
 ## 4. Coding Practice 를 통해 null 체크를 피해보기
 
-### 전제조건들
+### 4.1.전제조건들
+빨리 실패하는 코드를 작성하는 것은 좋은 practice 입니다. 그러므로 만약 API가 null이 되면 안되는 여러 파라미터들을 받는다면, API 전제조건으로 null이 아닌 모든 매개 변수를 확인하는 것이 좋습니다.
+
+```java
+// good
+public void goodAccept(String one, String two, String three) {
+    if (one == null || two == null || three == null) {
+        throw new IllegalArgumentException();
+    }
+ 
+    process(one);
+    process(two);
+    process(three);
+}
+
+// bad
+public void badAccept(String one, String two, String three) {
+  if (one == null) {
+      throw new IllegalArgumentException();
+  } else {
+      process(one);
+  }
+
+  if (two == null) {
+      throw new IllegalArgumentException();
+  } else {
+      process(two);
+  }
+
+  if (three == null) {
+      throw new IllegalArgumentException();
+  } else {
+      process(three);
+  }
+}
+```
+
+위 예처럼 할 수도 있지만, [Guava's Preconditions](https://www.baeldung.com/guava-preconditions) 을 사용하면 API 파라미터들을 유효성을 체크할 수 있습니다.
+
+### 4.2 Wrapper 클래스 대신 Primitives 를 사용하기
+int 와 같은 Primitives는 애초에 null을 가질 수 없습니다. 그래서 우리는 Integer 와 같은 Wrapper 클래스를 되도록 사용을 줄여야 합니다.
+
+```java
+public static int primitivesSum(int a, int b){
+  return a + b;
+}
+
+public static Integer wrapperSum(Integer a, Integer b){
+  return a + b;
+}
+```
+```java
+assertThrows(NullPointerException.class, ()->wrapperSum(null,2));
+```
+
+Wrapper 클래스보다 Primitives를 사용해야하는 지를 더 알고 싶다면, [Java Primitives](https://www.baeldung.com/java-primitives-vs-objects)
+
+### 4.3 Empty Collections
+때때로 우리는 메소드의 응답으로 컬렉션을 반환할 필요가 있을 때가 있습니다. 이 때, 우리는 null을 반환하기보다는 empty collection을 반환하는 것이 좋습니다.
+```java
+public List<String> names(){
+  if(userExists()){
+    return Stream.of(readName()).collect(Collectors.toList());
+  } else {
+    return Collections.emptyList();
+  }
+}
+```
+이렇게 하면, API 사용자는 null 체크를 하지 않아도 됩니다.
+
+### 5. Objects 을 사용하라
+Java7 에서 새로운 `Objects` API를 나왔다. 이 API는 몇개의 static 유틸리티성 메소드들을 가지고 있다. 불필요한 코드들을 치워버릴 수 있다. 
+
+```java
+public void accpet(Object param){
+  Objects.requireNonNull(param);
+  // doSomething()
+}
+```
+```java
+assertThrows(NullPointerException.class, ()->accept(null));
+```
+이 클래스에는 `isNull()`과 `nonNull()` 메소드들도 포함되어 있다. 
+
+### 6. Optional 을 사용하라
+Java8 에서는 [Optional](https://www.baeldung.com/java-optional) API 새로 나왔다. 이것은 null에 비해 선택적 값을 처리하기 위해 더 나은 약속을 제공합니다. 
+
+```java
+public Optional<Object> process(boolean processed){
+  String response = doSomething(processed);
+
+  if(response == null){
+    return Optional.empty();
+  }
+
+  return Optional.of(response);
+}
+
+private String doSomething(boolean processed){
+  if(processed){
+    return "passed"
+  }else{
+    return null;
+  }
+}
+```
+
+process 메소드에서 호출자에게 응답이 비어있을 수도 있으며 반드시 컴파일 타임에 처리를 해줘야한다고 명화갛게 하고 있습니다.
+
+이렇게 하면 클라이언트 측에서 null 체크를 할 필요가 없습니다. empty response 만 Optional API를 사용하여 null 과 다르게 선언적 스타일로 처리해주면 됩니다. 
+
+```java
+assertThrows(Exceptoin.class, ()->process(false).orElseThrow(()->new Exceptoin()));
+```
+
+비록 API 호출자가 null check 필요성을 없앨 수 있었지만, 우리는 빈 응답을 사용했습니다. Optional은 null인 경우 특정 값 또는 empty 를 반환할 수 있는 `ofNullable` 메소드를 제공합니다.
+
+```java
+public Optional<Object> process(boolean processed){
+  String response = doSomething(processed);
+  return Optional.ofNullable(resposne);
+}
+```
 
 
 ## 참고
