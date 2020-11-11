@@ -190,6 +190,7 @@ assertThrows(NullPointerException.class, ()->accept(null));
 이 클래스에는 `isNull()`과 `nonNull()` 메소드들도 포함되어 있다. 
 
 ### 6. Optional 을 사용하라
+#### 6.1 orElseThrow
 Java8 에서는 [Optional](https://www.baeldung.com/java-optional) API 새로 나왔다. 이것은 null에 비해 선택적 값을 처리하기 위해 더 나은 약속을 제공합니다. 
 
 ```java
@@ -228,6 +229,63 @@ public Optional<Object> process(boolean processed){
   return Optional.ofNullable(resposne);
 }
 ```
+
+#### 6.2. Collection 과 함께 사용하는 Optional
+
+```java
+public String findFirst(){
+  return getList().stream()
+          .findFirst()
+          .orElse(DEFAULT_VALUE);
+}
+```
+
+이 함수는 리스트의 첫번째 아이템을 반환한다. Stream API의 `findFirst` 함수는 데이터가 없을 경우 빈 Optional을 반환할 것이다. `orElse` 함수를 통해서 기본값을 대신에 반환할 수 있다. 이것은 비어있는 리스트들도 다룰 수 있게 한다. 
+
+```java
+public Optional<String> findOptionalFirst(){
+  return getList().stream().findFirst();
+}
+```
+대신에 클라이언트가 empty를 다룰 수 있게 Optional을 반환할 수도 있다. Optional을 Collection과 함께 사용하면 non-null 값들을 반환할 수 있도록 API를 설계할 수 있다. 클라이언트는 null 체크를 하지 않아도 된다.
+
+#### 6.3 Optional 조합
+
+```java
+public Optional<String> optionalListFirst(){
+  return getOptionalList().flatMap(list->list.stream().findFirst());
+}
+```
+
+getOptional 함수에서 리턴한 Optional에 flatMap 함수를 사용함으로써 Optional을 반환하는 내부 표현식의 결과를 압축 해제할 수 있습니다. flatMap을 사용하지 않는다면, 그 결과는 `Optional<Optional<String>>`이 될 것입니다. flatMap 작업은 Optional이 empty가 아닐 때만 작동합니다.
+
+
+### 7. 라이브러리
+
+#### 7.1 Lobmok
+Lombok은 상용적 코드들의 양을 줄이는데 좋은 라이브러리입니다. 일반 코드들에 어노테이션을 통해서 설정할 수 있습니다. 그 중에 `@NonNull` 어노테이션이 있습니다. `@NonNull`은 null 체크를 대체할 수 있습니다.
+
+```java
+public void accept(@NonNull Object param){
+  System.out.println(param);
+}
+```
+`@NonNull` 어노테이션을 통해 null 체크를 할 수 있습니다.
+
+Lombok 은 컴파일된 클래스를 생성합니다.
+
+```java
+public void accept(@NonNull Object param){
+  if(param == null){
+    throw new NullPointerException("param");
+  } else {
+    System.out.println(param);
+  }
+}
+```
+만약 파라미터가 null이면, 이 메소드는 NullPointerException을 발생시킨다. 클라이언트에서는 exception을 처리해야 한다.
+
+#### 7.2. StringUtils
 
 
 ## 참고
