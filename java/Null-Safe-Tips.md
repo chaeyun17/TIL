@@ -286,7 +286,26 @@ public void accept(@NonNull Object param){
 만약 파라미터가 null이면, 이 메소드는 NullPointerException을 발생시킨다. 클라이언트에서는 exception을 처리해야 한다.
 
 #### 7.2. StringUtils
+String 유효성 검사는 null값 뿐만아니라 빈 값까지 체크를 포함합니다. 그러므로 일반적인 유효성 검사는 다음처럼 할 수 있습니다.
 
+```java
+public void accept(String param){
+  if(null != param && !param.isEmpty())
+    System.out.println(param);
+}
+```
+
+많은 문자열 타입을 다뤄야할 경우에는 빠르게 중복 코드가 늘어납니다. `StringUtils`이 이것을 편하게 해결해줍니다. `commons-lang3` Dependency를 추가해줍니다.
+
+```java
+public void accept(String param){
+  if(StringUtils.isNotEmpty(param)){
+    System.out.println(param);
+  }
+}
+```
+
+그래서 우리는 null 또는 빈 값을 체크하는 코드를 `isNotEmpty()` 정적 유틸리티 메소드로 대체할 수 있습니다. 이 API는 일반적인 String 기능들을 다룰 수 있는 다른 [강력한 유틸리티 메소드](https://www.baeldung.com/string-processing-commons-lang)들을 제공해줍니다.
 
 ## 참고
 - https://www.baeldung.com/java-avoid-null-check
