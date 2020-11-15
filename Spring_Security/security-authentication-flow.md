@@ -1,4 +1,4 @@
-# 스프링 부트 시큐리티
+# 스프링 부트 시큐리티 인증 과정 노트
 - authentication(인증) 과 authorization(허가) 의 기능을 수행한다.
 - `AuthenticationManager` 인터페이스가 주요한 역할을 한다. `authenticate()` 메소드만을 가지고 있다.
 - `AuthenticationManager` 인터페이스 구현으로는 주로 `ProviderManager` 클래스를 사용한다.
