@@ -45,6 +45,8 @@ grant_type=password
 &client_secret=xxxxxxxxxx
 ```
 
+추가적으로 고민 지점이 있다. 아무리 자사 서비스라고 하더라도, OAuth 상의 클라이언트가 프론트엔드(웹브라우저)가 될 경우 Client Crendential(ID와 Password)가 노출될 위험이 항상 존재한다. 인증서버 측에서는 클라이언트 Credential이 다른 곳에서 사용한다는 것을 확인하지 못한다. 이 문제를 해결하려면, 인증서버에 Client의 서버 도메인을 저장해두고 체크하는 방식으로 보완해야한다. 그래서 Authorization Code Grant Type에서 client redirect url을 사용하는 이유인 것 같다. 보안을 최대한 안전하게 하려면 권고한대로 Authorization Code 방식을 사용하는 것이 바람직하다.
+
 
 ### 참조
 - [Resource Owner Password Credentials Grant, oauth2](https://tools.ietf.org/html/rfc6749#section-4.3)
