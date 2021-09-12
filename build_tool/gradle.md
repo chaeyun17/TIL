@@ -1,7 +1,7 @@
 # Gradle
 Gradle은 오픈소스 빌드 자동 도구입니다. 유연성과 성능에 초점을 맞췄습니다. Gradle 빌드 스크립트는 Groovy 또는 Kotlin DSL을 사용하여 작성합니다. [출처](https://docs.gradle.org/current/userguide/userguide.html)
 
-단일 Java 파일을 컴파일하려면 `javac app.java` 를 통해 `app.class`로 컴파일을 하고, `java app` 으로 앱을 실행하면 됩니다. 하지만 어플리케이션을 만들려면, 다양한 라이브러리를 사용할 수 밖에 없습니다. 다양한 라이브러리를 쉽게 사용할 수 있게 관리하고, 빌드를 유연하게 간단히 할 수 있게 해주는 편리한 도구입니다.
+어플리케이션을 만들려면, 다양한 라이브러리를 사용할 수 밖에 없습니다. 다양한 라이브러리를 쉽게 사용할 수 있게 관리하고, 빌드를 유연하게 간단히 할 수 있게 해주는 편리한 도구입니다.
 
 Groovy 와 Kotlin DSL을 작성이 되어 있어서, 처음엔 스크립트를 바로 접근하기가 쉽지 않지만 그만큼 스크립트로 빌드 과정을 정의할 수 있어서 유연성이 크다는 이점이 있습니다. maven은 xml 기반이라 직관적이지만, 스크립트를 짤 수 없기 때문에 유연성에 Gradle 보다 한계가 있습니다.
 
@@ -25,11 +25,11 @@ dependencies {
 
 ```gradle
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok:1.18.6'
-	testCompileOnly 'org.projectlombok:lombok:1.18.6'
-	annotationProcessor 'org.projectlombok:lombok:1.18.6' 
-	testAnnotationProcessor 'org.projectlombok:lombok:1.18.6' 
+  implementation 'org.springframework.boot:spring-boot-starter-web'
+  compileOnly 'org.projectlombok:lombok:1.18.6'
+  testCompileOnly 'org.projectlombok:lombok:1.18.6'
+  annotationProcessor 'org.projectlombok:lombok:1.18.6' 
+  testAnnotationProcessor 'org.projectlombok:lombok:1.18.6' 
   testImplementation ('org.springframework.boot:spring-boot-starter-test'){
     exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
   }
