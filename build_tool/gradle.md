@@ -58,8 +58,8 @@ plugins {
 
 각각 언제 사용하는지 정리해보겠습니다.
 
-- `implementation`은 말그대로 구현할 때 사용하는 라이브러리를 지칭합니다.
-- `compileOnly`는 프로그램이 실행 중인(런타임) 말고 컴파일할 때만 사용되는 dependency를 지칭합니다. java 파일을 class로 변환하고 jar 패키징 결과에서는 해당 라이브러리들은 패키징에 제외됩니다. lombok 과 같은 라이브러리들이 해당됩니다.
+- `implementation`은 말그대로 구현할 때 사용하는 라이브러리를 지칭합니다. `spring` 과 같은 프레임워크가 주로 해당됩니다.
+- `compileOnly`는 프로그램이 실행 중인(런타임) 말고 컴파일할 때만 사용되는 dependency를 지칭합니다. java 파일을 class로 변환하고 jar 패키징 결과에서는 해당 라이브러리들은 패키징에 제외됩니다. maven의 `provided`와 유사합니다. [자세한 설명](https://blog.gradle.org/introducing-compile-only-dependencies). 예시로는 lombok 과 같은 라이브러리들이 해당됩니다. apache storm 을 사용하려면 로직이 담긴 topology를 jar로 제출해야 합니다. 그 때 storm core 는 jar 패키징에서 제외해서 빌드해야 해서 compileOnly를 사용합니다.
 - `compileClassPath` 는 comileOnly와 implmentation 두 요소를 포함합니다. 소스코드를 컴파일하는 `compileJava` Task에서 사용합니다. 
 - `annotationProcessor` 는 컴파일 시에 사용하는 어노테이션 프로세서들을 라이브러리들을 지칭합니다.
 - `runtimeOnly` 는 런타임 시에만 사용되는 dependency 입니다.
