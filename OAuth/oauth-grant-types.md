@@ -47,6 +47,31 @@ grant_type=password
 
 추가적으로 고민 지점이 있다. 아무리 자사 서비스라고 하더라도, OAuth 상의 클라이언트가 프론트엔드(웹브라우저)가 될 경우 Client Crendential(ID와 Password)가 노출될 위험이 항상 존재한다. 인증서버 측에서는 클라이언트 Credential이 다른 곳에서 사용한다는 것을 확인하지 못한다. 이 문제를 해결하려면, 인증서버에 Client의 서버 도메인을 저장해두고 체크하는 방식으로 보완해야한다. 그래서 Authorization Code Grant Type에서 client redirect url을 사용하는 이유인 것 같다. 보안을 최대한 안전하게 하려면 권고한대로 Authorization Code 방식을 사용하는 것이 바람직하다.
 
+### Resource Owner Password Crendential Grant Type을 사용하지 말아야 하는 이유
+어떤 이유에서든 Resource Owner password Credential Grant 방식을 사용하지 말아야 한다고 자세히 설명한 [블로그 글](https://www.scottbrady91.com/OAuth/Why-the-Resource-Owner-Password-Credentials-Grant-Type-is-not-Authentication-nor-Suitable-for-Modern-Applications)이 있다. 
+
+1. 인증 서버와 Resource Owner(유저) 간 직접적으로 인증을 하지 않으면 제대로 된 인증이 아니다. client 나 중간자가 들어가게 되면 인증서버 측에서는 해당 유저로 인증한 것인지 확신할 수 없다. 그럼으로 보안상 위험하다.
+1. 사용자에게 피싱 사이트에 접속할 확률을 높이게 된다. 써드파티 서비스(OAuth Client)마다 다른 인증 페이지를 통해 인증을 계속 할 수 밖에 없다. 나중에되면 사용자는 어떤 것이 연계된 서비스인지 알기 어려우며, 가짜로 만든 피싱사이트에서 로그인 정보를 입력하는 실수를 할 수 있다. Authorization Code 방식을 사용하면, 한 개의 동일한 인증 페이지를 사용하기 때문에 피싱 공격 확률을 낮출 수 있다.
+1. OAuth Client를 아무리 신뢰한다고 해도, 누구나 접속할 수 있는 웹을 사용한다면 보안상 위험하다. 웹은 캐시를 남길 수 있기 때문에 username 과 PW 가 남을 수 있다. 또한 Client ID와 PW 정보를 복호화할 위험도 있고, 자바스크립트를 변조할 수도 있다.
+1. 이 방식은 기술부채이다. 이미 Legacy로 지정이 되었고, 유지보수가 어려워질 것이며 보안 상 위험하다.
+1. 특정 디바이스가 OAuth Client이여도 마찬가지이다. Device를 위한 Grant Type이 따로 존재한다. 
+
+
+
+## Client Credential Grant Type
+이 방식은 리소스 서버 간 통신을 할 때 쓰인다. 유저이름과 패스워드 같은 인증 없이 Client 정보만 있으면 Access Token을 발급받을 수 있다. 유의할 점은 Client 정보만으로 쉽게 토큰을 발급할 수 있으므로, scope를 최소한으로 제한을 해야한다. [RFC 문서 참고](https://tools.ietf.org/html/rfc6749#section-1.3.4)
+
+API 명세는 [참고](https://www.oauth.com/oauth2-servers/access-tokens/client-credentials/)
+```
+POST /token HTTP/1.1
+Host: authorization-server.com
+ 
+grant_type=client_credentials
+&client_id=xxxxxxxxxx
+&client_secret=xxxxxxxxxx
+```
+
+
 
 ### 참조
 - [Resource Owner Password Credentials Grant, oauth2](https://tools.ietf.org/html/rfc6749#section-4.3)
