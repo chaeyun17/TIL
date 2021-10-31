@@ -1,7 +1,7 @@
 # Spring Data Jpa 및 Hibernate 상세내용
 
 
-## PersistContext 관리
+## PersistenceContext 관리
 
 - 플레인 Java로 EntityManagerFactory를 통해 생성한 EntityManager 각각은 다른 PersistContext를 생성하고 관리한다.
 - 하지만 Spring 에서는 EntityManagerFactory를 Bean 설정으로 하면, EntityManager 생성 및 삭제를 Container에서 자동으로 관리한다. 자연스레 EntityManager에 연관된 PersistContext도 자동으로 관리된다.
