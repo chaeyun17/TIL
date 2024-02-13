@@ -18,3 +18,17 @@
 5. public api에서 데이터로 사용될 경우, 게터와 세터를 만들 것을 고려해볼 것입니다. 그러나 위 항목들을 다 고려해본 뒤, 정 안되면 만들 것입니다.  
 
 위와 같은 내용은 책 '클린코드'에 설명되어 있습니다. 그리고 '이펙티브 자바'에서도 설명되어 있습니다. 참고하시길 바랍니다. 위 내용은 [Avoid getters and setters whenever possible](https://dev.to/scottshipp/avoid-getters-and-setters-whenever-possible-c8m)에서 인용하여 작성하였습니다.
+
+
+## Java Bean
+
+`JavaBean`이란 하나의 JAVA 클래스 표준입니다. 세 가지 컨벤션을 지키면 됩니다.
+
+첫째, 모든 프로퍼티들은 Private 접근자로 설정하고 getter와 setter 와 같은 메서드를 통해서만 프로퍼티에 영향을 끼칠 수 있습니다.
+
+둘째, Public 접근자 기본 생성자(No-Arguments Constructor)가 있어야 합니다.
+
+셋째, `Serializable`을 구현해야 합니다. 생성한 오브젝트를 스트림을 통해 파일로도, DB 로도 등등 다양한 외부로 변환하고 역방향으로도 가능하도록 하여 범용적으로 오브젝트를 다를 수 있습니다.
+
+참고자료: https://stackoverflow.com/questions/3295496/what-is-a-javabean-exactly
+
