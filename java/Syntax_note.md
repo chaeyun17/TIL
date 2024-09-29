@@ -41,10 +41,6 @@ MSB가 0 또는 1 일 때, 나머지 비트를 해석하는 방법이 각기 다
 
 
 ## 실수의 표현법
-<<<<<<< HEAD
-1과 5사이의 정수는 유한하지만, 1과 5사이의 실수는 무한하다. 실수를 정확히 표현하는데 한계가 있다. **IEEE 754** 표준을 사용한다.
-[더 알아보기](https://ko.wikipedia.org/wiki/%EB%B6%80%EB%8F%99%EC%86%8C%EC%88%98%EC%A0%90)
-=======
 1과 5사이의 정수는 유한하지만, 1과 5사이의 실수는 무한하다. 실수를 정확히 표현하는데 한계가 있다.
 
 **IEEE 754** 표준을 사용한다.
@@ -381,9 +377,25 @@ public class Cat extends Mammal {
 }
 ```
 
-## String
+## String 문자열
+- 문자열 리티럴은 `문자열 상수 풀 String Constant Pool` 이라는 특별한 메모리 영역에 저장되며 Heap 메모리에 저장됨. 같은 문자열이면 재사용함.
 - String.toString(): 실제 데이터 값. 해쉬코드 값. String 변수에는 주소값이 들어있기 때문에 이 메소드를 사용한다.
 - '질문': 힙 영역과 스택영역. 어디에 데이터가 저장되나
+- 문자열 연산
+	```java
+	// String 불변객체를 사용해서 문자 연산
+	String concatedImmutable = "A" + "B" + "C" + "D" + "E";
+	// StringBuilder 가변객체를 사용한 문자 연산
+	StringBuilder sb = new StringBuilder();
+	sb.append("A");
+	sb.append("B");
+	sb.append("C");
+	sb.append("D");
+	sb.append("E");
+	String concatedMutable = sb.toString();
+	```
+	- `"A"+"B"` 문자열 리터럴 연산을 할 때마다 새로운 메모리 공간을 할당함. 메모리 할당 시간 소요.
+	- `StringBuilder` 는 내부적으로 고정된 `char[1ㄴ6]` 메모리 버퍼를 가지고 있으며, 부족할 경우 그 때 메모리를 할당함. 연산이 자주 있을 경우, StringBuilder 가변객체가 더 빠름.
 
 ## 클래스 변수와 메소드 상속
 - 클래스 변수는 final과 private을 제외하고 상속 가능
@@ -1058,4 +1070,3 @@ public class TwoParamNoReturn {
 
 ### 스트림 생성
 - 배열 스트림 생성: `static <T> Stream<T> stream(T[] array)`
->>>>>>> 05710f2f5d111c56f15473cf5aaabac345194295
