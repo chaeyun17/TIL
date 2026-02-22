@@ -33,3 +33,81 @@ https://medium.com/@AlexanderObregon/data-mapping-with-springs-modelattribute-an
 https://e-room.tistory.com/169
 https://www.inflearn.com/questions/249849/modelattribute%EC%97%90%EC%84%9C-default-value
 
+
+### @ModelAttribute VS @RequestBody
+
+`@ModelAttribute` 어노테이션은 Spring MVC 의 JavaBean 규약인 `Spring Binder` 를 따르는 반면 `@RequestBody`는 `Jackson` 오픈소스 라이브러리 내의 규약을 따른다.
+JavaBean 규약은 생성자 기반 바인딩으로 생성자 단독 또는 생성자+Setter 메서드를 사용해서 Bean을 생성하는 방식이다. , `Jackson` 에선 기본생성자와 필드주입(리플렉션의 필드 값 세팅 방식)을 사용한다.
+
+
+### @ModelAttirbute 예시
+
+```java
+public class AuthVerificationDto {
+
+  @AllArgsConstructor(access = AccessLevel.PROTECTED)
+  @Getter
+  public static class VerifyCodeRequest {
+
+    @NotBlank(message = "전화번호는 필수입니다.")
+    @Pattern(regexp = "^01[016789]\\d{7,8}$", message = "올바른 전화번호 형식이 아닙니다.")
+    private String phoneNumber;
+
+    @NotBlank(message = "인증번호는 필수입니다.")
+    @Pattern(regexp = "^\\d{6}$", message = "인증번호는 6자리 숫자여야 합니다.")
+    private String verificationCode;
+  }
+
+}
+```
+
+```java
+  @GetMapping("/test")
+  public ResponseEntity<AuthVerificationDto.VerifyCodeRequest> test(
+      @Valid @ModelAttribute AuthVerificationDto.VerifyCodeRequest request) {
+    return ResponseEntity.ok(request);
+  }
+```
+
+```java
+  @Test
+  @DisplayName("테스트")
+  void test() throws Exception {
+    MultiValueMap<String, String> paramMap = new LinkedMultiValueMap<>();
+    paramMap.add("phoneNumber", "01012345678");
+    paramMap.add("verificationCode", "123456");
+    mockMvc.perform(
+            get("/api/v1/auth/verifications/test")
+                .params(paramMap))
+        .andDo(print())
+        .andExpect(status().isOk());
+
+  }
+```
+
+### @RequestBody 예시
+
+```java
+public class AuthVerificationDto {
+
+    @Getter
+    public static class VerifyCodeRequest {
+        @NotBlank(message = "전화번호는 필수입니다.")
+        @Pattern(regexp = "^01[016789]\\d{7,8}$", message = "올바른 전화번호 형식이 아닙니다.")
+        private String phoneNumber;
+        
+        @NotBlank(message = "인증번호는 필수입니다.")
+        @Pattern(regexp = "^\\d{6}$", message = "인증번호는 6자리 숫자여야 합니다.")
+        private String verificationCode;
+    }
+}
+```
+
+```java
+  @PostMapping("/verify")
+  public ResponseEntity<Void> verifyCode(
+      @Valid @RequestBody AuthVerificationDto.VerifyCodeRequest request) {
+    service.verifyCode(request);
+    return ResponseEntity.ok().build();
+  }
+```
